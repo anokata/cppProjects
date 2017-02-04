@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 using namespace std;
 
 int some() {
@@ -75,6 +76,38 @@ void rotate_(int a[], unsigned size, int shift) {
 
     return;
 }
+
+void sq_root_equasion(int a, int b, int c) {
+    int d = b * b - 4 * a * c;
+    cout << d;
+    if (d < 0) {
+        cout << "No real roots" << endl;
+    } else {
+        long x1 = (-b + sqrt(d)) / (2 * a);
+        long x2 = (-b - sqrt(d)) / (2 * a);
+        cout << x1 << ' ' << x2 << endl;
+    }
+}
+
+int log_int(int x) {
+    if (x < 2) return 0;
+    int log = 0;
+    long value = 2;
+    while (value < x) {
+        value *= 2;
+        ++log;
+    }
+    return log;
+}
+
+void process_one() {
+    int count;
+    cin >> count;
+    for (;count != 0; --count) {
+
+        cout << count;
+    }
+}
 // TODO array cmp array
 #define MAX(x, y, r) {int _a = x; int _b=y; r=_a>_b?_a:_b;}
 int main() {
@@ -87,6 +120,9 @@ int main() {
     show_array(a, 3);
     int b = 3; int c = 4; int r = 0;
     MAX(b+2, c+=4, r);
-    cout << r;
+    cout << r << sqrt(2) << endl;
+    sq_root_equasion(1, 4, 4);
+    cout << '|' << log_int(5) << ' ' << log_int(11539);
+    process_one();
     return 0;
 }
