@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <string>
 using namespace std;
 
 
@@ -173,7 +174,200 @@ void reverese_output() {
     revout(x);
 }
 
+
+bool isUpper(char c) {
+    return (c >= 'A' && c <= 'Z');
+}
+
+bool isLower(char c) {
+    return (c >= 'a' && c <= 'z');
+}
+
+char toUpper(char c) {
+    if (isLower(c)) {
+        return (c - 'a') + 'A';
+    }
+    return c;
+}
+
+char toLower(char c) {
+    if (isUpper(c)) {
+        return (c - 'A') + 'a';
+    }
+    return c;
+}
+
+char changeCase(char c) {
+    if (isLower(c)) {
+        return toUpper(c);
+    } else {
+        return toLower(c);
+    }
+}
+
+void strings_0() {
+    string s = "abc";
+    s[1] = 'g';
+    cout << s << endl;
+    //cin >> s;
+    cout << ">>" + s + "<<" << sizeof(s) << endl;
+    //cout << &s << ' ' << *(&s + 1);
+    getline(cin, s);
+    cout << s.size() << ' ' << (unsigned)s[0] << endl;
+    for (auto c : s) {
+        if (c != ' ') {
+            if (c >= '0' && c <= '9') cout << c;
+        } else {
+            cout << '_';
+        }
+    }
+    bool bbb = s.find("asa") != -1;
+    cout << endl << s << endl << bbb;
+}
+
+int word_count(string s) {
+    int count = 1;
+    for (char c : s) {
+        if (c == ' ') ++count;
+    }
+    return count;
+}
+
+bool is_palindrom(string s) {
+    int len = s.size();
+    for (int i = 0; i < len/2; ++i) {
+        if (s[i] != s[len-i-1]) return false;
+    }
+    return true;
+}
+
+void test_palindrom() {
+    string str;
+    getline(cin, str);
+    if (is_palindrom(str)) {
+        cout << "yes" << endl;
+    } else {
+        cout << "no" << endl;
+    }
+}
+
+string longest_word_one_space(string s) {
+    int word_start = 0;
+    int word_end;
+    int len = s.size();
+    word_end = s.find(' ');
+    string str;
+    int max_start = 0;
+    int max_end = 0;
+    int max_len = 0;
+
+    while (word_end != -1) {
+        if (max_len < (word_end - word_start)) {
+            max_len = word_end - word_start;
+            max_start = word_start;
+            max_end = word_end;
+        }
+        word_start = s.find(' ', word_end + 1);
+        word_end = s.find(' ', word_start + 1);
+    }
+    if (max_start == 0) {
+        str = s.substr(max_start, max_len);
+    } else {
+        str = s.substr(max_start + 1, max_len - 1);
+    }
+    cout << '"' << str << '"';
+    return str;
+}
+
+string longest_word_1s_simple(string s) {
+    int max_start = 0;
+    int max_len = 0;
+    int word_start = 0;
+    int word_len = 0;
+    bool word = true;
+
+    for (int i = 0; i < s.size(); ++i) {
+        char c = s[i];
+        if (c != ' ') {
+            if (word) {
+                word_len++;
+            } else {
+                word = true;
+                word_start = i;
+                word_len = 0;
+            }
+        } else {
+            if (word) {
+                word = false;
+                if (max_len < word_len) {
+                    max_len = word_len;
+                    max_start = word_start;
+                    word_len = 0;
+                }
+            }
+        }
+    }
+
+    if (max_len < word_len) {
+        max_len = word_len;
+        max_start = word_start;
+    }
+
+    string str;
+    if (max_start == 0) {
+        str = s.substr(max_start, max_len);
+    } else {
+        str = s.substr(max_start, max_len + 1);
+    }
+    cout << '"' << str << '"' << endl;
+    return str;
+}
+
+bool is_num_digit(char c) {
+    return (c >= '0' && c <= '9');
+}
+
+bool is_correct_IP(string s) {
+    if (s.size() < 7) return false; // min addr '0.0.0.0'
+    char c = '\0';
+    int num = 0;
+    int dot_count = 0;
+    string number = "";
+    if (!is_num_digit(s[0])) return false;
+    for (int i = 0; i < s.size(); ++i) {
+        c = s[i];
+        if (is_num_digit(c)) {
+            number += c;
+        } else if (c == '.') {
+            dot_count++;
+            if (dot_count > 3) return false;
+            if (number.size() == 0) return false;
+            num = stoi(number);
+            if (num < 0 || num > 255) return false;
+            number = "";
+        } else return false;
+    }
+    if (dot_count != 3) return false;
+    if (c == '.') return false;
+    num = stoi(number);
+    if (num < 0 || num > 255) return false;
+    return true;
+}
+
+void test_IP(string ip) {
+    if (is_correct_IP(ip)) {
+        cout << "YES" << endl;
+    } else cout << "NO" << endl;
+}
+
 int main() {
-    reverese_output();
+    string s = "abc";
+    cout << s.find('a') << ' ' << s.find('c');
+    //cout << longest_word_one_space("abccc abc abcd ab abc");
+    longest_word_1s_simple("abccc abc abcd ab abc");
+    longest_word_1s_simple("a1 abcd a2");
+    longest_word_1s_simple("ab abc abcd ab abc123123");
+    cout << stoi("123") << endl;
+    test_IP("127.12..123");
     return 0;
 }

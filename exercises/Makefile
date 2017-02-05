@@ -1,2 +1,2 @@
 first:
-	g++ first.cpp -o first.out && ./first.out
+	g++ first.cpp -std=c++11 -o first.out && ./first.out
