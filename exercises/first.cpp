@@ -141,7 +141,39 @@ void inject() {
     m[3] = (int *) &injected;
 }
 
+long factorial(int n) {
+    if (n < 2) return 1;
+    return factorial(n - 1) * n;
+}
+
+int gcd_implementation(int a, int b) {
+    if (b == 0) return a;
+    return gcd_implementation(b, a % b);
+}
+
+int gcd(int a, int b) {
+    if (a > b) return gcd_implementation(a, b);
+    return gcd_implementation(b, a);
+}
+
+void revout(int x) {
+    if (x == 0) {
+        cout << endl;
+        return;
+    }
+    int y = 0;
+    cin >> y;
+    revout(y);
+    cout << x << ' ';
+}
+
+void reverese_output() {
+    int x = 0;
+    cin >> x;
+    revout(x);
+}
+
 int main() {
-    inject();
+    reverese_output();
     return 0;
 }
