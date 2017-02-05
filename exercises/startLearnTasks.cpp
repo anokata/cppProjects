@@ -1,5 +1,10 @@
 #include <cassert>
-
+#include <iostream>
+using namespace std;
+/* *** 
+ * когда на мелкие функции разбиваю только ради удобства - вызываю раз - можно их инлайнить!
+ *
+ */
 //0.0  Написать процедуру тестирующую все следующие функции, и выводящую отчёт.
 //1.0  написать функцию sumArray принимающую массив целых чисел и вычисляющих сумму.
 int sumArray(int *array, int *end) {
@@ -11,6 +16,11 @@ int sumArray(int *array, int *end) {
 }
 //1.1  написать функцию avgArray принимающую массив целых чисел и вычисляющих среднее арифметическое.
 //1.2  написать функцию lenString вычисляющую длинну переданной строки.
+unsigned cstyle_string_len(const char *str) {
+    unsigned len = 0;
+    for (; *str; ++str, ++len);
+    return len;
+}
 //2.0  Написать функцию max2 возвращающую большее из двух чисел.
 //2.1  Написать функцию max3 принимающую 3 числа и возвращающую максимальное.
 //2.2  Написать функцию sortArray принимающую массив чисел и сортирующую его с помощью функции max2
@@ -46,10 +56,23 @@ void test_arrays() {
     assert(sumArray(arr2, arr2 + 3) == 8);
 }
 
+void test_string_len() {
+    cout << "str len tst" << endl;
+    const char *str1 = "some";
+    const char *str2 = "";
+    const char *str3 = "1";
+    assert(cstyle_string_len(str1) == 4);
+    assert(cstyle_string_len(str2) == 0);
+    assert(cstyle_string_len(str3) == 1);
+}
+
 void test_all() {
     test_arrays();
+    test_string_len();
 }
 
 int main() {
+    cout << "start\n";
     test_all();
+    return 0;
 }
