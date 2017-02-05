@@ -4,6 +4,7 @@
 #include <set>
 #include <map>
 #include <vector>
+#include <cassert>
 using namespace std;
 
 #define MAX(x, y, r) {int _a = x; int _b=y; r=_a>_b?_a:_b;}
@@ -489,14 +490,32 @@ int mkad(int v, int t) {
     //int abs_z = (z * z) / z;
     cout << end << ' ' << z << ' ' << 109 + end << endl;
 }
+
+int snail(int h, int a, int b) {
+    int d = a - b;
+    int had = (h - a) / d;
+    int s = (h - a) / d + 1;
+    int aab = a / d;
+    int hd = h / d;
+    int db = d / b;
+    int p = hd - (a / h);
+     int k = h % d;
+     int kk = (h - a) % d;
+
+    cout << "snail " << s << " k= " << k << " hd= " << hd << " p= " << p << " kk= " << kk << endl;
+    return s;
+}
+
+void snail_test() {
+    assert(snail(2, 3, 1) == 1);
+    assert(snail(2, 2, 1) == 1);
+    assert(snail(3, 2, 1) == 2);
+    assert(snail(4, 2, 1) == 3);
+    assert(snail(5, 2, 1) == 4);
+    assert(snail(3, 3, 1) == 1);
+    assert(snail(4, 3, 1) == 2);
+}
+
 int main() {
-    //cout << uniq_numbers() << endl;
-    //exist_test();
-    //cout << intersected_sets() << endl;
-    //time_sec();
-    mkad(60, 2);
-    mkad(-1, 1);
-    mkad(-1, 4);
-    mkad(-1, 400);
     return 0;
 }
