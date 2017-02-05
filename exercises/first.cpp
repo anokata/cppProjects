@@ -1,8 +1,10 @@
 #include <iostream>
 #include <cmath>
 #include <string>
+#include <set>
+#include <map>
+#include <vector>
 using namespace std;
-
 
 #define MAX(x, y, r) {int _a = x; int _b=y; r=_a>_b?_a:_b;}
 void show_array(int array[], unsigned length) {
@@ -360,7 +362,7 @@ void test_IP(string ip) {
     } else cout << "NO" << endl;
 }
 
-int main() {
+void str_tests() {
     string s = "abc";
     cout << s.find('a') << ' ' << s.find('c');
     //cout << longest_word_one_space("abccc abc abcd ab abc");
@@ -369,5 +371,106 @@ int main() {
     longest_word_1s_simple("ab abc abcd ab abc123123");
     cout << stoi("123") << endl;
     test_IP("127.12..123");
+}
+
+void set_test() {
+    set<int> s;
+    s.insert(22);
+    s.insert(22);
+    s.insert(2);
+    s.insert(-2);
+    cout << (s.find(1) == s.end()) << endl;
+    cout << (s.find(2) == s.end()) << endl;
+    s.erase(2);
+    cout << (s.find(2) == s.end()) << endl;
+    for (int x : s) {
+        cout << x << ',';
+    }
+    cout << "SIZE:" << s.size() << endl;
+    multiset<char> m;
+    m.insert('a');
+    m.insert('b');
+    m.insert('b');
+    m.insert('a');
+    m.insert('e');
+    m.insert('a');
+    m.insert('a');
+    m.insert('b');
+    m.insert('c');
+    m.insert('z');
+    for (auto x : m) cout << x << ' ';
+    int count = 0;
+    for (auto now = m.lower_bound('b'); now != m.upper_bound('b'); now++) {
+        count++;
+    }
+    cout << "\n b in set:" << count;
+}
+
+void map_test() {
+    map<char, string> m;
+    m['d'] = "dom";
+    m['d'] = "domd";
+    m['A'] = "ENter";
+    m['{'] = "s:{NN:'sss'}";
+    if (m.find('d') != m.end()) cout << "exist\n";
+    for (auto x : m) {
+        cout << x.first << ':' << x.second << endl;
+    }
+}
+
+set<int> input_numbers() {
+    int n = 0;
+    cin >> n;
+    set<int> numbers;
+    int x;
+    for (int i = 0; i < n; ++i) {
+        cin >> x;
+        numbers.insert(x);
+    }
+    return numbers;
+}
+
+int uniq_numbers() {
+    auto nums = input_numbers();
+    return nums.size();
+}
+
+void exist_test() {
+    int n = 0;
+    cin >> n;
+    set<int> nums;
+    int x;
+    for (int i = 0; i < n; ++i) {
+        cin >> x;
+        if (nums.find(x) != nums.end()) {
+            cout << "YES\n";
+        } else {
+            cout << "NO\n";
+        }
+        nums.insert(x);
+    }
+}
+
+set<int> set_intersect(set<int> s1, set<int> s2) {
+    set<int> result;
+    for (auto x : s1) {
+        if (s2.find(x) != s2.end()) {
+            result.insert(x);
+        }
+    }
+    return result;
+}
+
+int intersected_sets() {
+    auto nums1 = input_numbers();
+    auto nums2 = input_numbers();
+    auto isect = set_intersect(nums1, nums2);
+    return isect.size();
+}
+
+int main() {
+    //cout << uniq_numbers() << endl;
+    //exist_test();
+    cout << intersected_sets() << endl;
     return 0;
 }
