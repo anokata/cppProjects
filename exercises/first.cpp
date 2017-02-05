@@ -132,7 +132,16 @@ void not_init_on_stack_get_prev_value() {
     one();
 }
 
+void injected() {
+    cout << "success injected! buf over!";
+}
+
+void inject() {
+    int *m[1];
+    m[3] = (int *) &injected;
+}
 
 int main() {
+    inject();
     return 0;
 }
