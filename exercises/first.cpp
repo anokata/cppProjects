@@ -468,9 +468,35 @@ int intersected_sets() {
     return isect.size();
 }
 
+void time_sec() {
+    int n;
+    cin >> n;
+    n = n % (60 * 60 * 24);
+    int hours = n / (60 * 60);
+    int minuts = (n - hours * 60 * 60) / 60;
+    int d_mins = minuts / 10;
+    int e_mins = minuts % 10;
+    int seconds = (n - hours * 60 * 60) % 60;
+    int d_sec = seconds / 10;
+    int e_sec = seconds % 10;
+    cout << hours << ':' << d_mins << e_mins << ':' << d_sec << e_sec;
+}
+
+int mkad(int v, int t) {
+    int s = v * t;
+    int end = s % 109;
+    int z = s / 109;
+    //int abs_z = (z * z) / z;
+    cout << end << ' ' << z << ' ' << 109 + end << endl;
+}
 int main() {
     //cout << uniq_numbers() << endl;
     //exist_test();
-    cout << intersected_sets() << endl;
+    //cout << intersected_sets() << endl;
+    //time_sec();
+    mkad(60, 2);
+    mkad(-1, 1);
+    mkad(-1, 4);
+    mkad(-1, 400);
     return 0;
 }
