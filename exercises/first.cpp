@@ -753,6 +753,83 @@ void second_max() {
     cout << last;
 }
 
+void rates_year() {
+    int p, x, y, k;
+    cin >> p >> x >> y >> k;
+    int deposit;
+    double rated;
+    while (k != 0) {
+        deposit = x * 100 + y;
+        rated = deposit * (100 + p) / 100.0;
+        x = rated / 100;
+        y = rated - x * 100;
+        k--;
+    }
+    
+    cout << x << ' ' << y;
+    return;
+}
+
+void avg_inputed() {
+    int x;
+    cin >> x;
+    double avg = 0;
+    int sum = 0;
+    int count = 0;
+    while (x != 0) {
+        sum += x;
+        count++;
+        cin >> x;
+    }
+    avg = sum / (double)count;
+    cout << fixed << setprecision(11) << avg;
+}
+
+long line_fibo() {
+    int n;
+    cin >> n;
+    if (n == 0 || n == 1) {
+        cout << n;
+        return 0;
+    }
+    long f_pred = 1;
+    long f_ppred = 0;
+    long f = 0;
+    while (n != 1) {
+        n--;
+        f = f_ppred + f_pred;
+        f_ppred = f_pred;
+        f_pred = f;
+    }
+    cout << f;
+    return 0;
+}
+
+int where_fibo() {
+    long a;
+    cin >> a;
+    if (a == 0 || a == 1) {
+        cout << a;
+        return 0;
+    }
+    long f_pred = 1;
+    long f_ppred = 0;
+    long f = 0;
+    int n = 1;
+    while (a > f) {
+        n++;
+        f = f_ppred + f_pred;
+        f_ppred = f_pred;
+        f_pred = f;
+    }
+    if (a == f) {
+        cout << n;
+    } else {
+        cout << -1;
+    }
+    return 0;
+}
+
 int main() {
     //test_swapl();
     //dynamic_mem_cpp();
@@ -762,5 +839,6 @@ int main() {
     // cout << fixed << setprecision(1) << 32.12 << ' ' << 21 << ' ' << trunc(123.123) << endl;
     // cout << floor(2.9) << ' ' << ceil(2.1) << ' ' << round(2.5);
     // int m[10]; for (auto x : m) cout << x;
+    where_fibo();
     return 0;
 }
