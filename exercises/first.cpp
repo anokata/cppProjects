@@ -761,5 +761,6 @@ int main() {
     // second_max();
     // cout << fixed << setprecision(1) << 32.12 << ' ' << 21 << ' ' << trunc(123.123) << endl;
     // cout << floor(2.9) << ' ' << ceil(2.1) << ' ' << round(2.5);
+    // int m[10]; for (auto x : m) cout << x;
     return 0;
 }
