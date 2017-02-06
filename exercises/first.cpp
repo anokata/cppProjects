@@ -516,6 +516,59 @@ void snail_test() {
     assert(snail(4, 3, 1) == 2);
 }
 
+void king_move() {
+    int sx, sy, ex, ey;
+    cin >> sx >> sy >> ex >> ey;
+    int dx = sx - ex;
+    int dy = sy - ey;
+    cout << dx << ' ' << dy;
+    if ((dx * dx) < 2 && (dy * dy) < 2) {
+        cout << "YES";   
+    } else {
+        cout << "NO";
+    }
+}
+
+void horse_move() {
+    int sx, sy, ex, ey;
+    cin >> sx >> sy >> ex >> ey;
+    int dx = sx - ex;
+    int dy = sy - ey;
+    dx = dx * dx;
+    dy = dy * dy;
+    if ((dx == 4 && dy == 1) || (dx == 1 && dy == 4)) {
+        cout << "YES";   
+    } else {
+        cout << "NO";
+    }
+}
+
+void ferz_move() {
+    int sx, sy, ex, ey;
+    cin >> sx >> sy >> ex >> ey;
+    int dx = sx - ex;
+    int dy = sy - ey;
+
+    if (((dx * dx) == (dy * dy)) || (sx == ex || sy == ey)) {
+        cout << "YES";   
+    } else {
+        cout << "NO";
+    }
+}
+
+void strcat(char *to, const char *from)
+{
+    // first go to end
+    while (*to) ++to;
+    // copy
+    while (*from) {
+        *to = *from;
+        from++;
+        to++;
+    }
+    *to = *from;
+}
+
 int main() {
     return 0;
 }
