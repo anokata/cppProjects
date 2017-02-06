@@ -651,13 +651,33 @@ void test_swapl() {
     cout << b << '_';
     ++b = b;
     cout << b; 
-    // есть ли смысл возвращать ссылку функцией?
+    // есть ли смысл возвращать ссылку функцией? да если это выделенная память а не стек
     // аргумент ссылка на массив - int (&a)[3]
     // для больших объектов аргументов лучше (для избегания копирования) передвать по
     // type const &name например string const &str
 }
 
+void dynamic_mem_cpp() {
+    int *pint = new int;
+    cout << *pint << ' ';
+    *pint = 42;
+    cout << *pint << ' ';
+    delete pint;
+    cout << *pint << '*' << pint << ' ';
+    pint = new int(128);
+    cout << *pint << ' ' << endl;
+    delete pint;
+
+    long *plong = new long[10];
+    cout << plong[1] << ' ';
+    plong[1] += 21;
+    cout << plong[1] << ' ';
+    delete [] plong;
+    cout << plong[1] << ' ';
+
+}
+
 int main() {
-    test_swapl();
+    dynamic_mem_cpp();
     return 0;
 }
