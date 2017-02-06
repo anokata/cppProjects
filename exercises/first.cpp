@@ -6,6 +6,7 @@
 #include <vector>
 #include <cassert>
 #include <algorithm> // sort
+#include <iomanip>
 
 using namespace std;
 
@@ -734,10 +735,31 @@ void getline_test() {
     delete [] line;
 }
 
+void second_max() {
+    int x;
+    cin >> x;
+    int max = x;
+    int last = 0;
+  
+    while (x != 0) {
+        cin >> x;
+        if (max < x) {
+            last = max;
+            max = x;
+        } else if (last < x) {
+            last = x;
+        }
+    }
+    cout << last;
+}
+
 int main() {
     //test_swapl();
     //dynamic_mem_cpp();
     // resize_test();
-    getline_test();
+    // getline_test();
+    // second_max();
+    // cout << fixed << setprecision(1) << 32.12 << ' ' << 21 << ' ' << trunc(123.123) << endl;
+    // cout << floor(2.9) << ' ' << ceil(2.1) << ' ' << round(2.5);
     return 0;
 }
