@@ -655,6 +655,10 @@ void test_swapl() {
     // аргумент ссылка на массив - int (&a)[3]
     // для больших объектов аргументов лучше (для избегания копирования) передвать по
     // type const &name например string const &str
+    // ссылка на указатель
+    int *pl = &a;
+    int *(&pla) = pl;
+    cout << endl << "pla " << pla << "val " << *pla << endl;
 }
 
 void dynamic_mem_cpp() {
@@ -663,21 +667,77 @@ void dynamic_mem_cpp() {
     *pint = 42;
     cout << *pint << ' ';
     delete pint;
-    cout << *pint << '*' << pint << ' ';
+    pint = 0;
+    //cout << *pint << '*' << pint << ' ';
     pint = new int(128);
     cout << *pint << ' ' << endl;
     delete pint;
+    pint = 0;
 
     long *plong = new long[10];
     cout << plong[1] << ' ';
     plong[1] += 21;
     cout << plong[1] << ' ';
     delete [] plong;
-    cout << plong[1] << ' ';
+    plong = 0;
+    //cout << plong[1] << ' ';
 
 }
 
+
+char *resize(const char *str, unsigned size, unsigned new_size) {
+    char *newmem = new char[new_size];
+    if (size > new_size) size = new_size;
+    for (int i = 0; i < size; ++i) {
+        newmem[i] = str[i];
+    }
+    delete [] str;
+    return newmem;
+}
+
+char *getline_() {
+    char c;
+    int size = 4;
+    char *mem = new char[size];
+    int len = 0;
+    mem[len] = 0;
+
+    while (cin.get(c)) {
+        if (c == '\n') break;
+        mem[len] = c;
+        len++;
+        if (len + 1 > size) {
+            mem = resize(mem, size, size * 2);
+            size *= 2;
+        }
+    }
+    mem[len] = 0;
+    return mem;
+}
+
+void resize_test() {
+    int *ar = new int[3];
+    ar[0] = 2;
+    ar[1] = 1;
+    ar[2] = 4;
+
+    show_array(ar, 3);
+    ar = (int *) resize((char *) ar, 3 * sizeof(int), 5);
+    show_array(ar, 5);
+
+    delete [] ar;
+}
+
+void getline_test() {
+    char *line = getline_();
+    cout << "line:>>>" << line << "<<<" << endl;
+    delete [] line;
+}
+
 int main() {
-    dynamic_mem_cpp();
+    //test_swapl();
+    //dynamic_mem_cpp();
+    // resize_test();
+    getline_test();
     return 0;
 }
