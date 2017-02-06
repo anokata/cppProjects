@@ -5,6 +5,8 @@
 #include <map>
 #include <vector>
 #include <cassert>
+#include <algorithm> // sort
+
 using namespace std;
 
 #define MAX(x, y, r) {int _a = x; int _b=y; r=_a>_b?_a:_b;}
@@ -567,6 +569,58 @@ void strcat(char *to, const char *from)
         to++;
     }
     *to = *from;
+}
+
+int strstr(const char *text, const char *pattern)
+{
+    if (*pattern == 0) return 0;
+    if (*text == 0) return -1;
+    int ppos;
+    for (int pos = 0; text[pos]; ++pos) {
+        for (ppos = 0; pattern[ppos]; ++ppos) {
+            // cout << text[pos + ppos] << '=' << pattern[ppos] << ' ' << pos << ' ' << ppos;
+            if (text[pos + ppos] != pattern[ppos]) {
+                break;
+            }
+        }
+        if (pattern[ppos] == 0)
+            return pos;
+    }
+    return -1;
+}
+//strstr, strncat, strlen <cstring>
+// max_element
+
+void strstr_test() {
+    const char *s1 = "";
+    const char *s2 = "abc";
+    const char *s3 = "a";
+    const char *s4 = "b";
+    const char *s5 = "c";
+    const char *s6 = "ccc";
+    const char *s7 = "ccd";
+    const char *s8 = "cd";
+    const char *s9 = "abc def gef";
+    const char *s0 = "def";
+    cout << strstr(s2, s1) << endl;
+    cout << strstr(s2, s3) << endl;
+    cout << strstr(s2, s4) << endl;
+    cout << strstr(s2, s5) << endl;
+    cout << strstr(s6, s4) << endl;
+    cout << strstr(s7, s7) << endl;
+    cout << strstr(s9, s0) << endl;
+    cout << strstr(s0, s9) << endl;
+}
+
+void sort_test() {
+    char s[5] = "gwba";
+    cout << s << endl;
+    sort(s, s+5);
+    cout << s+1 << '.' << (int)s[0] << (int)s[1] << endl;
+    int a[5] = {3, 2, 1, 5, 4};
+    show_array(a, 5);
+    sort(a, a+5);
+    show_array(a, 5);
 }
 
 int main() {
