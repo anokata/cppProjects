@@ -1151,6 +1151,7 @@ struct Point {
         cout << "destructor call " << x << "\n";
     }
 };
+//Placement new - new(pointer) Type;
 
 double Point::length_to_0(int r) {
     return sqrt(this->x * x + y * y) * r;
