@@ -25,11 +25,13 @@ struct String {
         return size;
     }
 
+    char &get(size_t pos);
     size_t length();
+    bool equal(const String &other);
 
+	char *str;
 private:
 	size_t size;
-	char *str;
 };
 
 String::String(size_t n, char c) {
@@ -54,6 +56,18 @@ size_t String::length() {
     return size;
 }
 
+char & String::get(size_t pos) {
+    return this->str[pos];
+}
+
+bool String::equal(const String &other) {
+    if (this->size != other.size) return false;
+    for (int i = 0; i < size; ++i) {
+        if (str[i] != other.str[i]) return false;
+    }
+    return true;
+}
+
 int main() {
     String s("abc");
     cout << s.length() << ' ' << s.str << ' ';
@@ -75,5 +89,11 @@ int main() {
     // константный указатель на константу
     int const * const p4 = &a;
     // const делает константным тип слева от него.
+    //
+    s.get(1) = 'Z';
+    cout << s.str << ' ' << s.equal(s) << s.equal(ss) << endl;
+    String z1 = "abc";
+    String z2 = "abC";
+    cout << z2.equal(z1);
     return 0;
 }
