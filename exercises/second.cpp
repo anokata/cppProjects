@@ -50,5 +50,17 @@ int main() {
     cout << s.str << s.size << endl;
     s.append(s);
     cout << s.str << s.size << endl;
+    int a = 32;
+    // указатель на константу
+    int const * p1;
+    const int * p2;
+    p1 = &a;
+    p2 = &a;
+    // константный указатель
+    int * const p3 = &a;
+    *p3 = 33;
+    // константный указатель на константу
+    int const * const p4 = &a;
+    // const делает константным тип слева от него.
     return 0;
 }
