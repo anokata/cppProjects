@@ -7,6 +7,7 @@
 #include <cassert>
 #include <algorithm> // sort
 #include <iomanip>
+#include <utility> // pair ?
 
 using namespace std;
 
@@ -830,15 +831,27 @@ int where_fibo() {
     return 0;
 }
 
-int main() {
-    //test_swapl();
-    //dynamic_mem_cpp();
-    // resize_test();
-    // getline_test();
-    // second_max();
+void vector_sort() {
+    vector <int> a(3);
+    a[0]=3; a[1]=2; a[2]=1;
+    for (auto x : a) cout << x << ' ';
+    sort(a.begin(), a.end());
+    cout << endl;
+    for (auto x : a) cout << x << ' ';
+
+    vector <pair <int, int>> a(3);
+    a[0] = {20, 1};
+    a[1] = {12, 2};
+    a[2] = {10, 3};
+    for (auto x : a) cout << x.second << ' ';
+    sort(a.begin(), a.end());
+    cout << endl;
+    for (auto x : a) cout << x.second << ' ';
+}
     // cout << fixed << setprecision(1) << 32.12 << ' ' << 21 << ' ' << trunc(123.123) << endl;
     // cout << floor(2.9) << ' ' << ceil(2.1) << ' ' << round(2.5);
     // int m[10]; for (auto x : m) cout << x;
-    where_fibo();
+
+int main() {
     return 0;
 }
