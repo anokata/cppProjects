@@ -1127,6 +1127,83 @@ void filework() {
     fout << "string '" << s << "' length= " << sizeof(s) << endl;
 }
 
+struct Point {
+    int x;
+    int y;
+    const int z;
+    double length_to_0(int r = 1);
+    // initialization list !!! выполняется раньше и можно инициализовать константные поля.
+    // порядок выполения инит x(?) y(?) зависит от порядка объявления полей.
+    Point() : x(sqrt(2)), y(11), z(13) {
+        cout << "From Point() constructor " << y << "\n";
+    }
+    Point(int zz) : z(zz*2) { // explicit чтобы запредить неявное преобразование при =
+        x = zz;
+        y = zz * 2;
+        cout << "From Point(int) constructor(inplicit from = ?)\n";
+    }
+    Point(int a, int b) : z(113) {
+        x = a;
+        y = b;
+        cout << "From Point(int, int) constructor\n";
+    }
+    ~Point() {
+        cout << "destructor call " << x << "\n";
+    }
+};
+
+double Point::length_to_0(int r) {
+    return sqrt(this->x * x + y * y) * r;
+}
+
+typedef Point * pPoint;
+
+struct TPoint{
+    Point p;
+    TPoint() {
+        cout << "default constructor";
+    }
+    TPoint(int x) {
+        cout << "not default constructor?";
+    }
+
+};
+
+void struct_with_method() {
+    pPoint p = new Point;
+    p->x = 2; p->y = 3;
+    cout << p->length_to_0();
+    cout << endl << "------constructors-----" << endl;
+    cout << "--pointer to *P\n";
+    Point *a;
+    cout << "--new it\n";
+    a = new Point;
+    cout << "--on stack P\n";
+    Point b;
+    cout << "--on stack P {init}\n";
+    {
+        Point bb = {1111, 2};
+    }
+    cout << "--on stack P(int)\n";
+    Point c(29);
+    cout << c.z << endl;
+    cout << "--неявный вызов конструктора с одним аргументом при присваивании в объявлении.\n";
+    Point cc = 30;
+    Point ccc = {12};
+    cout << "--on stack P(int, int)\n";
+    Point d(29, 19);
+    cout << "--on new P(int, int)\n";
+    delete a;
+    a = new Point(1, 3);
+    delete a;
+    cout << "Tpoint\n";
+    TPoint t(2);
+    TPoint r(); // !!! объявление фун
+    TPoint rr; // вызов конструктора
+
+}
+
 int main() {
+    struct_with_method();
     return 0;
 }
