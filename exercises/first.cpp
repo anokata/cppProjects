@@ -1028,10 +1028,87 @@ map <string, string> input_string_dict() {
     return d;
 }
 
+int max_same() {
+    int x;
+    cin >> x;
+    int longest = 1;
+    int same = 0;
+    int max = 1;
+    while (x != 0) {
+        cin >> same;
+        if (x == same) {
+            longest++;
+            if (max < longest) {
+                max = longest;
+            }
+        } else {
+            longest = 1;
+        }
+        x = same;
+    }
+    cout << max;
+}
+
+int local_max_count() {
+    int max = 0;
+    int a, b, c;
+    cin >> a;
+    if (a == 0) return 0;
+    cin >> b;
+    if (b == 0) return 0;
+    cin >> c;
+    if (c == 0) return 0;
+
+    while (c != 0) {
+        if (b > a && b > c) {
+            max++;
+        }
+        a = b;
+        b = c;
+        cin >> c;
+    }
+    return max;
+}
+
+int local_max_min_len() {
+    int maxpos = 0;
+    int mingap = 0;
+    bool first = true;
+    bool dual = false;
+    int a, b, c;
+    cin >> a;
+    if (a == 0) return 0;
+    cin >> b;
+    if (b == 0) return 0;
+    cin >> c;
+    if (c == 0) return 0;
+
+    while (c != 0) {
+        if (first) {
+            if (b > a && b > c) {
+                first = false;
+            }
+        } else {
+            if (b > a && b > c) {
+                if (mingap == 0 || mingap > maxpos) {
+                    mingap = maxpos;
+                    dual = true;
+                }
+                maxpos = 0;
+            } else {
+                maxpos++;
+            }
+        }
+        a = b;
+        b = c;
+        cin >> c;
+    }
+    if (dual) { 
+        return mingap + 1;
+    } else return 0;
+}
+
 int main() {
-    auto d = input_string_dict();
-    string s;
-    cin >> s;
-    cout << d[s];
+    cout << local_max_min_len();
     return 0;
 }
