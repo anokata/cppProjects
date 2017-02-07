@@ -2,6 +2,8 @@
 #include <cstddef> // size_t
 #include <cstring> // strlen, strcpy
 using namespace std;
+    //есть константные объекты - у них можно вызвать только конст методы.
+    //mutable поля можно менять внутри const методов.
 
 struct String {
 
@@ -17,8 +19,15 @@ struct String {
         delete [] str;
     }
 
-    void append(String &other);
+    void append(const String &other);
+    //константный метод
+    size_t _size() const {
+        return size;
+    }
 
+    size_t length();
+
+private:
 	size_t size;
 	char *str;
 };
@@ -32,7 +41,7 @@ String::String(size_t n, char c) {
     str[n] = 0;
 }
 
-void String::append(String &other) {
+void String::append(const String &other) {
     char * new_str = new char [size + other.size + 1];
     strcpy(new_str, str);
     strcpy(new_str + size, other.str);
@@ -41,15 +50,19 @@ void String::append(String &other) {
     size = size + other.size;
 }
 
+size_t String::length() {
+    return size;
+}
+
 int main() {
     String s("abc");
-    cout << s.size << ' ' << s.str << ' ';
+    cout << s.length() << ' ' << s.str << ' ';
     String ss(3, 's');
     cout << ss.str << endl;
     s.append(ss);
-    cout << s.str << s.size << endl;
+    cout << s.str << s.length() << endl;
     s.append(s);
-    cout << s.str << s.size << endl;
+    cout << s.str << s.length() << endl;
     int a = 32;
     // указатель на константу
     int const * p1;
