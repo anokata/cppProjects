@@ -1,13 +1,13 @@
 #include <iostream>
-#include <cmath>
-#include <string>
 #include <set>
 #include <map>
-#include <vector>
 #include <cassert>
-#include <algorithm> // sort
 #include <iomanip>
 #include <utility> // pair ?
+#include <cmath>
+#include <string>
+#include <vector>
+#include <algorithm> 
 
 using namespace std;
 
@@ -832,12 +832,12 @@ int where_fibo() {
 }
 
 void vector_sort() {
-    vector <int> a(3);
-    a[0]=3; a[1]=2; a[2]=1;
-    for (auto x : a) cout << x << ' ';
-    sort(a.begin(), a.end());
+    vector <int> b(3);
+    b[0]=3; b[1]=2; b[2]=1;
+    for (auto x : b) cout << x << ' ';
+    sort(b.begin(), b.end());
     cout << endl;
-    for (auto x : a) cout << x << ' ';
+    for (auto x : b) cout << x << ' ';
 
     vector <pair <int, int>> a(3);
     a[0] = {20, 1};
@@ -845,6 +845,7 @@ void vector_sort() {
     a[2] = {10, 3};
     for (auto x : a) cout << x.second << ' ';
     sort(a.begin(), a.end());
+    reverse(a.begin(), a.end());
     cout << endl;
     for (auto x : a) cout << x.second << ' ';
 }
@@ -852,6 +853,144 @@ void vector_sort() {
     // cout << floor(2.9) << ' ' << ceil(2.1) << ' ' << round(2.5);
     // int m[10]; for (auto x : m) cout << x;
 
+struct man {
+    int len;
+    string name;
+};
+
+bool cmp_man(man a, man b) {
+    return a.len < b.len;
+}
+
+void struct_vec_sort_and_permut() {
+    vector <man> c(3);
+    c[0] = {4, "abc"};
+    c[1] = {3, "sonya"};
+    c[2] = {5, "kiri"};
+    cout << endl;
+    for (auto x : c) cout << x.len << ':' << x.name << ' ';
+    sort(c.begin(), c.end(), cmp_man);
+    cout << endl;
+    for (auto x : c) cout << x.len << ':' << x.name << ' ';
+    while (next_permutation(c.begin(), c.end(), cmp_man)) {
+        cout << endl;
+        for (auto x : c) cout << x.len << ':' << x.name << ' ';
+    }
+    cout << 'B' << ("ab" > "aa");
+}
+
+void sort_inputed_array() {
+    int n;
+    cin >> n;
+    vector <int> a(n);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+    sort(a.begin(), a.end());
+    for (int i = 0; i < n; i++) {
+        cout << a[i] << ' ';
+    }
+}
+
+void shoes3() {
+    int n;
+    int foot;
+    cin >> foot >> n;
+    vector <int> a(n);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+    sort(a.begin(), a.end());
+    int last = foot;
+    int cnt = 0;
+    for (int i = 0; i < n; i++) {
+        if (a[i] >= last) {
+            cnt++;
+            last = a[i] + 3;
+        }
+    }
+    cout << cnt;
+}
+
+struct member {
+    int id;
+    int score;
+};
+
+bool cmp_olimp(member a, member b) {
+    if (a.score < b.score) {
+        return false;
+    } else if (a.score > b.score) {
+        return true;
+    } else return a.id < b.id;
+}
+
+void inputed_struct_sort_rev() {
+    int n;
+    cin >> n;
+    vector <member> a(n);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i].id >> a[i].score;
+    }
+    sort(a.begin(), a.end(), cmp_olimp);
+    for (int i = 0; i < n; i++) {
+        cout << a[i].id << ' ' << a[i].score << endl;
+    }
+}
+
+struct point {
+    int x;
+    int y;
+};
+
+double distance0(point p) {
+    return sqrt(p.x * p.x + p.y * p.y);
+}
+
+bool cmp_point(point a, point b) {
+    return distance0(a) < distance0(b);
+}
+
+void points_sorted() {
+    int n;
+    cin >> n;
+    vector <point> a(n);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i].x >> a[i].y;
+    }
+    sort(a.begin(), a.end(), cmp_point);
+    for (int i = 0; i < n; i++) {
+        cout << a[i].x << ' ' << a[i].y << endl;
+    }
+}
+
+struct student {
+    string name;
+    string surname;
+    double avg_rank;
+};
+
+bool cmp_students(student a, student  b) {
+    return a.avg_rank > b.avg_rank;
+}
+
+void students_sort_avg() {
+    int n;
+    cin >> n;
+    vector <student> a(n);
+    int m, p, f;
+    for (int i = 0; i < n; i++) {
+        cin >> a[i].surname >> a[i].name;
+        cin >> m >> p >> f;
+        a[i].avg_rank = (m + p + f) / 3.0;
+    }
+    stable_sort(a.begin(), a.end(), cmp_students);
+    for (int i = 0; i < n; i++) {
+        cout << a[i].surname << ' ' << a[i].name << endl;
+    }
+}
+
 int main() {
+    students_sort_avg();
     return 0;
 }
