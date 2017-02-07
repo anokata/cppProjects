@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <algorithm> 
+#include <fstream>
 
 using namespace std;
 
@@ -1108,7 +1109,24 @@ int local_max_min_len() {
     } else return 0;
 }
 
+double std_sigma() { // NOT YET
+    int x;
+    cin >> x;
+    double s;
+    while (x != 0) {
+
+        cin >> x;
+    }
+
+    return s;
+}
+
+void filework() {
+    char s[] = "1234";
+    ofstream fout("out.txt");
+    fout << "string '" << s << "' length= " << sizeof(s) << endl;
+}
+
 int main() {
-    cout << local_max_min_len();
     return 0;
 }
