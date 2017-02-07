@@ -990,7 +990,48 @@ void students_sort_avg() {
     }
 }
 
+set<int> input_set() {
+    int n;
+    cin >> n;
+    set <int> s;
+    int x;
+    for (int i = 0; i < n; i++) {
+        cin >> x;
+        s.insert(x);
+    }
+    return s;
+}
+
+void print_int_set(set<int> s) {
+    for (auto i : s) {
+        cout << i << ' ';
+    }
+}
+
+void two_lines() {
+    set<int> s1 = input_set();
+    set<int> s2 = input_set();
+    set<int> s3 = set_intersect(s1, s2);
+    print_int_set(s3);
+}
+
+map <string, string> input_string_dict() {
+    map <string, string> d;
+    int n;
+    cin >> n;
+    string s, k;
+    for (int i = 0; i < n; i++) {
+        cin >> s >> k;
+        d[k] = s;
+        d[s] = k;
+    }
+    return d;
+}
+
 int main() {
-    students_sort_avg();
+    auto d = input_string_dict();
+    string s;
+    cin >> s;
+    cout << d[s];
     return 0;
 }
