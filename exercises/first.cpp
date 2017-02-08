@@ -1260,7 +1260,74 @@ int kramer2() {
 
 }
 
+void even_vector() {
+    int n;
+    cin >> n;
+    vector <int> a(n);
+    for (int i = 0; i < n; ++i) {
+        cin >> a[i];
+    }
+    for (int i = 0; i < n; i += 2) {
+        cout << a[i] << ' ';
+    }
+}
+
+void even_elems() {
+    int n;
+    cin >> n;
+    vector <int> a;
+    int x;
+    for (int i = 0; i < n; i++) {
+        cin >> x;
+        a.push_back(x);
+    }
+    for (int z : a) {
+        if (z % 2 == 0) {
+            cout << z << ' ';
+        }
+    }
+}
+
+void vector_pairsign() {
+    int n;
+    cin >> n;
+    vector <int> a;
+    int x;
+    for (int i = 0; i < n; i++) {
+        cin >> x;
+        a.push_back(x);
+    }
+    for (int z = 1; z < n; z++) {
+        if ((a[z] > 0 && a[z-1] > 0) || (a[z] <= 0 && a[z-1] <= 0)) {
+            cout << a[z-1] << ' ' << a[z];
+            break;
+        }
+    }
+}
+
+void vec_min() {
+    int n;
+    cin >> n;
+    vector <int> a;
+    int x, min;
+    for (int i = 0; i < n; i++) {
+        cin >> x;
+        a.push_back(x);
+    }
+    bool first = true;
+    for (int i = 1; i < n; i++) {
+        if (a[i] > 0 && first) {
+            min = a[i];
+            first = false;
+        }
+        if (a[i] > 0 && min > a[i]) {
+            min = a[i];
+        }
+    }
+    cout << min;
+}
+
 int main() {
-    kramer2();
+    vec_min();
     return 0;
 }
