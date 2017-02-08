@@ -19,6 +19,32 @@ struct String {
         delete [] str;
     }
 
+    String(const String &s)
+        : size(s.size), str(new char[size + 1]) // init list
+    { // конструктор копирования. когда нужно создать на основе.
+        cout << "Copy constructor\n";
+        for (int i = 0; i <= size; i++) {
+            str[i] = s.str[i];
+        }
+    }
+
+    String & operator=(String const & a) { // оператор присваивания.
+        // разрушить дин данные и создать по аргументу новые\скопировать.
+        if (this != &a) {
+            cout << "Кроме себя.\n";
+        }
+        if (this != &a) {
+            delete [] str;
+            size = a.size;
+            str = new char[size + 1];
+            for (int i = 0; i <= size; i++) {
+                str[i] = a.str[i];
+            }
+        }
+        cout << "EQ = operator \n";
+        return *this;
+    }
+
     void append(const String &other);
     //константный метод
     size_t _size() const {
@@ -32,6 +58,10 @@ struct String {
 	char *str;
 private:
 	size_t size;
+};
+
+struct ChildString : public String { // публичное наследование.
+
 };
 
 String::String(size_t n, char c) {
@@ -68,7 +98,30 @@ bool String::equal(const String &other) {
     return true;
 }
 
+void test_fun_copy_const(String a) {
+
+}
+
+struct Foo {
+    void say() const { std::cout << "Foo says: " << msg << "\n"; }
+protected:
+    Foo(const char *msg) : msg(msg) { }
+private:
+    const char *msg;
+};
+void foo_says(const Foo& foo) { foo.say(); }
+
+struct FooOpened : Foo {
+    FooOpened(const char *m) : Foo(m) {};
+};
+const Foo get_foo(const char *msg) {
+    FooOpened f(msg);
+    return f;
+}
+
 int main() {
+    const char * msg = "HI!\n";
+    foo_says(get_foo(msg));
     String s("abc");
     cout << s.length() << ' ' << s.str << ' ';
     String ss(3, 's');
@@ -77,6 +130,13 @@ int main() {
     cout << s.str << s.length() << endl;
     s.append(s);
     cout << s.str << s.length() << endl;
+    String copy = s; // тут вызовется конст. копирования.
+    cout << "copy=" << copy.str << endl;
+    test_fun_copy_const(s); // и тут тоже 
+    s = s; // вызовется оператор =
+    cout << "before op= " << s.str << ' ';
+    s = ss; // вызовется оператор =
+    cout << "after op= " << s.str << endl;
     int a = 32;
     // указатель на константу
     int const * p1;
