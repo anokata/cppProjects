@@ -27,6 +27,12 @@ struct String {
             str[i] = s.str[i];
         }
     }
+    // virtual методы - разрешаются динамически при исполнении.
+    // если есть указатель на переменную производного класса(указатель базового класса)
+    // то при вызове вирутального метода вызовется метод производного класса.
+    // виртуальный деструктор нужен для того чтобы можно было безопасно работать
+    // с объектом через указатель на него с типом базового класса. и будет
+    // вызван деструктор производного класса, чтобы правильно освободить ресуры.
 
     String & operator=(String const & a) { // оператор присваивания.
         // разрушить дин данные и создать по аргументу новые\скопировать.
@@ -54,6 +60,12 @@ struct String {
     char &get(size_t pos);
     size_t length();
     bool equal(const String &other);
+    char & at(size_t idx) { 
+        cout << "&char\n";
+        return str[idx]; }
+    char at(size_t idx) const { 
+        cout << "const char\n";
+        return str[idx]; }
 
 	char *str;
 private:
@@ -135,6 +147,15 @@ int main() {
     const char * msg = "HI!\n";
     foo_says(get_foo(msg));
     String s("abc");
+    char c82 = s.at(0); // зависит только от того константный объект или нет?
+    cout << c82 << endl;
+    c82 = 'A';
+    cout << c82 << endl;
+    String const conss("HABUDABI");
+    char const &ch2 = conss.at(0);
+    cout << ch2 << endl;
+    c82 = 'h'; // not work;
+    cout << ch2 << endl;
     cout << s.length() << ' ' << s.str << ' ';
     String ss(3, 's');
     cout << ss.str << endl;
