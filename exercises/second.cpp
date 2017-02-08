@@ -61,7 +61,8 @@ private:
 };
 
 struct ChildString : public String { // публичное наследование.
-
+    void append(int i); // перегрузка
+    using String::append; // чтобы не переопределить а перегрузить.
 };
 
 String::String(size_t n, char c) {
@@ -119,7 +120,15 @@ const Foo get_foo(const char *msg) {
     return f;
 }
 
+void overloaded(int i) {
+    cout << "Over INT " << i << endl;
+}
+void overloaded(double i) {
+    cout << "Over double " << i << endl;
+}
+
 int main() {
+    overloaded(2.3);
     const char * msg = "HI!\n";
     foo_says(get_foo(msg));
     String s("abc");
