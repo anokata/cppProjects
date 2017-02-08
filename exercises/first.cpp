@@ -1327,8 +1327,69 @@ void vec_min() {
     cout << min;
 }
 
+int min_even() {
+    int n;
+    cin >> n;
+    bool is_even = false;
+    int min;
+    int x, absx;
+    for (int i = 0; i < n; ++i) {
+        cin >> x;
+        if (x == 0) continue;
+        absx = abs(x);
+        if (absx % 2 == 1 && !is_even) {
+            is_even = true;
+            min = x;
+        } else if (absx % 2 == 1 && min > x) {
+            min = x;
+        }
+    }
+    if (!is_even) {
+        cout << 0;
+        return 0;
+    } else {
+        cout << min;
+    }
+}
+
+int differ() {
+    int n;
+    cin >> n;
+    long x;
+    long prev = 0;
+    long diff = 0;
+    bool first = true;
+    for (int i = 0; i < n; ++i) {
+        cin >> x;
+        if (first) {
+            diff++;
+            prev = x;
+            first = false;
+            continue;
+        }
+        if (prev != x) {
+            diff++;
+        }
+        prev = x;
+    }
+    cout << diff;
+}
+
+void swaped() {
+    int n;
+    cin >> n;
+    vector <int> a(n);
+    for (int i = 0; i < n; ++i) {
+        cin >> a[i];
+    }
+    for (int i = 1; i < n; i += 2) {
+        cout << a[i] << ' ' << a[i-1] << ' ';
+    }
+    if (n % 2 == 1) cout << a[n-1];
+}
+
 int main() {
-    vec_min();
+    swaped();
     return 0;
 }
 // algorithm std::swap
