@@ -126,8 +126,11 @@ void overloaded(int i) {
 void overloaded(double i) {
     cout << "Over double " << i << endl;
 }
-
+void foo(char) { std::cout << "char" << std::endl; }
+void foo(signed char) { std::cout << "signed char" << std::endl; }
+void foo(unsigned char) { std::cout << "unsigned char" << std::endl; }
 int main() {
+    foo('a');
     overloaded(2.3);
     const char * msg = "HI!\n";
     foo_says(get_foo(msg));
