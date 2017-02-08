@@ -1204,7 +1204,63 @@ void struct_with_method() {
 
 }
 
+int square_roots() {
+    double a, b, c, d, x1, x2;
+    //cin >> a >> b >> c;
+    a = 0; b = 1; c = 1;
+    if (a == 0 && b == 0 && c == 0) {
+        cout << 3;
+        return 0;
+    } 
+    if ((a == 0 && b == 0)) {
+        cout << 0;
+        return 0;
+    } 
+    if (b != 0 && a == 0 && c != 0) {
+        x1 = -c / b;
+        cout << 1 << ' ' << x1;
+        return 0;
+    } 
+    if ((b != 0 && a == 0 && c == 0) || (b == 0 && c == 0 && a != 0)) {
+        cout << 1 << ' ' << 0;
+        return 0;
+    }
+    
+    d = b * b - 4 * a * c;
+    if (d > 0) {
+        x1 = (-b + sqrt(d)) / (2 * a);
+        x2 = (-b - sqrt(d)) / (2 * a);
+        if (x1 < x2) {
+            cout << 2 << ' ' << x1 << ' ' << x2;
+        } else {
+            cout << 2 << ' ' << x2 << ' ' << x1;
+        }
+    } else if (d == 0) {
+        x1 = (-b + sqrt(d)) / (2 * a);
+        cout << 1 << ' ' << x1;
+    } else {
+        cout << 0;   
+    }
+}
+
+int kramer2() {
+    double a, b, c, d, e, f;
+    //cin >> a >> b >> c >> d >> e >> f;
+    a = 1; b = 2; 
+    c = 1; d = 1; 
+    e = 1; f = 6;
+    double dd, d1, d2, x, y;
+    dd = a * d - b * c;
+    d1 = e * d - f * b;
+    d2 = a * f - c * e;
+    cout << dd << ' ' << d1 << ' ' << d2 << endl;
+    x = d1 / dd;
+    y = d2 / dd;
+    cout << x << ' ' << y;
+
+}
+
 int main() {
-    struct_with_method();
+    kramer2();
     return 0;
 }
