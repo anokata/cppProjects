@@ -1388,8 +1388,94 @@ void swaped() {
     if (n % 2 == 1) cout << a[n-1];
 }
 
+void shiftvec() {
+    int n;
+    cin >> n;
+    vector <int> a(n);
+    for (int i = 0; i < n; ++i) {
+        cin >> a[i];
+    }
+    int succ = a[0];
+    int t;
+    for (int i = 1; i < n; ++i) {
+        t = a[i];
+        a[i] = succ;
+        succ = t;
+    }
+    a[0] = succ;
+    for (auto x : a) cout << x << ' ';
+    cout << endl;
+    int pairs = 0;
+    for (int i = 0; i < n; ++i) {
+        for (int k = i + 1; k < n; ++k) {
+            if (a[i] == a[k]) pairs++;
+        }
+    }
+    cout << pairs;
+    cout << endl;
+    for (int i = 0; i < n; ++i) {
+        bool uniq = true;
+        for (int k = 0; k < n; ++k) {
+            if (i != k && a[i] == a[k]) uniq = false;
+        }
+        if (uniq) cout << a[i] << ' ';
+    }
+}
+
+int ferz8() {
+    vector <int> xs(8);
+    vector <int> ys(8);
+    for (int i = 0; i < 8; ++i) {
+        cin >> xs[i];
+        cin >> ys[i];
+    }
+    int dx, dy;
+    for (int i = 0; i < 8; ++i) {
+        for (int j = i + 1; j < 8; ++j) {
+            if (xs[i] == xs[j] || ys[i] == ys[j]) {
+                cout << "YES";
+                return 0;
+            }
+            dx = xs[i] - xs[j];
+            dy = ys[i] - ys[j];
+            dx *= dx;
+            dy *= dy;
+            if (dx == dy) {
+                cout << "YES";
+                return 0;
+            }
+        }
+    }
+    cout << "NO";
+    return 0;
+}
+
+int kegleball() {
+    int balls, pins;
+    cin >> pins >> balls; 
+    vector <bool> a(pins);
+    for (int i = 0; i < pins; i++) {
+        a[i] = true;
+    }
+    int l, r;
+    for (int i = 0; i < balls; i++) {
+        cin >> l >> r;
+        for (int k = l; k <= r; k++) {
+            a[k-1] = false;
+        }
+    }
+
+    for (bool x : a) {
+        if (x) {
+            cout << 'I';
+        } else {
+            cout << '.';
+        }
+    }
+}
+
 int main() {
-    swaped();
+    kegleball();
     return 0;
 }
 // algorithm std::swap
