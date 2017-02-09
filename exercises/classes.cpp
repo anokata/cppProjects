@@ -97,9 +97,11 @@ struct PrintBinaryOperationsVisitor : Visitor {
 
     void visitBinaryOperation(BinaryOperation const * bop)
     {
+        std::cout << '(';
         bop->get_left()->visit(this);
         std::cout << bop->get_op() << " ";
         bop->get_right()->visit(this);
+        std::cout << '(';
     }
 };
 

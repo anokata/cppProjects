@@ -1474,8 +1474,42 @@ int kegleball() {
     }
 }
 
+void show_2d_array(int a[][100], int rows, int cols) {
+    cout << endl;
+    for (int x = 0; x < rows; x++) {
+        for (int y = 0; y < cols; y++) {
+            cout << a[x][y] << ' ';
+        }
+        cout << endl;
+    }
+}
+
+int arrays_2d() {
+    int rows, cols;
+    int array[100][100];
+    cin >> rows >> cols;
+    for (int x = 0; x < rows; x++) {
+        for (int y = 0; y < cols; y++) {
+            cin >> array[x][y];
+        }
+    }
+    int max = array[0][0];
+    int max_x = 0, max_y = 0;
+    for (int x = 0; x < rows; x++) {
+        for (int y = 0; y < cols; y++) {
+            if (array[x][y] > max) {
+                max = array[x][y];
+                max_x = x;
+                max_y = y;
+            }
+        }
+    }
+    cout << max_x << ' ' << max_y;
+    //show_2d_array(array, rows, cols);
+}
+
 int main() {
-    kegleball();
+    arrays_2d();
     return 0;
 }
 // algorithm std::swap
