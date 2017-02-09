@@ -38,3 +38,20 @@ if [[ $# -lt 2 ]]
 then
     echo "FEW arguments"
 fi
+
+case $1 in 
+    "a")
+        echo "гномики"
+        ;;
+    *)
+        echo "elsecase"
+esac
+
+let "a = 2**33"
+echo $a
+let "a += $a"
+echo $a
+let "a += $a"
+echo $a
+let a+=$a
+echo $a

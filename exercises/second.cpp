@@ -168,7 +168,7 @@ ostream& operator<<(ostream &os, String const &b) {
     return os;
 }
 
-void string_test() {
+void string_test(int deftest=13) {
     int i = 1;
     int k = i++ + i++ + i++; // k = 1 + 2 + 3
     cout << i << ' ' << k; // !!! 4 and 6
@@ -225,9 +225,23 @@ void string_test() {
     const char *bbb = aaa;
 }
 
+int counter(int init = 0) {
+    static int c = init; // инициализация выполняется только один раз, при первом вызове
+    cout << c << ' ' << init << endl;
+    return ++c;
+}
+
+void static_test() {
+    counter();
+    counter();
+    counter(20);
+    counter();
+}
+
 int main() {
     cout << "Begin\n";
     //SmartPtr a;
+    static_test();
     cout << "End\n";
     return 0;
 }

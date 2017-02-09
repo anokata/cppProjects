@@ -1508,8 +1508,30 @@ int arrays_2d() {
     //show_2d_array(array, rows, cols);
 }
 
+int array2d_star() {
+    int n;
+    cin >> n;
+    char a[15][15];
+    int m = n / 2;
+    for (int x = 0; x < n; ++x) {
+        for (int y = 0; y < n; ++y) {
+            if (y == m || x == m || x == y || x == n-y-1) {
+                a[x][y] = '*';
+            } else {
+                a[x][y] = '.';
+            }
+        }
+    }
+    for (int x = 0; x < n; ++x) {
+        for (int y = 0; y < n; ++y) {
+            cout << a[x][y] << ' ';
+        }
+        cout << endl;
+    }
+}
+
 int main() {
-    arrays_2d();
+    array2d_star();
     return 0;
 }
 // algorithm std::swap
