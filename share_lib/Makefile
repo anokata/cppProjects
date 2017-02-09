@@ -1,7 +1,12 @@
 build: hello libHello.so
+buildone: hello_withoutLib buildlib run
+buildlib: libHello.so
 
 run: 
 	LD_LIBRARY_PATH=. ./hello
+
+hello_withoutLib: main.c 
+	gcc main.c -ldl	-o hello
 
 hello: main.c hello.h libHello.so solution.c
 	gcc main.c solution.c -fPIC -L. -lHello -o hello
