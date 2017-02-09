@@ -1530,8 +1530,120 @@ int array2d_star() {
     }
 }
 
+int array2d_diag1() {
+    int n;
+    cin >> n;
+    int a[100][100];
+    for (int x = 0; x < n; ++x) {
+        for (int y = 0; y < n; ++y) {
+                a[x][y] = abs(x-y);
+        }
+    }
+    // output
+    for (int x = 0; x < n; ++x) {
+        for (int y = 0; y < n; ++y) {
+            cout << a[x][y] << ' ';
+        }
+        cout << endl;
+    }
+}
+
+int array2d_swapCol() {
+    int n, m;
+    cin >> n >> m;
+    int a[100][100];
+    for (int x = 0; x < n; ++x) {
+        for (int y = 0; y < m; ++y) {
+                cin >> a[x][y];
+        }
+    }
+    int sx, ex;
+    cin >> sx >> ex;
+    for (int x = 0; x < n; ++x) {
+        int t = a[x][sx];
+        a[x][sx] = a[x][ex];
+        a[x][ex] = t;
+    }
+    // output
+    for (int x = 0; x < n; ++x) {
+        for (int y = 0; y < m; ++y) {
+            cout << a[x][y] << ' ';
+        }
+        cout << endl;
+    }
+}
+
+int array2d_is_symm() {
+    int n;
+    cin >> n;
+    int a[10][10];
+    for (int x = 0; x < n; ++x) {
+        for (int y = 0; y < n; ++y) {
+                cin >> a[x][y];
+        }
+    }
+    for (int x = 0; x < n; ++x) {
+        for (int y = 0; y < n; ++y) {
+            if (a[x][y] != a[y][x]) {
+                cout << "NO";
+                return 0;
+            }
+        }
+    }
+    cout << "YES";
+}
+
+int array2d_diagonals(int d = 0) {
+    int n;
+    cin >> n;
+    //int a[10][10];
+    int a[10][10] ={{1, 2, 3},
+                    {4, 5, 6},
+                    {7, 8, 9}};
+    for (int x = 0; x < n; ++x) {
+        for (int y = 0; y < n; ++y) {
+                //cin >> a[x][y];
+        }
+    }
+    int diag;
+    cin >> diag;
+    for (int x = 0; x < n; ++x) {
+        for (int y = 0; y < n; ++y) {
+            if ((x-y) == diag) {
+                cout << a[x][y] << ' ';
+            }
+        }
+    }
+}
+
+int array2d_transpose() {
+    int n, m;
+    cin >> n >> m;
+    //int a[10][10];
+    int a[1000][1000] ={{11, 12, 13, 14},
+                        {21, 22, 23, 24},
+                        {31, 32, 33, 34}};
+    int b[1000][1000];
+    for (int x = 0; x < n; ++x) {
+        for (int y = 0; y < m; ++y) {
+                //cin >> a[x][y];
+        }
+    }
+    for (int x = 0; x < n; ++x) {
+        for (int y = 0; y < m; ++y) {
+            b[y][x] = a[x][y];
+        }
+    }
+    for (int x = 0; x < m; ++x) {
+        for (int y = 0; y < n; ++y) {
+            cout << b[x][y] << ' ';
+        }
+        cout << endl;
+    }
+}
+
 int main() {
-    array2d_star();
+    array2d_transpose();
     return 0;
 }
 // algorithm std::swap
