@@ -143,7 +143,21 @@ void overloaded(double i) {
 void foo(char) { std::cout << "char" << std::endl; }
 void foo(signed char) { std::cout << "signed char" << std::endl; }
 void foo(unsigned char) { std::cout << "unsigned char" << std::endl; }
+
+#include <chrono>
+#include <thread>
+void updated_message(int n) {
+    cout << "Progress:" << endl;
+    for (int i = 0; i < n; i++) { // repeatn(fun, n) , void fun(int n); TODO
+        //std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        cout << "\r some [%" << i << "] mesage    ";
+    }
+    //std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    cout << "\033[1;31mbold red text\033[0m\n";
+}
+
 int main() {
+    updated_message(10);
     foo('a');
     overloaded(2.3);
     const char * msg = "HI!\n";
