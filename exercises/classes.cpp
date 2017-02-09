@@ -1,10 +1,22 @@
 #include <iostream>
 using namespace std;
 
+struct Number;
+struct Visitor;
+struct BinaryOperation;
+struct Expression;
+
 struct Expression
 {
     virtual double evaluate() const = 0; // абстрактный метод, должен быть виртуалным
     virtual ~Expression() {}; // должен быть виртуальный деструктор чтобы можно было удалять по ссылки базового типа
+    virtual void visit(Visitor * visitor) const  = 0;
+};
+
+struct Visitor {
+    virtual void visitNumber(Number const * number) = 0;
+    virtual void visitBinaryOperation(BinaryOperation const * binary) = 0;
+    virtual ~Visitor() { }
 };
 
 struct Number : Expression
@@ -17,6 +29,8 @@ struct Number : Expression
     double evaluate() const { // при этом он тоже должен быть константным (совпадать)
         return value;
     }
+    void visit(Visitor * visitor) const;
+    double get_value() const { return value; }
 
 private:
     double value;
@@ -38,7 +52,11 @@ struct BinaryOperation : Expression
         delete left;
         delete right;
     }
-    
+
+    Expression const * get_left()  const { return left; }
+    Expression const * get_right() const { return right; }
+    char get_op() const { return op; }
+
     // надо перегрузить метод вычисления
     double evaluate() const {
         double l = left->evaluate();
@@ -54,6 +72,7 @@ struct BinaryOperation : Expression
                 return l / r;
         }
     }
+    void visit(Visitor * visitor) const;
 
 private:
     Expression const * left; // поскольку этот класс отвечает за удаление этих полей и
@@ -61,6 +80,27 @@ private:
     // вычислять как с числами так и с подвыражениями) то нужно чтобы базовым вычислением
     // был виртуальный метод. и деструктор.
     char op;
+};
+
+void BinaryOperation::visit(Visitor * visitor) const { visitor->visitBinaryOperation(this); }
+void Number::visit(Visitor * visitor) const { visitor->visitNumber(this); }
+
+bool check_equals(Expression const *left, Expression const *right)
+{
+    return *((int**)left) == *((int**)right);
+}
+
+struct PrintBinaryOperationsVisitor : Visitor {
+    void visitNumber(Number const * number) { 
+        cout << number->get_value() << ' ';
+    }
+
+    void visitBinaryOperation(BinaryOperation const * bop)
+    {
+        bop->get_left()->visit(this);
+        std::cout << bop->get_op() << " ";
+        bop->get_right()->visit(this);
+    }
 };
 
 int main() {
@@ -72,6 +112,12 @@ int main() {
     std::cout << expr->evaluate() << std::endl;
     // тут освобождаются *все* выделенные объекты
     // (например, sube будет правым операндом expr, поэтому его удалять не нужно)
+    Number n(5);
+    Number k(6);
+    cout << check_equals(&n, &k);
+    PrintBinaryOperationsVisitor visitor;
+    expr->visit(&visitor);
     delete expr;
     return 0;
 }
+// g++ -fdump-class-hierarchy classes.cpp
