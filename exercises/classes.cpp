@@ -105,6 +105,17 @@ struct PrintBinaryOperationsVisitor : Visitor {
     }
 };
 
+struct test_priv_to_pub {
+    private: 
+        virtual void some();
+};
+struct test_priv_to_pubD : private test_priv_to_pub {
+    public:
+        virtual void some();
+};
+
+
+// используя class надо бы наследоваться public
 int main() {
     // сначала создаём объекты для подвыражения 4.5 * 5
     Expression * sube = new BinaryOperation(new Number(4.5), '*', new Number(5));
