@@ -69,6 +69,11 @@ struct String {
         cout << "const char\n";
         return str[idx]; }
 
+    operator char const *() const { // Оператор приведения к char const *
+        cout << "Type String Cast to char const *\n";
+        return str;
+    }
+
 	char *str;
 private:
 	size_t size;
@@ -156,7 +161,17 @@ void updated_message(int n) {
     cout << "\033[1;31mbold red text\033[0m\n";
 }
 
-int main() {
+ostream& operator<<(ostream &os, String const &b) {
+    const char *start = "\033[1;31m";
+    const char *end = "\033[0m\n";
+    os << start << '[' << b.str << ']' << end;
+    return os;
+}
+
+void string_test() {
+    int i = 1;
+    int k = i++ + i++ + i++; // k = 1 + 2 + 3
+    cout << i << ' ' << k; // !!! 4 and 6
     updated_message(10);
     foo('a');
     overloaded(2.3);
@@ -173,6 +188,7 @@ int main() {
     c82 = 'h'; // not work;
     cout << ch2 << endl;
     cout << s.length() << ' ' << s.str << ' ';
+    cout << s; // operator<<
     String ss(3, 's');
     cout << ss.str << endl;
     s.append(ss);
@@ -204,5 +220,14 @@ int main() {
     String z1 = "abc";
     String z2 = "abC";
     cout << z2.equal(z1);
+    String aaa = "bcd";
+    cout << aaa;
+    const char *bbb = aaa;
+}
+
+int main() {
+    cout << "Begin\n";
+    //SmartPtr a;
+    cout << "End\n";
     return 0;
 }
