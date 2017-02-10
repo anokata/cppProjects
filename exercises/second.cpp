@@ -270,6 +270,7 @@ struct Rational
     }
     int get_num() const  { return numerator_; }
     int get_den() const  { return denominator_; }
+    explicit operator double () const { return to_double(); } 
 
 private:
     int numerator_;
