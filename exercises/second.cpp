@@ -238,10 +238,124 @@ void static_test() {
     counter();
 }
 
+struct Rational
+{
+    Rational(int numerator = 0, int denominator = 1) 
+        : numerator_(numerator), denominator_(denominator) {}
+
+    void add(Rational rational);
+    void sub(Rational rational);
+    void mul(Rational rational);
+    void div(Rational rational);
+
+    void neg() {};
+    void inv();
+    double to_double() const;
+
+    Rational &operator+=(Rational rational) {
+        add(rational);
+        return *this;
+    }
+    Rational &operator-=(Rational rational) {
+        sub(rational);
+        return *this;
+    }
+    Rational &operator*=(Rational rational) {
+        mul(rational);
+        return *this;
+    }
+    Rational &operator/=(Rational rational) {
+        div(rational);
+        return *this;
+    }
+    int get_num() const  { return numerator_; }
+    int get_den() const  { return denominator_; }
+
+private:
+    int numerator_;
+    int denominator_;
+};
+
+Rational operator+(Rational r1, Rational const & r2) {
+    return r1 += r2;
+}
+Rational operator-(Rational r1, Rational const & r2) {
+    return r1 -= r2;
+}
+Rational operator*(Rational r1, Rational const & r2) {
+    return r1 *= r2;
+}
+Rational operator/(Rational r1, Rational const & r2) {
+    return r1 /= r2;
+}
+Rational operator+(Rational r) {
+    return r;
+}
+Rational operator-(Rational r) {
+    return r = 0 - r;
+}
+
+double Rational::to_double() const {
+    return (double) numerator_ / denominator_;
+}
+void Rational::inv() {
+    numerator_ = -numerator_;
+}
+void Rational::add(Rational rational) {
+    numerator_ = numerator_ * rational.denominator_ + rational.numerator_ * denominator_;
+    denominator_ *= rational.denominator_;
+}
+void Rational::sub(Rational rational) {
+    numerator_ = numerator_ * rational.denominator_ - rational.numerator_ * denominator_;
+    denominator_ *= rational.denominator_;
+}
+
+void Rational::mul(Rational rational) {
+    numerator_ *= rational.numerator_;
+    denominator_ *= rational.denominator_;
+}
+
+void Rational::div(Rational rational) {
+    numerator_ *= rational.denominator_;
+    denominator_ *= rational.numerator_;
+}
+
+bool operator==(Rational r1, Rational const &r2) {
+    return (r1.get_num() == r2.get_num()) && (r1.get_den() == r2.get_den());
+}
+bool operator!=(Rational r1, Rational const &r2) {
+    return !(r1 == r2);
+}
+bool operator<(Rational r1, Rational const &r2) {
+    return (r1.get_num() * r2.get_den() - r1.get_den() * r2.get_num()) < 0;
+}
+bool operator>(Rational r1, Rational const &r2) {
+    return (r2 < r1);
+}
+bool operator>=(Rational r1, Rational const &r2) {
+    return !(r1 < r2);
+}
+bool operator<=(Rational r1, Rational const &r2) {
+    return !(r1 > r2);
+}
+
 int main() {
     cout << "Begin\n";
+    Rational a(1, 2);
+    cout << a.to_double() << endl;
+    a.inv();
+    cout << a.to_double() << endl;
+    a += 2;
+    a = a + 1;
+    a = 10 - a;
+    cout << (-a).to_double() << endl;
+    cout << (2 == a);
+    cout << (a == a);
+    cout << (a < a);
+    cout << (a < 2);
+    cout << (a < 20);
     //SmartPtr a;
-    static_test();
+    //static_test();
     cout << "End\n";
     return 0;
 }
