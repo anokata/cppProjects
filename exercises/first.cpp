@@ -1795,8 +1795,79 @@ int array2d_spiral() {
     }
 }
 
+int min(int a, int b) {
+    return a > b ? b : a;
+}
+
+int min4(int a, int b, int c, int d) {
+    return min(min(a, b), min(c, d));
+}
+
+double sqr(double a) {
+    return a * a;
+}
+bool IsPointInCircle(double x, double y, double xc, double yc, double r) {
+    return (sqr(x-xc) + sqr(y-yc) <= sqr(r));
+}
+
+double distance(double x1, double y1, double x2, double y2) {
+    return sqrt(sqr(x1 - x2) + sqr(y1 - y2));
+}
+bool IsPointInSquare(double x, double y) {
+    //return (x <= 1 && x >= -1 && y >= -1 && y <= 1);
+    return ((1 - abs(x) - abs(y)) >= 0);
+}
+double power(double a, int n) {
+    if (n == 0) return 1.0;
+    if (n == 1) return a;
+    if (n > 0) return a * power(a, n - 1);
+    if (n < 0) return (1 / a) * power(a, n + 1);
+}
+int mDiv(int n, int div) {
+    if (n % div == 0) return div;
+    if (div*div > n) return n;
+    return mDiv(n, div + 1);
+}
+int MinDivisor(int n) {
+    if (n == 2 || n == 3) return n;
+    return mDiv(n, 2);
+}
+bool IsPrime(int n) {
+    if (n == 2 || n == 3) return true;
+    return mDiv(n, 2) == n;
+}
+
+double qpower(double a, int n) {
+    if (n == 0) return 1.0;
+    if (n == 1) return a;
+    if (n % 2 == 0) {
+        a *= a; 
+        n = n / 2; 
+    }
+    if (n > 0) return a * qpower(a, n - 1);
+    if (n < 0) return (1 / a) * qpower(a, n + 1);
+}
+int sum_rec() {
+    int n;
+    cin >> n;
+    if (n == 0) return 0;
+    return n + sum_rec();
+}
+int fib_rec(int n) {
+    if (n < 3) return 1;
+    return fib_rec(n - 1) + fib_rec(n - 2);
+}
 int main() {
-    array2d_spiral();
+    cout << IsPointInSquare(1.0, 0.1) << abs(-1) << abs(-1.0) << std::abs(1) << std::abs(-1.0);
+    cout << endl << power(2.3, 2);
+    cout << endl << power(0.1, -2);
+    cout << endl << MinDivisor(9) <<MinDivisor(13*17) <<MinDivisor(3) <<MinDivisor(4);
+    cout << endl << MinDivisor(5) <<MinDivisor(6) <<MinDivisor(7) <<MinDivisor(8);
+    cout << endl << IsPrime(73*13);
+    cout << endl << qpower(2.3, 2);
+    cout << endl << qpower(0.1, -2);
+    //cout << endl << sum_rec();
+    cout << endl << fib_rec(7);
     return 0;
 }
 // algorithm std::swap
