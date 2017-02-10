@@ -1642,8 +1642,161 @@ int array2d_transpose() {
     }
 }
 
+int array2d_findline() {
+    int n, m;
+    cin >> n >> m;
+    //int a[20][20];
+    int a[20][20] ={{0, 1, 0, 0},
+                        {1, 0, 0, 0},
+                        {0, 0, 0, 0}};
+    for (int x = 0; x < n; ++x) {
+        for (int y = 0; y < m; ++y) {
+                //cin >> a[x][y];
+        }
+    }
+    int k;
+    cin >> k;
+    int now = 0;
+    for (int x = 0; x < n; ++x) {
+        now = 0;
+        for (int y = 0; y < m; ++y) {
+            if (a[x][y] == 1) {
+                now = 0;
+            } else {
+                ++now;
+                if (now >= k) {
+                    cout << x + 1;
+                    return 0;
+                }
+            }
+        }
+    }
+    cout << 0;
+}
+
+int array2d_rotate90() {
+    int n, m;
+    //cin >> n >> m;
+    n=3;m=4;
+    const int N = 100;
+    int a[N][N] ={{11, 12, 13, 14},
+                        {21, 22, 23, 24},
+                        {31, 32, 33, 34}};
+    int b[N][N];
+    for (int x = 0; x < n; ++x) {
+        for (int y = 0; y < m; ++y) {
+                //cin >> a[x][y];
+        }
+    }
+    for (int x = 0; x < m; ++x) {
+        for (int y = 0; y < n; ++y) {
+            //b[x][y] = a[y][m-x-1];
+            b[x][y] = a[n-y-1][x];
+        }
+    }
+    for (int x = 0; x < m; ++x) {
+        for (int y = 0; y < n; ++y) {
+            cout << b[x][y] << ' ';
+        }
+        cout << endl;
+    }
+}
+
+int array2d_snake() {
+    int n, m;
+    cin >> n >> m;
+    const int N = 30;
+    int a[N][N];
+    int i = 1;
+    for (int x = 0; x < n; ++x) {
+        for (int y = 0; y < m; ++y) {
+            if (x % 2 == 1) {
+                a[x][m-y-1] = i;
+            } else {
+                a[x][y] = i;
+            }
+            ++i;
+        }
+    }
+    //other diag
+    int y;
+    i = 0;
+    for (int s = 0; s < n*m; ++s) {
+        for (int x = 0, y = s; x <= s && x < n; ++x, --y) {
+                //cout << x << ':' << y << ' ';
+                //a[x][y] = ++i;
+        }
+        cout << endl;
+    }
+    i = 0;
+    for (int x = 0; x < n; ++x) {
+        for (int y = 0; y < m; ++y) {
+            if ((x + y) % 2 == 1) {
+                a[x][y] = 0;
+            } else {
+                a[x][y] = ++i;
+            }
+        }
+    }
+    for (int x = 0; x < n; ++x) {
+        for (int y = 0; y < m; ++y) {
+            cout << setw(4) << a[x][y];
+        }
+        cout << endl;
+    }
+}
+
+int array2d_spiral() {
+    int n, m;
+    cin >> n >> m;
+    const int N = 100;
+    int a[N][N];
+    int i = 1;
+    bool xy = true;
+    bool ud = true;
+    int x = 0;
+    int y = 0;
+    while (i <= n*m) {
+        a[x][y] = i++;
+        if (x >= m) {
+            xy = !xy;
+        }
+        if (y >= n) {
+            xy = !xy;
+            ud = !ud;
+        }
+        if (x < 0) {
+            xy = !xy;
+            ud = !ud;
+        }
+        if (y < 0) {
+            xy = !xy;
+            ud = !ud;
+        }
+        if (xy) {
+            if (ud) {
+                y++;
+            } else {
+                y--;
+            }
+        } else {
+            if (ud) {
+                x++;
+            } else {
+                x--;
+            }
+        }
+    }
+    for (int x = 0; x < n; ++x) {
+        for (int y = 0; y < m; ++y) {
+            cout << setw(4) << a[x][y];
+        }
+        cout << endl;
+    }
+}
+
 int main() {
-    array2d_transpose();
+    array2d_spiral();
     return 0;
 }
 // algorithm std::swap
