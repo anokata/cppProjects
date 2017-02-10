@@ -74,8 +74,59 @@ struct String {
         return str;
     }
 
+    String &sliceFrom(int idx) {
+        int newsize = size - idx;
+        char * newmem = new char [newsize + 1]; // for \0
+        size = newsize;
+        for (int i = 0; i < size; ++i) {
+            newmem[i] = str[i + idx];
+        }
+        delete [] str;
+        str = newmem;
+    }
+
+    String &sliceTo(int idx) {
+        int newsize = idx; // 0?
+        char * newmem = new char [newsize + 1];
+        size = newsize;
+        for (int i = 0; i < size; ++i) {
+            newmem[i] = str[i];
+        }
+        newmem[idx - 1] = 0;
+        delete [] str;
+        str = newmem;
+    }
+
+    /*String & operator[] (int idx) {
+        cout << "non const";
+        if (!slice) {
+            slice = true;
+            slc = idx;
+            return *this;
+        } else {
+            sliceFrom(slc);
+            sliceTo(idx);
+            slice = false;
+            return *this;
+        }
+    }*/
+
+    String & operator[] (int idx) const {
+        String *s = new String(this->str); // создать новую строку на основе данных текуще
+        if (this->slice) {
+            s->sliceTo(idx);
+            s->slice = false;
+        } else {
+            s->sliceFrom(idx);
+            s->slice = true;
+        }
+        return *s; // вернуть ссылку на эту строку
+    }
+
 	char *str;
 private:
+    bool slice = false;
+    int slc = 0;
 	size_t size;
 };
 
@@ -357,6 +408,28 @@ int main() {
     cout << (a < 20);
     //SmartPtr a;
     //static_test();
+    cout << endl;
+    String s1 = "abcdefg123";
+    cout << s1 ;
+    s1.sliceFrom(2);
+    cout << s1 ;
+    s1.sliceTo(2);
+    cout << s1 ;
+    String s2 = "abcdefg123";
+    cout << s2 ;
+    //s2[1][3];
+    s2[1][5];
+    cout << s2;
+
+    String const hello("hello");
+    //cout << hello << hello[0] << hello[1] << hello[2] << hello[3] << hello[4];
+    String const hell = hello[0][4]; // теперь в hell хранится подстрока "hell"
+    cout << hell << endl;
+    String const ell  = hello[1][4]; // теперь в ell хранится подстрока "ell"
+    cout << ell << endl;
+    String const el  = hello[1][1]; // ==
+    cout << el << endl;
+
     cout << "End\n";
     return 0;
 }
