@@ -81,7 +81,7 @@ struct String {
         for (int i = 0; i < size; ++i) {
             newmem[i] = str[i + idx];
         }
-        delete [] str;
+        //delete [] str;
         str = newmem;
     }
 
@@ -93,7 +93,7 @@ struct String {
             newmem[i] = str[i];
         }
         newmem[idx - 1] = 0;
-        delete [] str;
+        //delete [] str;
         str = newmem;
     }
 
@@ -422,6 +422,7 @@ int main() {
     cout << s2;
 
     String const hello("hello");
+    String const h("xddd");
     //cout << hello << hello[0] << hello[1] << hello[2] << hello[3] << hello[4];
     String const hell = hello[0][4]; // теперь в hell хранится подстрока "hell"
     cout << hell << endl;
@@ -429,6 +430,10 @@ int main() {
     cout << ell << endl;
     String const el  = hello[1][1]; // ==
     cout << el << endl;
+    String const hhh("xx");
+    cout << hhh << hhh[0][1];
+    //String const hh("xx");
+
 
     cout << "End\n";
     return 0;

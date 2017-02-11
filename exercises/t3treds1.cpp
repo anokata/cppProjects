@@ -3,7 +3,7 @@
 #include <array>
 using namespace std;
 
-int main() {
+void containers() {
     vector <int> v1(10); // динамический массив в куче.
     cout << v1.capacity();
     v1.resize(32);
@@ -36,4 +36,7 @@ int main() {
     //кольцевой буфер
     //boost::circular_buffer
     return 0;
+}
+
+int main() {
 }
