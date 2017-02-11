@@ -1857,6 +1857,9 @@ int fib_rec(int n) {
     if (n < 3) return 1;
     return fib_rec(n - 1) + fib_rec(n - 2);
 }
+
+
+
 int main() {
     cout << IsPointInSquare(1.0, 0.1) << abs(-1) << abs(-1.0) << std::abs(1) << std::abs(-1.0);
     cout << endl << power(2.3, 2);
