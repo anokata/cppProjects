@@ -9,6 +9,7 @@
 #include <time.h>
 
 int main() {
+    int ab[] = {1, 2, 3};
     const time_t timer = time(NULL);
     printf("%s\n", ctime(&timer));
     struct tm * timeinfo;
