@@ -5,10 +5,9 @@
  
 int main(int argc, char **argv) {
     QApplication app(argc, argv);
-    Window window;
-    window.setFixedSize(200, 250);
-    window.show();
     QTextStream(stdout) << "Started!" << endl;
+    Window window;
+    window.show();
     int result = app.exec();
     QTextStream(stdout) << "End." << endl;
     return result;

@@ -12,6 +12,12 @@ public:
 signals:
 
 public slots:
+
+protected:
+    void paintEvent(QPaintEvent *event) override;
+
+private:
+    void drawGrid(QPainter *p);
 };
 
 #endif // INVENTORY_H

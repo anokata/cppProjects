@@ -2,6 +2,7 @@
 #define WINDOW_H
 
 #include <QWidget>
+#include "inventory.h"
 
 class QPushButton;
 class Window : public QWidget
@@ -10,6 +11,8 @@ class Window : public QWidget
 public:
     explicit Window(QWidget *parent = 0);
     QPushButton *exit_button;
+    Inventory *inventory;
+
 
 signals:
 
