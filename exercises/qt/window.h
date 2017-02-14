@@ -21,6 +21,7 @@ public:
     void dropEvent(QDropEvent *event);
     void configureTableWidget(QTableWidget *t);
     QPushButton *exit_button;
+    QPushButton *newgame_button;
     QInvTableWidget *inventoryWidget;
     QLabel *imageLabel;
     QTableWidget * oneItem;
@@ -29,6 +30,7 @@ public:
 signals:
 
 public slots:
+    void newgame();
 
 private:
 

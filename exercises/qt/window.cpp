@@ -27,6 +27,9 @@ Window::Window(QWidget *parent) : QWidget(parent)
     exit_button->setGeometry(10, 10, 80, 30);
     exit_button->setLayoutDirection(Qt::RightToLeft);
     connect(exit_button, SIGNAL (clicked()), QApplication::instance(), SLOT (quit()));
+    newgame_button = new QPushButton(tr("New"), this);
+    newgame_button->setGeometry(110, 10, 80, 30);
+    connect(newgame_button, SIGNAL (clicked()), this, SLOT (newgame()));
 
     imageLabel = new QLabel(this);
     imageLabel->setBackgroundRole(QPalette::Base);
@@ -52,6 +55,10 @@ Window::Window(QWidget *parent) : QWidget(parent)
 
     inventoryWidget->setAcceptDrops(true);
     setAcceptDrops(true);
+}
+
+void Window::newgame() {
+    qDebug() << "new";
 }
 
 void Window::configureTableWidget(QTableWidget *t) {
