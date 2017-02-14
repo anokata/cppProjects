@@ -14,6 +14,7 @@ public:
     int getRows();
     Item * addItem(Item * item, int col, int row);
     void delItem(int col, int row);
+    void deleteItems();
 private:
     QVector< QVector<Item*> > items;
 

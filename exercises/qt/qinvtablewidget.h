@@ -24,6 +24,7 @@ public:
     //void mousePressEvent(QMouseEvent *event);
     QImage loadFile(const QString &fileName);
     void refreshCells();
+    void wipeInventory();
 
 signals:
 

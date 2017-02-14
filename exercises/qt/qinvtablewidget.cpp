@@ -72,6 +72,11 @@ void QInvTableWidget::dragEnterEvent(QDragEnterEvent *event)
     QTableWidget::dragEnterEvent(event);
 }
 
+void QInvTableWidget::wipeInventory() {
+    inventory->deleteItems();
+    refreshCells();
+}
+
 void QInvTableWidget::refreshCells() {
     for (int i = 0; i < inventory->getColumns(); ++i) {
         for (int j = 0; j < inventory->getRows(); ++j) {

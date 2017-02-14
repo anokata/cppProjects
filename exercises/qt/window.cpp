@@ -59,6 +59,7 @@ Window::Window(QWidget *parent) : QWidget(parent)
 
 void Window::newgame() {
     qDebug() << "new";
+    inventoryWidget->wipeInventory();
 }
 
 void Window::configureTableWidget(QTableWidget *t) {

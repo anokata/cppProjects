@@ -20,6 +20,15 @@ int Inventory::getRows() {
     return items.size();
 }
 
+void Inventory::deleteItems() {
+    for (int i = 0; i < items.size(); ++i) {
+        for (int j = 0; j < items[i].size(); ++j) {
+            delete items[i][j];
+            items[i][j] = NULL;
+        }
+    }
+}
+
 Item * Inventory::addItem(Item * item, int col, int row) {
     if (items[col][row] == NULL) {
         qDebug() << "=item";
