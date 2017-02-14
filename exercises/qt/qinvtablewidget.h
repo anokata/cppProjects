@@ -17,7 +17,6 @@ public:
     void dragEnterEvent(QDragEnterEvent *event);
     void dragMoveEvent(QDragMoveEvent *event);
 
-
 signals:
 
 

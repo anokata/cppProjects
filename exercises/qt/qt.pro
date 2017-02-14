@@ -10,8 +10,12 @@ INCLUDEPATH += .
 SOURCES += \
     window.cpp \
     main.cpp \
-    qinvtablewidget.cpp
+    qinvtablewidget.cpp \
+    item.cpp \
+    inventory.cpp
 
 HEADERS += \
     window.h \
-    qinvtablewidget.h
+    qinvtablewidget.h \
+    item.h \
+    inventory.h

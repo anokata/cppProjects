@@ -27,6 +27,7 @@ QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent)
 void QInvTableWidget::dropEvent(QDropEvent *event)
 {
     qDebug()<<"TABLE dropEvent";
+    qDebug() << QString(event->mimeData()->text());
     QTableWidget::dropEvent(event);
 }
 

@@ -1,23 +1,20 @@
 #ifndef INVENTORY_H
 #define INVENTORY_H
 
-#include <QWidget>
+#include <QVector>
+#include "item.h"
 
-class Inventory : public QWidget
+class Inventory
 {
-    Q_OBJECT
 public:
-    explicit Inventory(QWidget *parent = 0);
-
-signals:
-
-public slots:
-
-protected:
-    void paintEvent(QPaintEvent *event) override;
-
+    Inventory(int cols, int rows);
+    Item & getItem(int x, int y);
+    int getColumns();
+    int getRows();
+    void addItem(Item * item, int col, int row);
 private:
-    void drawGrid(QPainter *p);
+    QVector< QVector<Item*> > items;
+
 };
 
 #endif // INVENTORY_H
