@@ -9,6 +9,7 @@
 #include <QImage>
 #include "item.h"
 #include "inventory.h"
+#include <QHeaderView>
 
 class QInvTableWidget : public QTableWidget
 {
@@ -33,8 +34,9 @@ public slots:
     void cellStart(int row, int col);
     void cellEnter(int row, int col);
 
-private:
+protected:
     Inventory *inventory;
+private:
     Item * dragged_item;
     int drag_x;
     int drag_y;

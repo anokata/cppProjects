@@ -2,18 +2,15 @@
 #define QONECELLWIDGET_H
 
 #include <QWidget>
-#include <QTableWidget>
-#include <QHeaderView>
-#include <QImage>
+#include "qinvtablewidget.h"
 
-class QOneCellWidget : public QTableWidget
+class QOneCellWidget : public QInvTableWidget
 {
 public:
-    explicit QOneCellWidget(QWidget *parent, QImage image);
+    QOneCellWidget(QWidget *parent);
     void mousePressEvent(QMouseEvent *event);
-    void dragEnterEvent(QDragEnterEvent *event);
-private:
-    QImage dragImage;
+public slots:
+    void cellStart(int row, int col);
 };
 
 #endif // QONECELLWIDGET_H

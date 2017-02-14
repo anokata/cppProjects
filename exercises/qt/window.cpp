@@ -49,7 +49,7 @@ Window::Window(QWidget *parent) : QWidget(parent)
         }
     }
 
-    oneItem = new QOneCellWidget(this, inventoryWidget->loadFile("./apple.jpg"));
+    oneItem = new QOneCellWidget(this);
     oneItem->setGeometry(450, 300, 100, 100);
     //configureTableWidget(oneItem);
     QTableWidgetItem *item = new QTableWidgetItem;

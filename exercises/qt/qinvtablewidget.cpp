@@ -16,16 +16,25 @@ void QInvTableWidget::cellEnter(int row, int col) {}
 QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent)
     : QTableWidget(rows, columns, parent)
 {
-        setDragEnabled(true);
-        setDragDropOverwriteMode(true);
-        setDragDropMode(QAbstractItemView::DragDrop);
-        setDefaultDropAction(Qt::CopyAction);
+    horizontalHeader()->hide();
+    verticalHeader()->hide();
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    verticalHeader()->setResizeMode(QHeaderView::Fixed);
+    verticalHeader()->setDefaultSectionSize(100);
+    horizontalHeader()->setDefaultSectionSize(100);
+    setDragEnabled(true);
+    setDragDropOverwriteMode(true);
+    setDragDropMode(QAbstractItemView::DragDrop);
+    setDefaultDropAction(Qt::CopyAction);
 
-        connect(this, SIGNAL (cellPressed(int, int)), this, SLOT (cellStart(int, int)));
-        connect(this, SIGNAL (cellActivated(int, int)), this, SLOT (cellEnter(int, int)));
+    setDropIndicatorShown(true);
+    viewport()->setAcceptDrops(true);
 
-        inventory = new Inventory(3, 3);
-        dragged_item = NULL;
+    connect(this, SIGNAL (cellPressed(int, int)), this, SLOT (cellStart(int, int)));
+    connect(this, SIGNAL (cellActivated(int, int)), this, SLOT (cellEnter(int, int)));
+
+    inventory = new Inventory(columns, rows);
+    dragged_item = NULL;
 }
 QInvTableWidget::~QInvTableWidget() {
         delete inventory;

@@ -1,42 +1,28 @@
 #include "qonecellwidget.h"
-#include "item.h"
-#include <QDebug>
-#include <QDrag>
-#include <QMimeData>
-#include <QMouseEvent>
 
-QOneCellWidget::QOneCellWidget(QWidget *parent, QImage image) : QTableWidget(parent)
+QOneCellWidget::QOneCellWidget(QWidget *parent) : QInvTableWidget(1, 1, parent)
 {
-    dragImage = image;
-    setColumnCount(1);
-    setRowCount(1);
-    horizontalHeader()->hide();
-    verticalHeader()->hide();
-    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    verticalHeader()->setResizeMode(QHeaderView::Fixed);
-    verticalHeader()->setDefaultSectionSize(100);
-    horizontalHeader()->setDefaultSectionSize(100);
-    setDragEnabled(true);
+    Item * item = new Item("./apple.jpg", Item::FOOD);
+    inventory->addItem(item, 0, 0);
+    connect(this, SIGNAL (cellPressed(int, int)), this, SLOT (cellStart(int, int)));
+}
+
+void QOneCellWidget::cellStart(int row, int col) {
+    qDebug()<<"ONE cellStart" << row << col;
 }
 
 void QOneCellWidget::mousePressEvent(QMouseEvent *event) {
-    qDebug() << "mpe";
-    if (event->button() == Qt::LeftButton) {
-
+    QTableWidget::mousePressEvent(event);
+    /*if (event->button() == Qt::LeftButton) {
         QDrag *drag = new QDrag(this);
         QMimeData *mimeData = new QMimeData;
-
         // GEN ITEM
-        qDebug() << "QOneCellWidget Start drag";
+        qDebug() << "QONE Start drag";
         Item item("./apple.jpg", Item::FOOD);
         mimeData->setText(item.toString());
         drag->setMimeData(mimeData);
-        drag->setPixmap(QPixmap::fromImage(dragImage));
+        //drag->setPixmap(*imageLabel->pixmap());
         drag->exec();
     }
-}
-
-void QOneCellWidget::dragEnterEvent(QDragEnterEvent *event)
-{
-    event->acceptProposedAction();
+    */
 }
