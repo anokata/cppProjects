@@ -13,10 +13,17 @@ public:
     explicit QInvTableWidget(QWidget *parent = 0);
     QInvTableWidget(int rows, int columns, QWidget *parent = 0);
     void dropEvent(QDropEvent *event);
+    bool dropMimeData(int row, int column, const QMimeData *data, Qt::DropAction action);
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dragMoveEvent(QDragMoveEvent *event);
+
 
 signals:
 
+
 public slots:
+    void cellStart(int row, int col);
+    void cellEnter(int row, int col);
 };
 
 #endif // QINVTABLEWIDGET_H
