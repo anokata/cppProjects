@@ -2,7 +2,7 @@
 #define WINDOW_H
 
 #include <QWidget>
-#include <QTableWidget>
+#include "qinvtablewidget.h"
 #include <QHeaderView>
 #include <QImage>
 #include <QLabel>
@@ -17,7 +17,7 @@ public:
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
     QPushButton *exit_button;
-    QTableWidget *inventory;
+    QInvTableWidget *inventory;
     QImage image;
     QLabel *imageLabel;
 

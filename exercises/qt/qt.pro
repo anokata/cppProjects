@@ -9,7 +9,9 @@ INCLUDEPATH += .
 # Input
 SOURCES += \
     window.cpp \
-    main.cpp
+    main.cpp \
+    qinvtablewidget.cpp
 
 HEADERS += \
-    window.h
+    window.h \
+    qinvtablewidget.h

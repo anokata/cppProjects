@@ -11,14 +11,14 @@
 
 Window::Window(QWidget *parent) : QWidget(parent)
 {
+    const int INV_DIMENSION = 3;
     setFixedSize(600, 650);
     setGeometry(0, 0, 600, 600);
 
     //QFont font("DejaVu Sans Mono");
     //exit_button->setFont(font);
-    //inventory = new Inventory(this);
-    //inventory->setGeometry(10, 100, 200, 200);
-    inventory = new QTableWidget(3, 3, this);
+    //= new Inventory(this);
+    inventory = new QInvTableWidget(INV_DIMENSION, INV_DIMENSION, this);
     inventory->horizontalHeader()->hide();
     inventory->verticalHeader()->hide();
     inventory->setGeometry(10, 100, 400, 400);
@@ -39,11 +39,16 @@ Window::Window(QWidget *parent) : QWidget(parent)
     imageLabel->setGeometry(450, 200, 100, 100);
     loadFile("./apple.jpg");
 
-    QTableWidgetItem *test = new QTableWidgetItem;
-    test->setData(Qt::DecorationRole, QPixmap::fromImage(image));
-    //qDebug()<<" was  opened!";
+    inventory->setDragEnabled(true);
+    for (int i = 0; i < INV_DIMENSION; ++i) {
+        for (int j = 0; j < INV_DIMENSION; ++j) {
+            QTableWidgetItem *item = new QTableWidgetItem;
+            inventory->setItem(i, j, item);
+        }
+    }
 
-    inventory->setItem(0, 0, test);
+    //inventory->item(0, 1)->setData(Qt::DecorationRole, QPixmap::fromImage(image));
+
     inventory->setAcceptDrops(true); //?
     setAcceptDrops(true);
 
@@ -73,35 +78,31 @@ void Window::mousePressEvent(QMouseEvent *event)
         QDrag *drag = new QDrag(this);
         QMimeData *mimeData = new QMimeData;
 
-        //mimeData->setText(commentEdit->toPlainText());
         mimeData->setImageData(image);
         drag->setMimeData(mimeData);
         drag->setPixmap(*imageLabel->pixmap());
 
         Qt::DropAction dropAction = drag->exec();
-        qDebug()<<"start drag";
+
     }
 }
 
 void Window::dragEnterEvent(QDragEnterEvent *event)
 {
+    qDebug()<<"dragEnterEvent";
     event->acceptProposedAction();
 }
 
 void Window::dropEvent(QDropEvent *event)
 {
+    qDebug()<<"dropEvent";
     if (inventory->geometry().contains(event->pos())) {
-        qDebug()<<"drop";
-          QTableWidgetItem *test = new QTableWidgetItem;
-        test->setData(Qt::DecorationRole, event->mimeData()->imageData());
-        //inventory->item(1, 1)->set
-        inventory->setItem(1, 1, test);
+        //inventory->item()
+        inventory->item(0, 0)->setData(Qt::DecorationRole, QPixmap::fromImage(image));
+
         event->acceptProposedAction();
     } else {
         qDebug()<<"not in inv drop";
     }
-    //event->mimeData()->
-
-
-
 }
+
