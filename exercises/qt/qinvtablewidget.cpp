@@ -4,7 +4,7 @@ QInvTableWidget::QInvTableWidget(QWidget *parent) : QTableWidget(parent)
 {}
 
 void QInvTableWidget::cellStart(int row, int col) {
-    //qDebug()<<"TABLE cellStart" << row << ' ' << col;
+    qDebug()<<"TABLE cellStart" << row << ' ' << col;
     dragged_item = inventory->getItem(col, row);
     qDebug() << dragged_item;
     drag_x = col;
@@ -44,8 +44,8 @@ QImage QInvTableWidget::loadFile(const QString &fileName)
 
 void QInvTableWidget::dropEvent(QDropEvent *event)
 {
-    //qDebug()<<"TABLE dropEvent";
-    //qDebug() << QString(event->mimeData()->text());
+    qDebug()<<"TABLE dropEvent";
+    qDebug() << QString(event->mimeData()->text());
     QTableWidget::dropEvent(event);
     for (int i = 0; i < inventory->getRows(); ++i) {
         for (int j = 0; j < inventory->getColumns(); ++j) {
@@ -66,10 +66,7 @@ void QInvTableWidget::dragMoveEvent(QDragMoveEvent *event)
 
 void QInvTableWidget::dragEnterEvent(QDragEnterEvent *event)
 {
-    //qDebug()<<"TABLE dragEnterEvent";
-
-
-
+    qDebug()<<"TABLE dragEnterEvent";
     event->acceptProposedAction();
     QTableWidget::dragEnterEvent(event);
 }
@@ -77,11 +74,11 @@ void QInvTableWidget::dragEnterEvent(QDragEnterEvent *event)
 
 bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Qt::DropAction action)
 {
-    //qDebug()<<"TABLE mime" << row << ' ' << column;
     if(data->hasText())
     {
         QTableWidgetItem *item = this->item(row, column);
         if(item != 0) {
+            qDebug()<<"TABLE mime" << row << ' ' << column << data->text();
             Item *olditem = new Item(data->text());
             olditem = inventory->addItem(olditem, column, row);
             item->setText(QString::number((olditem->count)));
@@ -110,6 +107,7 @@ bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Q
 }
 // TODO: строить таблицу с изобр и текстом по инвентарю.
 // БД. начало игры, сброс-выход. выровнять перетаск.
+// сделать генератор тоже обычной таблицей с одной ячейкой.
 
 //void QInvTableWidget::mousePressEvent(QMouseEvent *event)
 //{

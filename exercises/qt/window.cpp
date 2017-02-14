@@ -18,13 +18,8 @@ Window::Window(QWidget *parent) : QWidget(parent)
     //exit_button->setFont(font);
     //= new Inventory(this);
     inventoryWidget = new QInvTableWidget(INV_DIMENSION, INV_DIMENSION, this);
-    inventoryWidget->horizontalHeader()->hide();
-    inventoryWidget->verticalHeader()->hide();
     inventoryWidget->setGeometry(10, 100, 400, 400);
-    inventoryWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    inventoryWidget->verticalHeader()->setResizeMode(QHeaderView::Fixed);
-    inventoryWidget->verticalHeader()->setDefaultSectionSize(100);
-    inventoryWidget->horizontalHeader()->setDefaultSectionSize(100);
+    configureTableWidget(inventoryWidget);
     exit_button = new QPushButton(tr("xit"), this);
     exit_button->setGeometry(10, 10, 80, 30);
     exit_button->setLayoutDirection(Qt::RightToLeft);
@@ -38,7 +33,6 @@ Window::Window(QWidget *parent) : QWidget(parent)
     imageLabel->setGeometry(450, 200, 100, 100);
     imageLabel->setPixmap(QPixmap::fromImage(inventoryWidget->loadFile("./apple.jpg")));
 
-    inventoryWidget->setDragEnabled(true);
     for (int i = 0; i < INV_DIMENSION; ++i) {
         for (int j = 0; j < INV_DIMENSION; ++j) {
             QTableWidgetItem *item = new QTableWidgetItem;
@@ -46,14 +40,32 @@ Window::Window(QWidget *parent) : QWidget(parent)
         }
     }
 
+    oneItem = new QTableWidget(1, 1, this);
+    oneItem->setGeometry(450, 300, 100, 100);
+    configureTableWidget(oneItem);
+    QTableWidgetItem *item = new QTableWidgetItem;
+    item->setData(Qt::DecorationRole, QPixmap::fromImage(inventoryWidget->loadFile("./apple.jpg")));
+    oneItem->setItem(0, 0, item);
+
     inventoryWidget->setAcceptDrops(true);
     setAcceptDrops(true);
+}
+
+void Window::configureTableWidget(QTableWidget *t) {
+    t->horizontalHeader()->hide();
+    t->verticalHeader()->hide();
+    t->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    t->verticalHeader()->setResizeMode(QHeaderView::Fixed);
+    t->verticalHeader()->setDefaultSectionSize(100);
+    t->horizontalHeader()->setDefaultSectionSize(100);
+    t->setDragEnabled(true);
 }
 
 Window::~Window() {
     delete inventoryWidget;
     delete imageLabel;
     delete exit_button;
+    delete oneItem;
 }
 
 void Window::mousePressEvent(QMouseEvent *event)
@@ -66,7 +78,7 @@ void Window::mousePressEvent(QMouseEvent *event)
 
         //mimeData->setImageData(image);
         // GEN ITEM
-        //qDebug() << "WINDOW Start drag";
+        qDebug() << "WINDOW Start drag";
         Item item("./apple.jpg", Item::FOOD);
         mimeData->setText(item.toString());
 

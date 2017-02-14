@@ -19,9 +19,11 @@ public:
     void mousePressEvent(QMouseEvent *event);
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
+    void configureTableWidget(QTableWidget *t);
     QPushButton *exit_button;
     QInvTableWidget *inventoryWidget;
     QLabel *imageLabel;
+    QTableWidget * oneItem;
 
 
 signals:
