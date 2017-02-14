@@ -21,9 +21,8 @@ public:
     void dropEvent(QDropEvent *event);
     QPushButton *exit_button;
     QInvTableWidget *inventoryWidget;
-    QImage image;
     QLabel *imageLabel;
-    Inventory *inventory;
+
 
 signals:
 

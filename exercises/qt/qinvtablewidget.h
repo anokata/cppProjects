@@ -8,6 +8,7 @@
 #include <QImageReader>
 #include <QImage>
 #include "item.h"
+#include "inventory.h"
 
 class QInvTableWidget : public QTableWidget
 {
@@ -15,6 +16,7 @@ class QInvTableWidget : public QTableWidget
 public:
     explicit QInvTableWidget(QWidget *parent = 0);
     QInvTableWidget(int rows, int columns, QWidget *parent = 0);
+    ~QInvTableWidget();
     void dropEvent(QDropEvent *event);
     bool dropMimeData(int row, int column, const QMimeData *data, Qt::DropAction action);
     void dragEnterEvent(QDragEnterEvent *event);
@@ -27,6 +29,9 @@ signals:
 public slots:
     void cellStart(int row, int col);
     void cellEnter(int row, int col);
+
+private:
+    Inventory *inventory;
 };
 
 #endif // QINVTABLEWIDGET_H

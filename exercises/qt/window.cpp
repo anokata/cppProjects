@@ -48,14 +48,9 @@ Window::Window(QWidget *parent) : QWidget(parent)
 
     inventoryWidget->setAcceptDrops(true);
     setAcceptDrops(true);
-
-    inventory = new Inventory(3, 3);
-    Item *i = new Item("some", Item::FOOD);
-    inventory->addItem(i, 0, 0);
 }
 
 Window::~Window() {
-    delete inventory;
     delete inventoryWidget;
     delete imageLabel;
     delete exit_button;
@@ -69,7 +64,7 @@ void Window::mousePressEvent(QMouseEvent *event)
         QDrag *drag = new QDrag(this);
         QMimeData *mimeData = new QMimeData;
 
-        mimeData->setImageData(image);
+        //mimeData->setImageData(image);
         // GEN ITEM
         Item item("./apple.jpg", Item::FOOD);
         mimeData->setText(item.toString());
@@ -93,18 +88,6 @@ void Window::dropEvent(QDropEvent *event)
 {
     if (inventoryWidget->geometry().contains(event->pos())) {
         inventoryWidget->dropEvent(event);
-
-        /*
-        for (int i = 0; i < inventory->getRows(); ++i) {
-            for (int j = 0; j < inventory->getColumns(); ++j) {
-                Item &item = inventory->getItem(i,j);
-                if (&item != NULL) {
-                    qDebug() << item.toString() << ' ';
-                }
-            }
-            qDebug() << '\n';
-        }
-*/
     } else {
         qDebug()<<"miss drop";
     }

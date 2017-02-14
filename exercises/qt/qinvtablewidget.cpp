@@ -22,6 +22,13 @@ QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent)
 
         connect(this, SIGNAL (cellPressed(int, int)), this, SLOT (cellStart(int, int)));
         connect(this, SIGNAL (cellActivated(int, int)), this, SLOT (cellEnter(int, int)));
+
+        inventory = new Inventory(3, 3);
+        Item *i = new Item("some", Item::FOOD);
+        inventory->addItem(i, 0, 0);
+}
+QInvTableWidget::~QInvTableWidget() {
+        delete inventory;
 }
 
 QImage QInvTableWidget::loadFile(const QString &fileName)
@@ -50,6 +57,17 @@ void QInvTableWidget::dragMoveEvent(QDragMoveEvent *event)
 void QInvTableWidget::dragEnterEvent(QDragEnterEvent *event)
 {
     qDebug()<<"TABLE dragEnterEvent";
+    /*
+    for (int i = 0; i < inventory->getRows(); ++i) {
+        for (int j = 0; j < inventory->getColumns(); ++j) {
+            Item &item = inventory->getItem(i,j);
+            if (&item != NULL) {
+                qDebug() << item.toString() << ' ';
+            }
+        }
+        qDebug() << '\n';
+    }
+*/
     event->acceptProposedAction();
     QTableWidget::dragEnterEvent(event);
 }
