@@ -66,6 +66,7 @@ void Window::mousePressEvent(QMouseEvent *event)
 
         //mimeData->setImageData(image);
         // GEN ITEM
+        //qDebug() << "WINDOW Start drag";
         Item item("./apple.jpg", Item::FOOD);
         mimeData->setText(item.toString());
 

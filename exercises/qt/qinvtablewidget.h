@@ -21,6 +21,7 @@ public:
     bool dropMimeData(int row, int column, const QMimeData *data, Qt::DropAction action);
     void dragEnterEvent(QDragEnterEvent *event);
     void dragMoveEvent(QDragMoveEvent *event);
+    //void mousePressEvent(QMouseEvent *event);
     QImage loadFile(const QString &fileName);
 
 signals:
@@ -32,6 +33,9 @@ public slots:
 
 private:
     Inventory *inventory;
+    Item * dragged_item;
+    int drag_x;
+    int drag_y;
 };
 
 #endif // QINVTABLEWIDGET_H

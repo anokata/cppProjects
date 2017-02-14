@@ -1,16 +1,17 @@
 #include "qinvtablewidget.h"
 
 QInvTableWidget::QInvTableWidget(QWidget *parent) : QTableWidget(parent)
-{
-
-}
+{}
 
 void QInvTableWidget::cellStart(int row, int col) {
-    qDebug()<<"TABLE cellStart" << row << ' ' << col;
+    //qDebug()<<"TABLE cellStart" << row << ' ' << col;
+    dragged_item = inventory->getItem(col, row);
+    qDebug() << dragged_item;
+    drag_x = col;
+    drag_y = row;
 }
 
-void QInvTableWidget::cellEnter(int row, int col) {
-}
+void QInvTableWidget::cellEnter(int row, int col) {}
 
 QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent)
     : QTableWidget(rows, columns, parent)
@@ -24,8 +25,7 @@ QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent)
         connect(this, SIGNAL (cellActivated(int, int)), this, SLOT (cellEnter(int, int)));
 
         inventory = new Inventory(3, 3);
-        Item *i = new Item("some", Item::FOOD);
-        inventory->addItem(i, 0, 0);
+        dragged_item = NULL;
 }
 QInvTableWidget::~QInvTableWidget() {
         delete inventory;
@@ -44,9 +44,19 @@ QImage QInvTableWidget::loadFile(const QString &fileName)
 
 void QInvTableWidget::dropEvent(QDropEvent *event)
 {
-    qDebug()<<"TABLE dropEvent";
-    qDebug() << QString(event->mimeData()->text());
+    //qDebug()<<"TABLE dropEvent";
+    //qDebug() << QString(event->mimeData()->text());
     QTableWidget::dropEvent(event);
+    for (int i = 0; i < inventory->getRows(); ++i) {
+        for (int j = 0; j < inventory->getColumns(); ++j) {
+            Item * item = inventory->getItem(i, j);
+            if (item != NULL) {
+                //qDebug() << item->toString() << ' ';
+                qDebug() << i << ':' << j << (item);
+            }
+        }
+    }
+    qDebug() << '\n';
 }
 
 void QInvTableWidget::dragMoveEvent(QDragMoveEvent *event)
@@ -56,18 +66,10 @@ void QInvTableWidget::dragMoveEvent(QDragMoveEvent *event)
 
 void QInvTableWidget::dragEnterEvent(QDragEnterEvent *event)
 {
-    qDebug()<<"TABLE dragEnterEvent";
-    /*
-    for (int i = 0; i < inventory->getRows(); ++i) {
-        for (int j = 0; j < inventory->getColumns(); ++j) {
-            Item &item = inventory->getItem(i,j);
-            if (&item != NULL) {
-                qDebug() << item.toString() << ' ';
-            }
-        }
-        qDebug() << '\n';
-    }
-*/
+    //qDebug()<<"TABLE dragEnterEvent";
+
+
+
     event->acceptProposedAction();
     QTableWidget::dragEnterEvent(event);
 }
@@ -75,21 +77,53 @@ void QInvTableWidget::dragEnterEvent(QDragEnterEvent *event)
 
 bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Qt::DropAction action)
 {
-    qDebug()<<"TABLE mime" << row << ' ' << column;
+    //qDebug()<<"TABLE mime" << row << ' ' << column;
     if(data->hasText())
     {
-        Item *ii = new Item(data->text());
-
         QTableWidgetItem *item = this->item(row, column);
         if(item != 0) {
-            item->setText(QString::number((ii->count)));
-            QImage image = loadFile(ii->getImagePath());
+            Item *olditem = new Item(data->text());
+            olditem = inventory->addItem(olditem, column, row);
+            item->setText(QString::number((olditem->count)));
+            QImage image = loadFile(olditem->getImagePath());
             item->setData(Qt::DecorationRole, QPixmap::fromImage(image));
         }
         return false;
     }
     else
     {
+
+        if (dragged_item != NULL) {
+            QTableWidgetItem *item = this->item(row, column);
+            Item *olditem = inventory->getItem(column, row);
+            qDebug() << "no text" << column << row << dragged_item << olditem;
+            if ((item != 0) && (olditem != dragged_item)) {
+                olditem = inventory->addItem(dragged_item, column, row);
+                item->setText(QString::number((olditem->count)));
+                QImage image = loadFile(olditem->getImagePath());
+                item->setData(Qt::DecorationRole, QPixmap::fromImage(image));
+                inventory->delItem(drag_x, drag_y);
+            }
+        }
         return QTableWidget::dropMimeData(row, column, data, action);
     }
 }
+
+//void QInvTableWidget::mousePressEvent(QMouseEvent *event)
+//{
+//    if (event->button() == Qt::LeftButton
+//        && this->geometry().contains(event->pos())) {
+
+//        QDrag *drag = new QDrag(this);
+//        QMimeData *mimeData = new QMimeData;
+
+//        // need know where start?
+//        //Item item("./apple.jpg", Item::FOOD);
+//        //mimeData->setText(item.toString());
+
+//        drag->setMimeData(mimeData);
+//        //drag->setPixmap(*imageLabel->pixmap());
+
+//        drag->exec();
+//    }
+//}

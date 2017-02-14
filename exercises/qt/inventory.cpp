@@ -8,8 +8,8 @@ Inventory::Inventory(int cols, int rows)
     }
 }
 
-Item & Inventory::getItem(int x, int y) {
-    return *(items[x][y]);
+Item * Inventory::getItem(int x, int y) {
+    return (items[x][y]);
 }
 
 int Inventory::getColumns() {
@@ -20,6 +20,18 @@ int Inventory::getRows() {
     return items.size();
 }
 
-void Inventory::addItem(Item * item, int col, int row) {
-    items[col][row] = item;
+Item * Inventory::addItem(Item * item, int col, int row) {
+    if (items[col][row] == NULL) {
+        qDebug() << "=item";
+        items[col][row] = item;
+    } else {
+        qDebug() << "+item";
+        items[col][row]->count += item->count;
+        delete item;
+    }
+    return items[col][row];
+}
+
+void Inventory::delItem(int col, int row) {
+    items[col][row] = NULL;
 }
