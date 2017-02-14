@@ -30,7 +30,7 @@ signals:
 public slots:
 
 private:
-    bool loadFile(const QString &fileName);
+
 };
 
 #endif // WINDOW_H

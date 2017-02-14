@@ -36,7 +36,7 @@ Window::Window(QWidget *parent) : QWidget(parent)
     imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
     imageLabel->setScaledContents(true);
     imageLabel->setGeometry(450, 200, 100, 100);
-    loadFile("./apple.jpg");
+    imageLabel->setPixmap(QPixmap::fromImage(inventoryWidget->loadFile("./apple.jpg")));
 
     inventoryWidget->setDragEnabled(true);
     for (int i = 0; i < INV_DIMENSION; ++i) {
@@ -46,9 +46,7 @@ Window::Window(QWidget *parent) : QWidget(parent)
         }
     }
 
-    //inventory->item(0, 1)->setData(Qt::DecorationRole, QPixmap::fromImage(image));
-
-    inventoryWidget->setAcceptDrops(true); //?
+    inventoryWidget->setAcceptDrops(true);
     setAcceptDrops(true);
 
     inventory = new Inventory(3, 3);
@@ -63,22 +61,6 @@ Window::~Window() {
     delete exit_button;
 }
 
-bool Window::loadFile(const QString &fileName)
-{
-    QImageReader reader(fileName);
-    const QImage newImage = reader.read();
-    if (newImage.isNull()) {
-        QMessageBox::information(this, "_",
-               tr("Cannot load %1: %2")
-               .arg(QDir::toNativeSeparators(fileName), reader.errorString()));
-        return false;
-    }
-    imageLabel->setPixmap(QPixmap::fromImage(newImage));
-    //imageLabel->adjustSize();
-    image = newImage;
-    return true;
-}
-
 void Window::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton
@@ -88,7 +70,7 @@ void Window::mousePressEvent(QMouseEvent *event)
         QMimeData *mimeData = new QMimeData;
 
         mimeData->setImageData(image);
-
+        // GEN ITEM
         Item item("./apple.jpg", Item::FOOD);
         mimeData->setText(item.toString());
 
@@ -102,19 +84,17 @@ void Window::mousePressEvent(QMouseEvent *event)
 
 void Window::dragEnterEvent(QDragEnterEvent *event)
 {
-    qDebug()<<"dragEnterEvent";
-    event->acceptProposedAction();
+    if (inventoryWidget->geometry().contains(event->pos())) {
+        event->acceptProposedAction();
+    }
 }
 
 void Window::dropEvent(QDropEvent *event)
 {
     if (inventoryWidget->geometry().contains(event->pos())) {
-        //inventory->item()
-        inventoryWidget->item(0, 0)->setData(Qt::DecorationRole, QPixmap::fromImage(image));
-        inventoryWidget->item(0, 0)->setText("1");
-        qDebug() << "drop: " << event->mimeData()->text();
-        event->acceptProposedAction();
+        inventoryWidget->dropEvent(event);
 
+        /*
         for (int i = 0; i < inventory->getRows(); ++i) {
             for (int j = 0; j < inventory->getColumns(); ++j) {
                 Item &item = inventory->getItem(i,j);
@@ -124,7 +104,7 @@ void Window::dropEvent(QDropEvent *event)
             }
             qDebug() << '\n';
         }
-
+*/
     } else {
         qDebug()<<"miss drop";
     }

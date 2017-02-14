@@ -5,6 +5,9 @@
 #include <QTableWidget>
 #include <QDropEvent>
 #include <QDebug>
+#include <QImageReader>
+#include <QImage>
+#include "item.h"
 
 class QInvTableWidget : public QTableWidget
 {
@@ -16,6 +19,7 @@ public:
     bool dropMimeData(int row, int column, const QMimeData *data, Qt::DropAction action);
     void dragEnterEvent(QDragEnterEvent *event);
     void dragMoveEvent(QDragMoveEvent *event);
+    QImage loadFile(const QString &fileName);
 
 signals:
 

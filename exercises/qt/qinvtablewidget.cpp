@@ -24,6 +24,17 @@ QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent)
         connect(this, SIGNAL (cellActivated(int, int)), this, SLOT (cellEnter(int, int)));
 }
 
+QImage QInvTableWidget::loadFile(const QString &fileName)
+{
+    QImageReader reader(fileName);
+    const QImage newImage = reader.read();
+    if (newImage.isNull()) {
+        qDebug() << "Can not load file";
+        return newImage;
+    }
+    return newImage;
+}
+
 void QInvTableWidget::dropEvent(QDropEvent *event)
 {
     qDebug()<<"TABLE dropEvent";
@@ -39,9 +50,8 @@ void QInvTableWidget::dragMoveEvent(QDragMoveEvent *event)
 void QInvTableWidget::dragEnterEvent(QDragEnterEvent *event)
 {
     qDebug()<<"TABLE dragEnterEvent";
-
+    event->acceptProposedAction();
     QTableWidget::dragEnterEvent(event);
-    //event->acceptProposedAction();
 }
 
 
@@ -50,9 +60,14 @@ bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Q
     qDebug()<<"TABLE mime" << row << ' ' << column;
     if(data->hasText())
     {
+        Item *ii = new Item(data->text());
+
         QTableWidgetItem *item = this->item(row, column);
-        if(item != 0)
-            item->setText(data->text());
+        if(item != 0) {
+            item->setText(QString::number((ii->count)));
+            QImage image = loadFile(ii->getImagePath());
+            item->setData(Qt::DecorationRole, QPixmap::fromImage(image));
+        }
         return false;
     }
     else

@@ -8,6 +8,7 @@ public:
     enum Item_type { FOOD };
     Item(QString image_path, Item_type type);
     Item(QString image_path, Item_type type, int count);
+    Item(QString item_string);
     QString getImagePath();
     Item_type getType();
     QString toString();
