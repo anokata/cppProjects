@@ -9,9 +9,7 @@ INCLUDEPATH += .
 # Input
 SOURCES += \
     window.cpp \
-    main.cpp \
-    inventory.cpp
+    main.cpp
 
 HEADERS += \
-    window.h \
-    inventory.h
+    window.h
