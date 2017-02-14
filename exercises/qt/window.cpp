@@ -10,7 +10,10 @@
 
 // TODO: строить таблицу с изобр и текстом по инвентарю.
 // БД. начало игры, сброс-выход. выровнять перетаск.
-// сделать генератор тоже обычной таблицей с одной ячейкой.
+// сделать генератор тоже обычной таблицей с одной ячейкой. наследовать.
+// unicode
+// private методы убрать, задать интерфейс.
+// comments to methods. ui create
 Window::Window(QWidget *parent) : QWidget(parent)
 {
     const int INV_DIMENSION = 3;
@@ -46,9 +49,9 @@ Window::Window(QWidget *parent) : QWidget(parent)
         }
     }
 
-    oneItem = new QTableWidget(1, 1, this);
+    oneItem = new QOneCellWidget(this, inventoryWidget->loadFile("./apple.jpg"));
     oneItem->setGeometry(450, 300, 100, 100);
-    configureTableWidget(oneItem);
+    //configureTableWidget(oneItem);
     QTableWidgetItem *item = new QTableWidgetItem;
     item->setData(Qt::DecorationRole, QPixmap::fromImage(inventoryWidget->loadFile("./apple.jpg")));
     oneItem->setItem(0, 0, item);
@@ -79,8 +82,7 @@ Window::~Window() {
     delete oneItem;
 }
 
-void Window::mousePressEvent(QMouseEvent *event)
-{
+void Window::mousePressEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton
         && imageLabel->geometry().contains(event->pos())) {
 

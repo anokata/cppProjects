@@ -8,6 +8,7 @@
 #include "qinvtablewidget.h"
 #include "item.h"
 #include "inventory.h"
+#include "qonecellwidget.h"
 
 class QPushButton;
 class Window : public QWidget
@@ -24,7 +25,7 @@ public:
     QPushButton *newgame_button;
     QInvTableWidget *inventoryWidget;
     QLabel *imageLabel;
-    QTableWidget * oneItem;
+    QOneCellWidget * oneItem;
 
 
 signals:

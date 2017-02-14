@@ -12,10 +12,12 @@ SOURCES += \
     main.cpp \
     qinvtablewidget.cpp \
     item.cpp \
-    inventory.cpp
+    inventory.cpp \
+    qonecellwidget.cpp
 
 HEADERS += \
     window.h \
     qinvtablewidget.h \
     item.h \
-    inventory.h
+    inventory.h \
+    qonecellwidget.h
