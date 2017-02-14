@@ -23,6 +23,7 @@ public:
     void dragMoveEvent(QDragMoveEvent *event);
     //void mousePressEvent(QMouseEvent *event);
     QImage loadFile(const QString &fileName);
+    void refreshCells();
 
 signals:
 

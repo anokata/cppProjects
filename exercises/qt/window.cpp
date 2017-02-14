@@ -8,6 +8,9 @@
 #include <QMouseEvent>
 #include <QDebug>
 
+// TODO: строить таблицу с изобр и текстом по инвентарю.
+// БД. начало игры, сброс-выход. выровнять перетаск.
+// сделать генератор тоже обычной таблицей с одной ячейкой.
 Window::Window(QWidget *parent) : QWidget(parent)
 {
     const int INV_DIMENSION = 3;

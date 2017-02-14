@@ -1,7 +1,6 @@
 #include "item.h"
 #include <QStringList>
 
-// TODO? From string
 Item::Item(QString image_path, Item_type type) :
     image_path(image_path), type(type)
 {

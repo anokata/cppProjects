@@ -4,8 +4,8 @@ QInvTableWidget::QInvTableWidget(QWidget *parent) : QTableWidget(parent)
 {}
 
 void QInvTableWidget::cellStart(int row, int col) {
-    qDebug()<<"TABLE cellStart" << row << ' ' << col;
     dragged_item = inventory->getItem(col, row);
+    qDebug()<<"TABLE cellStart" << row << col << "COUTN" << (dragged_item!=NULL?dragged_item->count:0);
     qDebug() << dragged_item;
     drag_x = col;
     drag_y = row;
@@ -52,11 +52,12 @@ void QInvTableWidget::dropEvent(QDropEvent *event)
             Item * item = inventory->getItem(i, j);
             if (item != NULL) {
                 //qDebug() << item->toString() << ' ';
-                qDebug() << i << ':' << j << (item);
+                qDebug() << i << ':' << j << (item) << item->count;
             }
         }
     }
     qDebug() << '\n';
+    refreshCells();
 }
 
 void QInvTableWidget::dragMoveEvent(QDragMoveEvent *event)
@@ -71,6 +72,21 @@ void QInvTableWidget::dragEnterEvent(QDragEnterEvent *event)
     QTableWidget::dragEnterEvent(event);
 }
 
+void QInvTableWidget::refreshCells() {
+    for (int i = 0; i < inventory->getColumns(); ++i) {
+        for (int j = 0; j < inventory->getRows(); ++j) {
+            QTableWidgetItem *item = this->item(i, j);
+            Item *inv_item = inventory->getItem(j, i);
+            item->setText("");
+            item->setData(Qt::DecorationRole, QVariant());
+            if (inv_item != NULL) {
+                item->setText(QString::number(inv_item->count));
+                QImage image = loadFile(inv_item->getImagePath());
+                item->setData(Qt::DecorationRole, QPixmap::fromImage(image));
+            }
+        }
+    }
+}
 
 bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Qt::DropAction action)
 {
@@ -81,33 +97,22 @@ bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Q
             qDebug()<<"TABLE mime" << row << ' ' << column << data->text();
             Item *olditem = new Item(data->text());
             olditem = inventory->addItem(olditem, column, row);
-            item->setText(QString::number((olditem->count)));
-            QImage image = loadFile(olditem->getImagePath());
-            item->setData(Qt::DecorationRole, QPixmap::fromImage(image));
         }
-        return false;
     }
     else
     {
-
         if (dragged_item != NULL) {
             QTableWidgetItem *item = this->item(row, column);
             Item *olditem = inventory->getItem(column, row);
             qDebug() << "no text" << column << row << dragged_item << olditem;
             if ((item != 0) && (olditem != dragged_item)) {
                 olditem = inventory->addItem(dragged_item, column, row);
-                item->setText(QString::number((olditem->count)));
-                QImage image = loadFile(olditem->getImagePath());
-                item->setData(Qt::DecorationRole, QPixmap::fromImage(image));
                 inventory->delItem(drag_x, drag_y);
             }
         }
-        return QTableWidget::dropMimeData(row, column, data, action);
     }
+    return QTableWidget::dropMimeData(row, column, data, action);
 }
-// TODO: строить таблицу с изобр и текстом по инвентарю.
-// БД. начало игры, сброс-выход. выровнять перетаск.
-// сделать генератор тоже обычной таблицей с одной ячейкой.
 
 //void QInvTableWidget::mousePressEvent(QMouseEvent *event)
 //{
