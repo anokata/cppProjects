@@ -9,7 +9,7 @@ class Window : public QWidget
     Q_OBJECT
 public:
     explicit Window(QWidget *parent = 0);
-    QPushButton *m_button;
+    QPushButton *exit_button;
 
 signals:
 
