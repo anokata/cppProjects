@@ -40,6 +40,12 @@ QInvTableWidget::~QInvTableWidget() {
         delete inventory;
 }
 
+void QInvTableWidget::passItem(Item * item) {
+        qDebug() << "get Item SIGNAL" << inventory->getRows();
+        dragged_item = item;
+        drag_x = -1;
+}
+
 QImage QInvTableWidget::loadFile(const QString &fileName)
 {
     QImageReader reader(fileName);
@@ -121,7 +127,9 @@ bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Q
             qDebug() << "no text" << column << row << dragged_item << olditem;
             if ((item != 0) && (olditem != dragged_item)) {
                 olditem = inventory->addItem(dragged_item, column, row);
-                inventory->delItem(drag_x, drag_y);
+                if (drag_x != -1) {
+                    inventory->delItem(drag_x, drag_y);
+                }
             }
         }
     }

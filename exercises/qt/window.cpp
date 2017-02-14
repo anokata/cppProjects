@@ -14,6 +14,10 @@
 // unicode
 // private методы убрать, задать интерфейс.
 // comments to methods. ui create
+// давай сделаем так: одноячейковый тейбл будет получать виджет в который будет в спец
+// слот соединять сигнал по которому передавать данные об новом объекте. пре mousePress..
+// будем генерить итем и эмитить сигнал
+// сделать чтобы одноячейковый не принимал и не перерисовался?
 Window::Window(QWidget *parent) : QWidget(parent)
 {
     const int INV_DIMENSION = 3;
@@ -49,7 +53,7 @@ Window::Window(QWidget *parent) : QWidget(parent)
         }
     }
 
-    oneItem = new QOneCellWidget(this);
+    oneItem = new QOneCellWidget(this, inventoryWidget);
     oneItem->setGeometry(450, 300, 100, 100);
     //configureTableWidget(oneItem);
     QTableWidgetItem *item = new QTableWidgetItem;

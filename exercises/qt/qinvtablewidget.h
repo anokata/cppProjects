@@ -28,11 +28,12 @@ public:
     void wipeInventory();
 
 signals:
-
+    void itemPassed(Item * item);
 
 public slots:
     void cellStart(int row, int col);
     void cellEnter(int row, int col);
+    void passItem(Item * item);
 
 protected:
     Inventory *inventory;
