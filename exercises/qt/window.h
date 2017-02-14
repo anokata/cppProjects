@@ -13,8 +13,10 @@ class Window : public QWidget
     Q_OBJECT
 public:
     explicit Window(QWidget *parent = 0);
+    void mousePressEvent(QMouseEvent *event);
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
     QPushButton *exit_button;
-    //Inventory *inventory;
     QTableWidget *inventory;
     QImage image;
     QLabel *imageLabel;
