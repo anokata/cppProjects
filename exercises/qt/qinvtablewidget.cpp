@@ -108,6 +108,8 @@ bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Q
         return QTableWidget::dropMimeData(row, column, data, action);
     }
 }
+// TODO: строить таблицу с изобр и текстом по инвентарю.
+// БД. начало игры, сброс-выход. выровнять перетаск.
 
 //void QInvTableWidget::mousePressEvent(QMouseEvent *event)
 //{
