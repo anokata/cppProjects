@@ -29,6 +29,7 @@ signals:
 
 public slots:
     void newgame();
+    void exit();
 
 private:
 
