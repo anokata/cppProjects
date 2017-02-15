@@ -128,6 +128,20 @@ void Inventory::addInventoryItem(int id, int col, int row) {
     db.commit();
 }
 
+int Inventory::addNewItem(QString name, int count, Item::Item_type type, QString path) {
+    QSqlQuery query(db);
+    db.transaction();
+    query.prepare("INSERT INTO Items (ItemID, Name, Count, Type, ImagePath) "
+            "VALUES (null, :name, :count, :type, :path)");
+    query.bindValue(":name", name); 
+    query.bindValue(":count", count); 
+    query.bindValue(":type", type); 
+    query.bindValue(":path", path); 
+    query.exec();
+    db.commit();
+    return query.lastInsertId().toInt();
+}
+
 Item * Inventory::appendItem(Item * item, int col, int row) {
     qDebug() << "APPEND " << item->getId();
     auto query = itemAtCell(col, row);
@@ -144,28 +158,9 @@ Item * Inventory::appendItem(Item * item, int col, int row) {
             deleteById(item->getId());
             addInventoryItem(item->getId(), col, row);
         } else {
-            qDebug() << "try INSERT";
-            QSqlQuery query(db);
-            db.transaction();
-            query.prepare("INSERT INTO Items (ItemID, Name, Count, Type, ImagePath) "
-                    "VALUES (null, :name, :count, :type, :path)");
-            query.bindValue(":name", "apple"); 
-            query.bindValue(":count", item->count); 
-            query.bindValue(":type", item->getType()); 
-            query.bindValue(":path", item->getImagePath()); 
-            query.exec();
-            int lastid = query.lastInsertId().toInt();
-            qDebug() << "inserted item ID:"<< query.lastInsertId().toInt();
-            db.commit();
-
-            db.transaction();
-            query.prepare("INSERT INTO Inventory VALUES (:iid, :x, :y)");
-            query.bindValue(":iid", lastid); 
-            query.bindValue(":x", col); 
-            query.bindValue(":y", row); 
-            query.exec();
-            db.commit();
-            qDebug() << "END INSERT" << db.lastError().text();
+            int lastid = addNewItem("apple", item->count, item->getType(), item->getImagePath());
+            qDebug() << "inserted item ID:"<< lastid;
+            addInventoryItem(lastid, col, row);
         }
     }
 }

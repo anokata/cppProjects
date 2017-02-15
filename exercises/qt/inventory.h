@@ -30,6 +30,7 @@ private:
     QSqlQuery itemAtCell(int col, int row);
     void updateItemCount(int id, int newCount);
     void addInventoryItem(int id, int row, int col);
+    int addNewItem(QString name, int count, Item::Item_type type, QString path);
 
 };
 
