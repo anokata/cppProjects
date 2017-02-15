@@ -1,8 +1,6 @@
 #include "window.h"
 #include <QPushButton>
 #include <QApplication>
-#include <QDir>
-#include <QMouseEvent>
 #include <QDebug>
 
 // TODO: 
@@ -40,17 +38,16 @@ Window::Window(QWidget *parent) : QWidget(parent)
     exit_button = new QPushButton(trUtf8("Выход"), this);
     exit_button->setGeometry(WINDOW_WIDTH - 90, 10, 80, 30);
     exit_button->setLayoutDirection(Qt::RightToLeft);
-    connect(exit_button, SIGNAL (clicked()), this, SLOT (exit()));
     newgame_button = new QPushButton(trUtf8("Начать"), this);
     newgame_button->setGeometry(10, 10, 100, 30);
-    connect(newgame_button, SIGNAL (clicked()), this, SLOT (newgame()));
     mainMenu = new QPushButton(trUtf8("Главное меню"), this);
     mainMenu->setGeometry(450, 510, 120, 30);
     mainMenu->setLayoutDirection(Qt::RightToLeft);
-    connect(mainMenu, SIGNAL (clicked()), this, SLOT (goMainMenu()));
     mainMenu->setEnabled(false);
-
-    setAcceptDrops(true);
+    // Signals
+    connect(exit_button, SIGNAL (clicked()), this, SLOT (exit()));
+    connect(newgame_button, SIGNAL (clicked()), this, SLOT (newgame()));
+    connect(mainMenu, SIGNAL (clicked()), this, SLOT (goMainMenu()));
 }
 
 Window::~Window() {
