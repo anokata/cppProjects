@@ -38,7 +38,7 @@ void Inventory::fromDB() {
         // createItem()
         Item * item = new Item(img_path, type, count);
         items[x][y] = item;
-        qDebug() << x << y << count << type << img_path;
+        //qDebug() << x << y << count << type << img_path;
     }
     qDebug() << Item::FOOD;
 }
@@ -77,6 +77,7 @@ Item * Inventory::addItem(Item * item, int col, int row) {
 }
 
 Item * Inventory::appendItem(Item * item, int col, int row) {
+    qDebug() << "APPEND ";
     QSqlQuery query(db);
     query.prepare("select Count, Type, ImagePath from Inventory \
                 inner join Items where Inventory.ItemID = Items.ItemID \
@@ -111,10 +112,11 @@ Item * Inventory::appendItem(Item * item, int col, int row) {
         db.transaction();
         query.prepare("INSERT INTO Inventory VALUES (:iid, :x, :y)");
         query.bindValue(":iid", lastid); 
-        query.bindValue(":x", 2); 
-        query.bindValue(":y", 2); 
+        query.bindValue(":x", col); 
+        query.bindValue(":y", row); 
         query.exec();
         db.commit();
+        qDebug() << "END INSERT" << db.lastError().text();
     }
 
 }

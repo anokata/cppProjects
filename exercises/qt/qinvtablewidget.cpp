@@ -27,8 +27,8 @@ QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent, QWidget
             this->setItem(i, j, item);
         }
     }
-    Item *i = new Item("./apple.jpg", Item::FOOD);
-    inventory->appendItem(i, 2, 2);
+    //Item *i = new Item("./apple.jpg", Item::FOOD);
+    //inventory->appendItem(i, 2, 2);
     refreshCells();
 }
 QInvTableWidget::~QInvTableWidget() {
@@ -62,7 +62,7 @@ void QInvTableWidget::dropEvent(QDropEvent *event)
             Item * item = inventory->getItem(i, j);
             if (item != NULL) {
                 //qDebug() << item->toString() << ' ';
-                qDebug() << i << ':' << j << (item) << item->count;
+                //qDebug() << i << ':' << j << (item) << item->count;
             }
         }
     }
@@ -88,6 +88,7 @@ void QInvTableWidget::wipeInventory() {
 }
 
 void QInvTableWidget::refreshCells() {
+    inventory->fromDB();
     for (int i = 0; i < inventory->getColumns(); ++i) {
         for (int j = 0; j < inventory->getRows(); ++j) {
             QTableWidgetItem *item = this->item(i, j);
@@ -105,13 +106,14 @@ void QInvTableWidget::refreshCells() {
 
 bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Qt::DropAction action)
 {
-    if(data->hasText())
+    if(data->hasText()) //not work?
     {
         QTableWidgetItem *item = this->item(row, column);
         if(item != 0) {
             qDebug()<<"TABLE mime" << row << ' ' << column << data->text();
             Item *olditem = new Item(data->text());
-            olditem = inventory->addItem(olditem, column, row);
+            inventory->appendItem(olditem, 2, 2);
+            //olditem = inventory->addItem(olditem, column, row);
         }
     }
     else
@@ -120,6 +122,9 @@ bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Q
             QTableWidgetItem *item = this->item(row, column);
             Item *olditem = inventory->getItem(column, row);
             qDebug() << "no text" << column << row << dragged_item << olditem;
+            if (olditem == NULL) {
+                inventory->appendItem(dragged_item, column, row);
+            } else 
             if ((item != 0) && (olditem != dragged_item)) {
                 olditem = inventory->addItem(dragged_item, column, row);
                 if (drag_x != -1) {
