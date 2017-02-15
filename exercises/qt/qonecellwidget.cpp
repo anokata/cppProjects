@@ -2,12 +2,17 @@
 
 QOneCellWidget::QOneCellWidget(QWidget *parent) : QTableWidget(1, 1, parent)
 {
-    connect(this, SIGNAL (cellPressed(int, int)), this, SLOT (cellStart(int, int)));
     configure();
     QTableWidgetItem *item = new QTableWidgetItem;
     item->setData(Qt::DecorationRole, QPixmap::fromImage(loadFile("./apple.jpg")));
     item->setFlags(item->flags() ^ Qt::ItemIsEditable);
     this->setItem(0, 0, item);
+}
+
+QOneCellWidget::QOneCellWidget(int rows, int columns, QWidget *parent)
+    : QTableWidget(rows, columns, parent)
+{
+    configure();
 }
 
 void QOneCellWidget::configure() {
@@ -25,19 +30,9 @@ void QOneCellWidget::configure() {
     viewport()->setAcceptDrops(true);
 }
 
-QOneCellWidget::QOneCellWidget(int rows, int columns, QWidget *parent)
-    : QTableWidget(rows, columns, parent)
-{
-    configure();
-}
-
-void QOneCellWidget::cellStart(int row, int col) {
-}
-
 void QOneCellWidget::mousePressEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         QTableWidget::mousePressEvent(event);
-        // emit new item dragged
         emit itemPassed(QString("./apple.jpg"), Item::FOOD);
     }
 }
@@ -52,6 +47,6 @@ QImage QOneCellWidget::loadFile(const QString &fileName) {
     return newImage;
 }
 
-void QOneCellWidget::dragEnterEvent(QDragEnterEvent *event)
-{
+void QOneCellWidget::dragEnterEvent(QDragEnterEvent *event) { 
+    event->ignore();
 }

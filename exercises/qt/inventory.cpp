@@ -40,17 +40,6 @@ void Inventory::fromDB() {
     }
 }
 
-void Inventory::wipeDB() {
-    QSqlQuery query(db);
-    db.transaction();
-    query.exec("delete from inventory");
-    db.commit();
-    db.transaction();
-    query.exec("delete from items");
-    db.commit();
-    fromDB();
-}
-
 Item * Inventory::getItem(int x, int y) {
     return (items[x][y]);
 }
@@ -72,17 +61,16 @@ void Inventory::deleteItems() {
     }
 }
 
-/*Item * Inventory::addItem(Item * item, int col, int row) {
-    if (items[col][row] == NULL) {
-        qDebug() << "=item";
-        items[col][row] = item;
-    } else {
-        qDebug() << "+item";
-        items[col][row]->count += item->count;
-        delete item;
-    }
-    return items[col][row];
-}*/
+void Inventory::wipeDB() {
+    QSqlQuery query(db);
+    db.transaction();
+    query.exec("delete from inventory");
+    db.commit();
+    db.transaction();
+    query.exec("delete from items");
+    db.commit();
+    fromDB();
+}
 
 void Inventory::deleteById(int id) {
     QSqlQuery query(db);
@@ -158,7 +146,7 @@ void Inventory::appendItem(Item * item, int col, int row) {
             // не обрабатывать на себе
             return;
         }
-        updateItemCount(id, count + item->count);
+        updateItemCount(id, count + item->getCount());
 
         if (item->getId() != -1) {
             // Если ложимый предмет был не новый удалим его со старого места
@@ -174,14 +162,10 @@ void Inventory::appendItem(Item * item, int col, int row) {
             addInventoryItem(item->getId(), col, row);
         } else {
             // создаём новый предмет в пустой ячейке
-            int lastid = addNewItem("apple", item->count, item->getType(), item->getImagePath());
+            int lastid = addNewItem("apple", item->getCount(), item->getType(), item->getImagePath());
             addInventoryItem(lastid, col, row);
         }
     }
-}
-
-void Inventory::delItem(int col, int row) {
-    items[col][row] = NULL;
 }
 
 bool Inventory::eatItem(int col, int row) {

@@ -13,23 +13,22 @@ class QOneCellWidget : public QTableWidget
 {
 Q_OBJECT
 public:
+    QOneCellWidget(int rows, int columns, QWidget *parent);
     QOneCellWidget(QWidget *parent);
     ~QOneCellWidget() {};
-    QOneCellWidget(int rows, int columns, QWidget *parent);
-    void mousePressEvent(QMouseEvent *event);
-    void configure();
-    QImage loadFile(const QString &fileName);
-    void dragEnterEvent(QDragEnterEvent *event);
+
 public slots:
-    void cellStart(int row, int col);
 
 signals:
     void itemPassed(QString, Item::Item_type);
 
 protected:
+    void mousePressEvent(QMouseEvent *event);
+    QImage loadFile(const QString &fileName);
+    void dragEnterEvent(QDragEnterEvent *event);
+    void configure();
+
     Item * dragged_item;
-    int drag_x;
-    int drag_y;
 };
 
 #endif // QONECELLWIDGET_H

@@ -1,18 +1,9 @@
 #include "qinvtablewidget.h"
 
-void QInvTableWidget::cellStart(int row, int col) {
-    dragged_item = inventory->getItem(col, row);
-    drag_x = col;
-    drag_y = row;
-}
-
-void QInvTableWidget::cellEnter(int row, int col) {}
-
 QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent, QWidget *recipient)
     : QOneCellWidget(rows, columns, parent)
 {
     connect(this, SIGNAL (cellPressed(int, int)), this, SLOT (cellStart(int, int)));
-    connect(this, SIGNAL (cellActivated(int, int)), this, SLOT (cellEnter(int, int)));
     connect(recipient, SIGNAL (itemPassed(QString, Item::Item_type)), this, SLOT (passItem(QString, Item::Item_type)));
 
     inventory = new Inventory(columns, rows);
@@ -28,8 +19,30 @@ QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent, QWidget
     }
     refreshCells();
 }
+
 QInvTableWidget::~QInvTableWidget() {
         delete inventory;
+}
+
+void QInvTableWidget::refreshCells() {
+    inventory->fromDB();
+    for (int i = 0; i < inventory->getColumns(); ++i) {
+        for (int j = 0; j < inventory->getRows(); ++j) {
+            QTableWidgetItem *item = this->item(i, j);
+            Item *inv_item = inventory->getItem(j, i);
+            item->setText("");
+            item->setData(Qt::DecorationRole, QVariant());
+            if (inv_item != NULL) {
+                item->setText(QString::number(inv_item->getCount()));
+                QImage image = loadFile(inv_item->getImagePath());
+                item->setData(Qt::DecorationRole, QPixmap::fromImage(image));
+            }
+        }
+    }
+}
+
+void QInvTableWidget::cellStart(int row, int col) {
+    dragged_item = inventory->getItem(col, row);
 }
 
 void QInvTableWidget::passItem(QString path, Item::Item_type type) {
@@ -41,7 +54,7 @@ void QInvTableWidget::debug_print_all_items() {
         for (int j = 0; j < inventory->getColumns(); ++j) {
             Item * item = inventory->getItem(i, j);
             if (item != NULL) {
-                qDebug() << i << ':' << j << (item) << item->count;
+                qDebug() << i << ':' << j << (item) << item->getCount();
             }
         }
     }
@@ -71,23 +84,6 @@ void QInvTableWidget::wipeInventory() {
     refreshCells();
 }
 
-void QInvTableWidget::refreshCells() {
-    inventory->fromDB();
-    for (int i = 0; i < inventory->getColumns(); ++i) {
-        for (int j = 0; j < inventory->getRows(); ++j) {
-            QTableWidgetItem *item = this->item(i, j);
-            Item *inv_item = inventory->getItem(j, i);
-            item->setText("");
-            item->setData(Qt::DecorationRole, QVariant());
-            if (inv_item != NULL) {
-                item->setText(QString::number(inv_item->count));
-                QImage image = loadFile(inv_item->getImagePath());
-                item->setData(Qt::DecorationRole, QPixmap::fromImage(image));
-            }
-        }
-    }
-}
-
 bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Qt::DropAction action)
 {
     if (row < inventory->getRows() && column < inventory->getColumns()) {
@@ -96,22 +92,19 @@ bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Q
         }
         return QTableWidget::dropMimeData(row, column, data, action);
     }
+    return false;
 }
 
 void QInvTableWidget::mousePressEvent(QMouseEvent *event)
 {
+    QTableWidget::mousePressEvent(event);
     if (event->button() == Qt::RightButton) {
         if (inventory->eatItem(this->currentColumn(), this->currentRow())) {
-            //QSound::play("./apple-crunch.wav");
             Phonon::MediaObject *music =
             Phonon::createPlayer(Phonon::MusicCategory,
                                  Phonon::MediaSource("./apple-crunch.wav"));
             music->play();
             refreshCells();
         }
-    }
-    if (event->button() == Qt::LeftButton && 
-         event->button() != Qt::RightButton) {
-        QTableWidget::mousePressEvent(event);
     }
 }

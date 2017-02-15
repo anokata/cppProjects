@@ -8,17 +8,16 @@ public:
     enum Item_type { FOOD };
     Item(int id, QString image_path, Item_type type);
     Item(int id, QString image_path, Item_type type, int count);
-    Item(int id, QString item_string);
     QString getImagePath();
     Item_type getType();
     int getId();
-    QString toString();
-    int count;
-    int ID;
+    int getCount();
 
 private:
     QString image_path;
     Item_type type;
+    int ID;
+    int count;
 
 };
 
