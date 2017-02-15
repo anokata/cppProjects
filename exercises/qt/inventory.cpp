@@ -88,6 +88,15 @@ Item * Inventory::addItem(Item * item, int col, int row) {
     return items[col][row];
 }
 
+void Inventory::deleteById(int id) {
+    QSqlQuery query(db);
+    db.transaction();
+    query.prepare("delete from inventory where ItemID = :id");
+    query.bindValue(":id", id);
+    query.exec();
+    db.commit();
+}
+
 Item * Inventory::appendItem(Item * item, int col, int row) {
     QSqlQuery query(db);
     query.prepare("select Count, Items.ItemID, Type, ImagePath from Inventory "
@@ -112,39 +121,45 @@ Item * Inventory::appendItem(Item * item, int col, int row) {
         qDebug() << "update item ID" << id << "count" << count << item->count << count + item->count;
         //qDebug() << db.lastError().text();
         db.commit();
+        if (item->getId() != -1) {
+            deleteById(item->getId());
+        }
     } else { // если не новый тащим то не надо создавать инсертом. только дел и инс в инвентарь.
-        qDebug() << "try INSERT";
-        QSqlQuery query(db);
-        db.transaction();
-        query.prepare("INSERT INTO Items (ItemID, Name, Count, Type, ImagePath) "
-                "VALUES (null, :name, :count, :type, :path)");
-        query.bindValue(":name", "apple"); 
-        query.bindValue(":count", item->count); 
-        query.bindValue(":type", item->getType()); 
-        query.bindValue(":path", item->getImagePath()); 
-        query.exec();
-        int lastid = query.lastInsertId().toInt();
-        qDebug() << "inserted item ID:"<< query.lastInsertId().toInt();
-        db.commit();
+        if (item->getId() != -1) {
+            deleteById(item->getId());
 
-        db.transaction();
-        query.prepare("INSERT INTO Inventory VALUES (:iid, :x, :y)");
-        query.bindValue(":iid", lastid); 
-        query.bindValue(":x", col); 
-        query.bindValue(":y", row); 
-        query.exec();
-        db.commit();
-        qDebug() << "END INSERT" << db.lastError().text();
-    }
-    if (item->getId() != -1) {
-        qDebug() << "Delete";
-        db.transaction();
-        query.prepare("delete from inventory where ItemID = :id");
-        query.bindValue(":id", item->getId());
-        query.exec();
-        db.commit();
-    }
+            db.transaction();
+            query.prepare("INSERT INTO Inventory VALUES (:iid, :x, :y)");
+            query.bindValue(":iid", item->getId()); 
+            query.bindValue(":x", col); 
+            query.bindValue(":y", row); 
+            query.exec();
+            db.commit();
+        } else {
+            qDebug() << "try INSERT";
+            QSqlQuery query(db);
+            db.transaction();
+            query.prepare("INSERT INTO Items (ItemID, Name, Count, Type, ImagePath) "
+                    "VALUES (null, :name, :count, :type, :path)");
+            query.bindValue(":name", "apple"); 
+            query.bindValue(":count", item->count); 
+            query.bindValue(":type", item->getType()); 
+            query.bindValue(":path", item->getImagePath()); 
+            query.exec();
+            int lastid = query.lastInsertId().toInt();
+            qDebug() << "inserted item ID:"<< query.lastInsertId().toInt();
+            db.commit();
 
+            db.transaction();
+            query.prepare("INSERT INTO Inventory VALUES (:iid, :x, :y)");
+            query.bindValue(":iid", lastid); 
+            query.bindValue(":x", col); 
+            query.bindValue(":y", row); 
+            query.exec();
+            db.commit();
+            qDebug() << "END INSERT" << db.lastError().text();
+        }
+    }
 }
 
 void Inventory::delItem(int col, int row) {

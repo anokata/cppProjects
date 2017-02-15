@@ -26,6 +26,7 @@ public:
 private:
     QVector< QVector<Item*> > items;
     QSqlDatabase db;
+    void deleteById(int id);
 
 };
 
