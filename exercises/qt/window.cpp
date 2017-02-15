@@ -9,26 +9,23 @@
 #include <QDebug>
 
 // TODO: 
+// главное меню. скрыть кнопки начала и выход. блок одной ячейки
+// вылет за границу
 // БД. начало игры 
+// рисовать в углу цифру
+// сделать чтобы одноячейковый не принимал и не перерисовался?
+// выделить модуль БД
 // private методы убрать, задать интерфейс.
 // comments to methods. ui create
-// сделать чтобы одноячейковый не принимал и не перерисовался?
-// Съедать + звук
-// выделить модуль БД
-// Баг при перетаскивании на себя, fixed
 // try Qt5
-// вылет за границу
-// главное меню. скрыть кнопки начала и выход. блок одной ячейки
-// рисовать в углу цифру
+// переделать звук
+// переставить методы от главных к второстепенным
 Window::Window(QWidget *parent) : QWidget(parent)
 {
     const int INV_DIMENSION = 3;
     setFixedSize(600, 650);
     setGeometry(0, 0, 600, 600);
 
-    //QFont font("DejaVu Sans Mono");
-    //exit_button->setFont(font);
-    //= new Inventory(this);
     oneItem = new QOneCellWidget(this);
     oneItem->setGeometry(450, 300, 120, 120);
     QTableWidgetItem *item = new QTableWidgetItem;

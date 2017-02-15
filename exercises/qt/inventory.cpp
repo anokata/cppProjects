@@ -34,7 +34,6 @@ void Inventory::fromDB() {
         Item::Item_type type = (Item::Item_type) query.value(3).toInt(); 
         QString img_path = query.value(4).toString(); 
         int id = query.value(5).toInt(); 
-        // createItem() TODO in DB
         Item * item = new Item(id, img_path, type, count);
         items[x][y] = item;
         //qDebug() << x << y << count << type << img_path;
@@ -112,8 +111,6 @@ void Inventory::updateItemCount(int id, int newCount) {
     quer_upd.bindValue(":id", id); 
     quer_upd.bindValue(":count", newCount); 
     quer_upd.exec();
-    //qDebug() << "update item ID" << id << "count" << count << item->count << count + item->count;
-    //qDebug() << db.lastError().text();
     db.commit();
 }
 

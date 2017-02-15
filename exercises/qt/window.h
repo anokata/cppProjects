@@ -25,7 +25,6 @@ public:
     QInvTableWidget *inventoryWidget;
     QOneCellWidget * oneItem;
 
-
 signals:
 
 public slots:
