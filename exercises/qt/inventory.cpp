@@ -10,9 +10,7 @@ Inventory::Inventory(int cols, int rows)
     db = QSqlDatabase::addDatabase("QSQLITE", "inventory.db");
     db.setDatabaseName("inventory.db"); 
     
-    if (db.open()) {
-        qDebug() << "db ok";
-    } else {
+    if (!db.open()) {
         qDebug() << "db not ok" << db.lastError().text();
     }
     fromDB();
@@ -41,7 +39,6 @@ void Inventory::fromDB() {
         items[x][y] = item;
         qDebug() << x << y << count << type << img_path;
     }
-    qDebug() << Item::FOOD;
 }
 
 void Inventory::wipeDB() {
@@ -76,7 +73,7 @@ void Inventory::deleteItems() {
     }
 }
 
-Item * Inventory::addItem(Item * item, int col, int row) {
+/*Item * Inventory::addItem(Item * item, int col, int row) {
     if (items[col][row] == NULL) {
         qDebug() << "=item";
         items[col][row] = item;
@@ -86,7 +83,7 @@ Item * Inventory::addItem(Item * item, int col, int row) {
         delete item;
     }
     return items[col][row];
-}
+}*/
 
 void Inventory::deleteById(int id) {
     QSqlQuery query(db);
@@ -97,7 +94,7 @@ void Inventory::deleteById(int id) {
     db.commit();
 }
 
-Item * Inventory::appendItem(Item * item, int col, int row) {
+QSqlQuery Inventory::itemAtCell(int col, int row) {
     QSqlQuery query(db);
     query.prepare("select Count, Items.ItemID, Type, ImagePath from Inventory "
                 "inner join Items where Inventory.ItemID = Items.ItemID "
@@ -105,36 +102,47 @@ Item * Inventory::appendItem(Item * item, int col, int row) {
     query.bindValue(":col", col);
     query.bindValue(":row", row);
     query.exec();
-    qDebug() << db.lastError().text();
+    return query;
+}
+
+void Inventory::updateItemCount(int id, int newCount) {
+    QSqlQuery quer_upd(db);
+    db.transaction();
+    quer_upd.prepare("UPDATE Items SET Count = :count WHERE ItemID = :id ");
+    quer_upd.bindValue(":id", id); 
+    quer_upd.bindValue(":count", newCount); 
+    quer_upd.exec();
+    //qDebug() << "update item ID" << id << "count" << count << item->count << count + item->count;
+    //qDebug() << db.lastError().text();
+    db.commit();
+}
+
+void Inventory::addInventoryItem(int id, int col, int row) {
+    QSqlQuery query(db);
+    db.transaction();
+    query.prepare("INSERT INTO Inventory VALUES (:iid, :x, :y)");
+    query.bindValue(":iid", id); 
+    query.bindValue(":x", col); 
+    query.bindValue(":y", row); 
+    query.exec();
+    db.commit();
+}
+
+Item * Inventory::appendItem(Item * item, int col, int row) {
     qDebug() << "APPEND " << item->getId();
+    auto query = itemAtCell(col, row);
     if (query.next()) {
         int count = query.value(0).toInt(); 
         int id = query.value(1).toInt(); 
-        // type == ?
-        QSqlQuery quer_upd(db);
-        db.transaction();
-        quer_upd.prepare("UPDATE Items SET Count = :count WHERE ItemID = :id ");
-        quer_upd.bindValue(":id", id); 
-        quer_upd.bindValue(":count", count + item->count); 
-        //query.exec();
-        qDebug() << quer_upd.exec() << quer_upd.lastQuery();
-        qDebug() << "update item ID" << id << "count" << count << item->count << count + item->count;
-        //qDebug() << db.lastError().text();
-        db.commit();
+        updateItemCount(id, count + item->count);
+
         if (item->getId() != -1) {
             deleteById(item->getId());
         }
-    } else { // если не новый тащим то не надо создавать инсертом. только дел и инс в инвентарь.
+    } else { 
         if (item->getId() != -1) {
             deleteById(item->getId());
-
-            db.transaction();
-            query.prepare("INSERT INTO Inventory VALUES (:iid, :x, :y)");
-            query.bindValue(":iid", item->getId()); 
-            query.bindValue(":x", col); 
-            query.bindValue(":y", row); 
-            query.exec();
-            db.commit();
+            addInventoryItem(item->getId(), col, row);
         } else {
             qDebug() << "try INSERT";
             QSqlQuery query(db);

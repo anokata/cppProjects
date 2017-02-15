@@ -17,7 +17,7 @@ public:
     Item * getItem(int x, int y);
     int getColumns();
     int getRows();
-    Item * addItem(Item * item, int col, int row);
+    //Item * addItem(Item * item, int col, int row);
     void delItem(int col, int row);
     void deleteItems();
     void fromDB();
@@ -27,6 +27,9 @@ private:
     QVector< QVector<Item*> > items;
     QSqlDatabase db;
     void deleteById(int id);
+    QSqlQuery itemAtCell(int col, int row);
+    void updateItemCount(int id, int newCount);
+    void addInventoryItem(int id, int row, int col);
 
 };
 

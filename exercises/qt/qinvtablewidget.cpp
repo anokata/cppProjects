@@ -35,9 +35,8 @@ QInvTableWidget::~QInvTableWidget() {
 
 void QInvTableWidget::passItem(QString path, Item::Item_type type) {
         // create item TODO DB
-        qDebug() << "pass";
+        //qDebug() << "pass";
         dragged_item = new Item(-1, path, type);
-        drag_x = -1;
 }
 
 QImage QInvTableWidget::loadFile(const QString &fileName)
@@ -105,7 +104,7 @@ void QInvTableWidget::refreshCells() {
 
 bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Qt::DropAction action)
 {
-    qDebug() << dragged_item;
+    //qDebug() << dragged_item;
     if (dragged_item != NULL) {
         QTableWidgetItem *item = this->item(row, column);
         Item *olditem = inventory->getItem(column, row);
@@ -114,12 +113,7 @@ bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Q
             inventory->appendItem(dragged_item, column, row);
         } else 
         if ((item != 0) && (olditem != dragged_item)) {
-            //olditem = inventory->addItem(dragged_item, column, row);
-            //qDebug() << "DROP IN TABLE";
             inventory->appendItem(dragged_item, column, row);
-            if (drag_x != -1) {
-                //inventory->delItem(drag_x, drag_y); //DB TODO
-            }
         }
     }
     return QTableWidget::dropMimeData(row, column, data, action);
