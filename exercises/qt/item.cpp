@@ -1,22 +1,27 @@
 #include "item.h"
 #include <QStringList>
 
-Item::Item(QString image_path, Item_type type) :
-    image_path(image_path), type(type)
+Item::Item(int id, QString image_path, Item_type type) :
+    image_path(image_path), type(type), ID(id)
 {
     count = 1;
 }
 
-Item::Item(QString image_path, Item_type type, int count) :
-    image_path(image_path), type(type), count(count)
+Item::Item(int id, QString image_path, Item_type type, int count) :
+    image_path(image_path), type(type), count(count), ID(id)
 {
 }
 
-Item::Item(QString item_string) { // For test only
+Item::Item(int id, QString item_string) { // For test only
     QStringList list = item_string.split(":");
     image_path = QString(list.at(2));
     type = (Item::Item_type) list.at(1).toInt();
     count = list.at(0).toInt();
+    ID = id;
+}
+
+int Item::getId() {
+    return ID;
 }
 
 QString Item::getImagePath() {

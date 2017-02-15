@@ -36,7 +36,7 @@ QInvTableWidget::~QInvTableWidget() {
 void QInvTableWidget::passItem(QString path, Item::Item_type type) {
         // create item TODO DB
         qDebug() << "pass";
-        dragged_item = new Item(path, type);
+        dragged_item = new Item(-1, path, type);
         drag_x = -1;
 }
 

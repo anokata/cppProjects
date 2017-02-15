@@ -27,7 +27,7 @@ void Inventory::fromDB() {
     deleteItems();
     QSqlQuery query(db);
 
-    query.exec("select X, Y, Count, Type, ImagePath from Inventory \
+    query.exec("select X, Y, Count, Type, ImagePath, Items.ItemID from Inventory \
                 inner join Items where Inventory.ItemID = Items.ItemID");
     while (query.next()) { 
         int x = query.value(0).toInt(); 
@@ -35,8 +35,9 @@ void Inventory::fromDB() {
         int count = query.value(2).toInt(); 
         Item::Item_type type = (Item::Item_type) query.value(3).toInt(); 
         QString img_path = query.value(4).toString(); 
+        int id = query.value(5).toInt(); 
         // createItem() TODO in DB
-        Item * item = new Item(img_path, type, count);
+        Item * item = new Item(id, img_path, type, count);
         items[x][y] = item;
         qDebug() << x << y << count << type << img_path;
     }

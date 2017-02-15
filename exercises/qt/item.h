@@ -6,11 +6,12 @@ class Item
 {
 public:
     enum Item_type { FOOD };
-    Item(QString image_path, Item_type type);
-    Item(QString image_path, Item_type type, int count);
-    Item(QString item_string);
+    Item(int id, QString image_path, Item_type type);
+    Item(int id, QString image_path, Item_type type, int count);
+    Item(int id, QString item_string);
     QString getImagePath();
     Item_type getType();
+    int getId();
     QString toString();
     int count;
     int ID;
