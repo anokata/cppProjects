@@ -97,7 +97,7 @@ Item * Inventory::appendItem(Item * item, int col, int row) {
     query.bindValue(":row", row);
     query.exec();
     qDebug() << db.lastError().text();
-    qDebug() << "APPEND ";
+    qDebug() << "APPEND " << item->getId();
     if (query.next()) {
         int count = query.value(0).toInt(); 
         int id = query.value(1).toInt(); 
@@ -112,7 +112,7 @@ Item * Inventory::appendItem(Item * item, int col, int row) {
         qDebug() << "update item ID" << id << "count" << count << item->count << count + item->count;
         //qDebug() << db.lastError().text();
         db.commit();
-    } else {
+    } else { // если не новый тащим то не надо создавать инсертом. только дел и инс в инвентарь.
         qDebug() << "try INSERT";
         QSqlQuery query(db);
         db.transaction();
@@ -135,6 +135,14 @@ Item * Inventory::appendItem(Item * item, int col, int row) {
         query.exec();
         db.commit();
         qDebug() << "END INSERT" << db.lastError().text();
+    }
+    if (item->getId() != -1) {
+        qDebug() << "Delete";
+        db.transaction();
+        query.prepare("delete from inventory where ItemID = :id");
+        query.bindValue(":id", item->getId());
+        query.exec();
+        db.commit();
     }
 
 }
