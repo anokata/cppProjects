@@ -4,7 +4,6 @@
 #include <QWidget>
 #include <QTableWidget>
 #include <QDropEvent>
-#include <QImageReader>
 #include <QImage>
 #include "inventory.h"
 #include "qonecellwidget.h"

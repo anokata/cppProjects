@@ -37,16 +37,32 @@ Window::Window(QWidget *parent) : QWidget(parent)
     exit_button->setGeometry(WINDOW_WIDTH - 90, 10, 80, 30);
     exit_button->setLayoutDirection(Qt::RightToLeft);
     connect(exit_button, SIGNAL (clicked()), this, SLOT (exit()));
-    newgame_button = new QPushButton(trUtf8("Новая игра"), this);
+    newgame_button = new QPushButton(trUtf8("Начать"), this);
     newgame_button->setGeometry(10, 10, 100, 30);
     connect(newgame_button, SIGNAL (clicked()), this, SLOT (newgame()));
+    mainMenu = new QPushButton(trUtf8("Главное меню"), this);
+    mainMenu->setGeometry(450, 510, 120, 30);
+    mainMenu->setLayoutDirection(Qt::RightToLeft);
+    connect(mainMenu, SIGNAL (clicked()), this, SLOT (goMainMenu()));
+    mainMenu->setEnabled(false);
 
     setAcceptDrops(true);
+}
+
+void Window::goMainMenu() {
+    inventoryWidget->setEnabled(false);
+    oneItem->setEnabled(false);
+    mainMenu->setEnabled(false);
+    newgame_button->setEnabled(true);
+    exit_button->setEnabled(true);
 }
 
 void Window::newgame() {
     inventoryWidget->setEnabled(true);
     oneItem->setEnabled(true);
+    mainMenu->setEnabled(true);
+    newgame_button->setEnabled(false);
+    exit_button->setEnabled(false);
     inventoryWidget->wipeInventory();
 }
 
