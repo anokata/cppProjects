@@ -22,6 +22,7 @@ QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent, QWidget
         for (int j = 0; j < rows; ++j) {
             QTableWidgetItem *item = new QTableWidgetItem;
             item->setTextAlignment(Qt::AlignBottom | Qt::AlignRight);
+            item->setFlags(item->flags() ^ Qt::ItemIsEditable);
             this->setItem(i, j, item);
         }
     }
