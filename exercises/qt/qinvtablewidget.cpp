@@ -100,7 +100,6 @@ bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Q
 
 void QInvTableWidget::mousePressEvent(QMouseEvent *event)
 {
-    QTableWidget::mousePressEvent(event);
     if (event->button() == Qt::RightButton) {
         if (inventory->eatItem(this->currentColumn(), this->currentRow())) {
             //QSound::play("./apple-crunch.wav");
@@ -110,5 +109,9 @@ void QInvTableWidget::mousePressEvent(QMouseEvent *event)
             music->play();
             refreshCells();
         }
+    }
+    if (event->button() == Qt::LeftButton && 
+         event->button() != Qt::RightButton) {
+        QTableWidget::mousePressEvent(event);
     }
 }
