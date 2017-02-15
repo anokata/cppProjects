@@ -21,6 +21,7 @@ public:
     void delItem(int col, int row);
     void deleteItems();
     void fromDB();
+    void wipeDB();
     Item * appendItem(Item * item, int col, int row);
 private:
     QVector< QVector<Item*> > items;

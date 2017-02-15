@@ -43,6 +43,17 @@ void Inventory::fromDB() {
     qDebug() << Item::FOOD;
 }
 
+void Inventory::wipeDB() {
+    QSqlQuery query(db);
+    db.transaction();
+    query.exec("delete from inventory");
+    db.commit();
+    db.transaction();
+    query.exec("delete from items");
+    db.commit();
+    fromDB();
+}
+
 Item * Inventory::getItem(int x, int y) {
     return (items[x][y]);
 }

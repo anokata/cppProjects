@@ -83,7 +83,7 @@ void QInvTableWidget::dragEnterEvent(QDragEnterEvent *event)
 }
 
 void QInvTableWidget::wipeInventory() {
-    inventory->deleteItems();
+    inventory->wipeDB();
     refreshCells();
 }
 
@@ -106,30 +106,17 @@ void QInvTableWidget::refreshCells() {
 
 bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Qt::DropAction action)
 {
-    if(data->hasText()) //not work?
-    {
+    if (dragged_item != NULL) {
         QTableWidgetItem *item = this->item(row, column);
-        if(item != 0) {
-            qDebug()<<"TABLE mime" << row << ' ' << column << data->text();
-            Item *olditem = new Item(data->text());
-            inventory->appendItem(olditem, 2, 2);
-            //olditem = inventory->addItem(olditem, column, row);
-        }
-    }
-    else
-    {
-        if (dragged_item != NULL) {
-            QTableWidgetItem *item = this->item(row, column);
-            Item *olditem = inventory->getItem(column, row);
-            qDebug() << "no text" << column << row << dragged_item << olditem;
-            if (olditem == NULL) {
-                inventory->appendItem(dragged_item, column, row);
-            } else 
-            if ((item != 0) && (olditem != dragged_item)) {
-                olditem = inventory->addItem(dragged_item, column, row);
-                if (drag_x != -1) {
-                    inventory->delItem(drag_x, drag_y);
-                }
+        Item *olditem = inventory->getItem(column, row);
+        qDebug() << "no text" << column << row << dragged_item << olditem;
+        if (olditem == NULL) {
+            inventory->appendItem(dragged_item, column, row);
+        } else 
+        if ((item != 0) && (olditem != dragged_item)) {
+            olditem = inventory->addItem(dragged_item, column, row);
+            if (drag_x != -1) {
+                inventory->delItem(drag_x, drag_y);
             }
         }
     }
