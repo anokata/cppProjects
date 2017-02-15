@@ -1,7 +1,6 @@
 #include "window.h"
 #include <QPushButton>
 #include <QApplication>
-#include <QDebug>
 
 // TODO: 
 //виджет "Главное меню" contain buttons.
