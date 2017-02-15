@@ -23,7 +23,6 @@ public:
     QPushButton *exit_button;
     QPushButton *newgame_button;
     QInvTableWidget *inventoryWidget;
-    QLabel *imageLabel;
     QOneCellWidget * oneItem;
 
 

@@ -36,7 +36,6 @@ Window::Window(QWidget *parent) : QWidget(parent)
 
     inventoryWidget = new QInvTableWidget(INV_DIMENSION, INV_DIMENSION, this, oneItem);
     inventoryWidget->setGeometry(10, 100, 400, 400);
-    //configureTableWidget(inventoryWidget);
 
     exit_button = new QPushButton(tr("xit"), this);
     exit_button->setGeometry(10, 10, 80, 30);
@@ -46,14 +45,6 @@ Window::Window(QWidget *parent) : QWidget(parent)
     newgame_button->setGeometry(110, 10, 80, 30);
     connect(newgame_button, SIGNAL (clicked()), this, SLOT (newgame()));
 
-    imageLabel = new QLabel(this);
-    imageLabel->setBackgroundRole(QPalette::Base);
-    imageLabel->setText("asd");
-    imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-    imageLabel->setScaledContents(true);
-    imageLabel->setGeometry(450, 200, 100, 100);
-    imageLabel->setPixmap(QPixmap::fromImage(inventoryWidget->loadFile("./apple.jpg")));
-
     for (int i = 0; i < INV_DIMENSION; ++i) {
         for (int j = 0; j < INV_DIMENSION; ++j) {
             QTableWidgetItem *item = new QTableWidgetItem;
@@ -61,8 +52,6 @@ Window::Window(QWidget *parent) : QWidget(parent)
         }
     }
 
-
-    inventoryWidget->setAcceptDrops(true);
     setAcceptDrops(true);
 }
 
@@ -73,29 +62,12 @@ void Window::newgame() {
 
 Window::~Window() {
     delete inventoryWidget;
-    delete imageLabel;
     delete exit_button;
     delete oneItem;
 }
 
 void Window::mousePressEvent(QMouseEvent *event) {
-    if (event->button() == Qt::LeftButton
-        && imageLabel->geometry().contains(event->pos())) {
-
-        QDrag *drag = new QDrag(this);
-        QMimeData *mimeData = new QMimeData;
-
-        //mimeData->setImageData(image);
-        // GEN ITEM
-        qDebug() << "WINDOW Start drag";
-        Item item("./apple.jpg", Item::FOOD);
-        mimeData->setText(item.toString());
-
-        drag->setMimeData(mimeData);
-        drag->setPixmap(*imageLabel->pixmap());
-
-        drag->exec();
-        //Qt::DropAction dropAction = drag->exec();
+    if (event->button() == Qt::LeftButton) {
     }
 }
 
