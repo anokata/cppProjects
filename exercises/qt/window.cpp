@@ -7,6 +7,8 @@
 #include <QDir>
 #include <QMouseEvent>
 #include <QDebug>
+#include <QSqlError>
+#include <QSqlQuery>
 
 // TODO: строить таблицу с изобр и текстом по инвентарю.
 // БД. начало игры, сброс-выход. выровнять перетаск.
@@ -63,6 +65,21 @@ Window::Window(QWidget *parent) : QWidget(parent)
 
     inventoryWidget->setAcceptDrops(true);
     setAcceptDrops(true);
+    db = QSqlDatabase::addDatabase("QSQLITE", "inventory.db");
+    db.setDatabaseName("inventory.db"); 
+    
+    if (db.open()) {
+        qDebug() << "db ok";
+    } else {
+        qDebug() << "db not ok" << db.lastError().text();
+    }
+    QSqlQuery query(db);
+    query.exec("SELECT * FROM Items");
+    while (query.next()) { 
+        QString id = query.value(0).toString(); 
+        QString name = query.value(1).toString(); 
+        qDebug() << id << name;
+    }
 }
 
 void Window::newgame() {
@@ -85,6 +102,8 @@ Window::~Window() {
     delete imageLabel;
     delete exit_button;
     delete oneItem;
+    db.close();
+    //QSqlDatabase::removeDatabase();
 }
 
 void Window::mousePressEvent(QMouseEvent *event) {
