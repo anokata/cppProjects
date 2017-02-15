@@ -110,8 +110,12 @@ void QInvTableWidget::mousePressEvent(QMouseEvent *event)
     QTableWidget::mousePressEvent(event);
     if (event->button() == Qt::RightButton) {
         if (inventory->eatItem(this->currentColumn(), this->currentRow())) {
-        //sound if eated
-        refreshCells();
+            //QSound::play("./apple-crunch.wav");
+            Phonon::MediaObject *music =
+            Phonon::createPlayer(Phonon::MusicCategory,
+                                 Phonon::MediaSource("./apple-crunch.wav"));
+            music->play();
+            refreshCells();
         }
     }
 }

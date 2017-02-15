@@ -8,6 +8,11 @@
 #include <QImage>
 #include "inventory.h"
 #include "qonecellwidget.h"
+#include <phonon/audiooutput.h>
+#include <phonon/seekslider.h>
+#include <phonon/mediaobject.h>
+#include <phonon/volumeslider.h>
+#include <phonon/backendcapabilities.h>
 
 class QInvTableWidget : public QOneCellWidget
 {

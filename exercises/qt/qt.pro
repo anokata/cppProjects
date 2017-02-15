@@ -6,6 +6,8 @@ TARGET =
 DEPENDPATH += .
 INCLUDEPATH += .
 QT += sql
+# QT += multimedia
+QT += phonon
 
 # Input
 SOURCES += \
