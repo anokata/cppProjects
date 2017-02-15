@@ -24,6 +24,7 @@ Inventory::~Inventory() {
 }
 
 void Inventory::fromDB() {
+    deleteItems();
     QSqlQuery query(db);
 
     query.exec("select X, Y, Count, Type, ImagePath from Inventory \
@@ -73,6 +74,49 @@ Item * Inventory::addItem(Item * item, int col, int row) {
         delete item;
     }
     return items[col][row];
+}
+
+Item * Inventory::appendItem(Item * item, int col, int row) {
+    QSqlQuery query(db);
+    query.prepare("select Count, Type, ImagePath from Inventory \
+                inner join Items where Inventory.ItemID = Items.ItemID \
+                and X= :col and Y= :row");
+    query.bindValue(":col", col);
+    query.bindValue(":row", row);
+    query.exec();
+    if (query.next()) {
+        int count = query.value(0).toInt(); 
+        Item::Item_type type = (Item::Item_type) query.value(1).toInt(); 
+        QString img_path = query.value(2).toString(); 
+        Item * oldItem = new Item(img_path, type, count);
+        // type == ?
+        item->count += oldItem->count;
+        // update item in items
+    } else {
+        qDebug() << "try INSERT";
+        QSqlQuery query(db);
+        db.transaction();
+        query.prepare("INSERT INTO Items (ItemID, Name, Count, Type, ImagePath) "
+                "VALUES (null, :name, :count, :type, :path)");
+        query.bindValue(":name", "apple"); 
+        query.bindValue(":count", item->count); 
+        query.bindValue(":type", item->getType()); 
+        query.bindValue(":path", item->getImagePath()); 
+        query.exec();
+        //qDebug() << "exec" << query.exec() << query.lastQuery();
+        int lastid = query.lastInsertId().toInt();
+        qDebug() << "inserted item ID:"<< query.lastInsertId().toInt();
+        //qDebug() << db.lastError().text();
+        db.commit();
+        db.transaction();
+        query.prepare("INSERT INTO Inventory VALUES (:iid, :x, :y)");
+        query.bindValue(":iid", lastid); 
+        query.bindValue(":x", 2); 
+        query.bindValue(":y", 2); 
+        query.exec();
+        db.commit();
+    }
+
 }
 
 void Inventory::delItem(int col, int row) {

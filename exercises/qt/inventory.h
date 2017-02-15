@@ -7,6 +7,7 @@
 #include <QSqlDatabase>
 #include <QSqlError>
 #include <QSqlQuery>
+#include <QSqlRecord>
 
 class Inventory
 {
@@ -20,6 +21,7 @@ public:
     void delItem(int col, int row);
     void deleteItems();
     void fromDB();
+    Item * appendItem(Item * item, int col, int row);
 private:
     QVector< QVector<Item*> > items;
     QSqlDatabase db;

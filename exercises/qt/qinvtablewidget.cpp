@@ -27,6 +27,8 @@ QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent, QWidget
             this->setItem(i, j, item);
         }
     }
+    Item *i = new Item("./apple.jpg", Item::FOOD);
+    inventory->appendItem(i, 2, 2);
     refreshCells();
 }
 QInvTableWidget::~QInvTableWidget() {
