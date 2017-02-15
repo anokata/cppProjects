@@ -1,5 +1,4 @@
 #include "window.h"
-#include <QPushButton>
 #include <QApplication>
 
 // TODO: 
@@ -21,53 +20,31 @@
 // можно бы хранить только уникальные предметы а в инвентаре уже описывать количество.
 Window::Window(QWidget *parent) : QWidget(parent)
 {
-    const int INV_DIMENSION = 3;
     const int WINDOW_WIDTH = 600;
     setFixedSize(WINDOW_WIDTH, WINDOW_WIDTH);
     setGeometry(0, 0, WINDOW_WIDTH, WINDOW_WIDTH);
 
-    oneItem = new QOneCellWidget(this);
-    oneItem->setGeometry(450, 300, 120, 120);
-    oneItem->setEnabled(false);
-
-    inventoryWidget = new QInvTableWidget(INV_DIMENSION, INV_DIMENSION, this, oneItem);
-    inventoryWidget->setGeometry(10, 100, 400, 400);
-    inventoryWidget->setEnabled(false);
-
-    mainMenu = new QPushButton(trUtf8("Главное меню"), this);
-    mainMenu->setGeometry(450, 510, 120, 30);
-    mainMenu->setLayoutDirection(Qt::RightToLeft);
-    mainMenu->setEnabled(false);
-    // Signals
-    connect(mainMenu, SIGNAL (clicked()), this, SLOT (goMainMenu()));
-
     mainMenuWidget = new MainMenu(this);
+    gameField = new GameField(this);
 }
 
 Window::~Window() {
-    delete inventoryWidget;
-    delete oneItem;
-    delete mainMenu;
     delete mainMenuWidget;
+    delete gameField;
 }
 
 void Window::goMainMenu() {
-    inventoryWidget->setEnabled(false);
-    oneItem->setEnabled(false);
-    mainMenu->setEnabled(false);
+    gameField->disable();
     mainMenuWidget->enable();
 }
 
 void Window::newgame() {
-    inventoryWidget->setEnabled(true);
-    oneItem->setEnabled(true);
-    mainMenu->setEnabled(true);
-    inventoryWidget->wipeInventory();
+    gameField->enable();
     mainMenuWidget->disable();
 }
 
 void Window::exit() {
+    gameField->enable();
     QApplication::instance()->quit();
-    inventoryWidget->wipeInventory();
 }
 

@@ -17,7 +17,8 @@ SOURCES += \
     item.cpp \
     inventory.cpp \
     qonecellwidget.cpp \
-    mainmenu.cpp
+    mainmenu.cpp \
+    gamefield.cpp
 
 HEADERS += \
     window.h \
@@ -25,4 +26,5 @@ HEADERS += \
     item.h \
     inventory.h \
     qonecellwidget.h \
-    mainmenu.h
+    mainmenu.h \
+    gamefield.h

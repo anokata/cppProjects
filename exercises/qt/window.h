@@ -3,9 +3,8 @@
 
 #include <QWidget>
 #include <QLabel>
-#include "qinvtablewidget.h"
-#include "qonecellwidget.h"
 #include "mainmenu.h"
+#include "gamefield.h"
 
 class QPushButton;
 class Window : public QWidget
@@ -24,10 +23,7 @@ public slots:
 
 private:
     MainMenu *mainMenuWidget;
-    QPushButton *mainMenu;
-    QInvTableWidget *inventoryWidget;
-    QOneCellWidget * oneItem;
-
+    GameField *gameField;
 };
 
 #endif // WINDOW_H
