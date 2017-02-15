@@ -38,7 +38,7 @@ void Inventory::fromDB() {
         // createItem()
         Item * item = new Item(img_path, type, count);
         items[x][y] = item;
-        //qDebug() << x << y << count << type << img_path;
+        qDebug() << x << y << count << type << img_path;
     }
     qDebug() << Item::FOOD;
 }
@@ -88,22 +88,29 @@ Item * Inventory::addItem(Item * item, int col, int row) {
 }
 
 Item * Inventory::appendItem(Item * item, int col, int row) {
-    qDebug() << "APPEND ";
     QSqlQuery query(db);
-    query.prepare("select Count, Type, ImagePath from Inventory \
-                inner join Items where Inventory.ItemID = Items.ItemID \
-                and X= :col and Y= :row");
+    query.prepare("select Count, Items.ItemID, Type, ImagePath from Inventory "
+                "inner join Items where Inventory.ItemID = Items.ItemID "
+                "and X = :col and Y = :row");
     query.bindValue(":col", col);
     query.bindValue(":row", row);
     query.exec();
+    qDebug() << db.lastError().text();
+    qDebug() << "APPEND ";
     if (query.next()) {
         int count = query.value(0).toInt(); 
-        Item::Item_type type = (Item::Item_type) query.value(1).toInt(); 
-        QString img_path = query.value(2).toString(); 
-        Item * oldItem = new Item(img_path, type, count);
+        int id = query.value(1).toInt(); 
         // type == ?
-        item->count += oldItem->count;
-        // update item in items
+        QSqlQuery quer_upd(db);
+        db.transaction();
+        quer_upd.prepare("UPDATE Items SET Count = :count WHERE ItemID = :id ");
+        quer_upd.bindValue(":id", id); 
+        quer_upd.bindValue(":count", count + item->count); 
+        //query.exec();
+        qDebug() << quer_upd.exec() << quer_upd.lastQuery();
+        qDebug() << "update item ID" << id << "count" << count << item->count << count + item->count;
+        //qDebug() << db.lastError().text();
+        db.commit();
     } else {
         qDebug() << "try INSERT";
         QSqlQuery query(db);
@@ -115,11 +122,10 @@ Item * Inventory::appendItem(Item * item, int col, int row) {
         query.bindValue(":type", item->getType()); 
         query.bindValue(":path", item->getImagePath()); 
         query.exec();
-        //qDebug() << "exec" << query.exec() << query.lastQuery();
         int lastid = query.lastInsertId().toInt();
         qDebug() << "inserted item ID:"<< query.lastInsertId().toInt();
-        //qDebug() << db.lastError().text();
         db.commit();
+
         db.transaction();
         query.prepare("INSERT INTO Inventory VALUES (:iid, :x, :y)");
         query.bindValue(":iid", lastid); 

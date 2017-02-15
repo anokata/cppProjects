@@ -2,8 +2,8 @@
 
 void QInvTableWidget::cellStart(int row, int col) {
     dragged_item = inventory->getItem(col, row);
-    qDebug()<<"TABLE cellStart" << row << col << "COUTN" << (dragged_item!=NULL?dragged_item->count:0);
-    qDebug() << dragged_item;
+    //qDebug()<<"TABLE cellStart" << row << col << "COUTN" << (dragged_item!=NULL?dragged_item->count:0);
+    //qDebug() << dragged_item;
     drag_x = col;
     drag_y = row;
 }
@@ -13,7 +13,7 @@ void QInvTableWidget::cellEnter(int row, int col) {}
 QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent, QWidget *recipient)
     : QOneCellWidget(rows, columns, parent)
 {
-    qDebug() << "QINV const";
+    //qDebug() << "QINV const";
     connect(this, SIGNAL (cellPressed(int, int)), this, SLOT (cellStart(int, int)));
     connect(this, SIGNAL (cellActivated(int, int)), this, SLOT (cellEnter(int, int)));
     connect(recipient, SIGNAL (itemPassed(Item*)), this, SLOT (passItem(Item*)));
@@ -36,7 +36,7 @@ QInvTableWidget::~QInvTableWidget() {
 }
 
 void QInvTableWidget::passItem(Item * item) {
-        qDebug() << "get Item SIGNAL";
+        //qDebug() << "get Item SIGNAL";
         dragged_item = item;
         drag_x = -1;
 }
@@ -54,8 +54,8 @@ QImage QInvTableWidget::loadFile(const QString &fileName)
 
 void QInvTableWidget::dropEvent(QDropEvent *event)
 {
-    qDebug()<<"TABLE dropEvent";
-    qDebug() << QString(event->mimeData()->text());
+    //qDebug()<<"TABLE dropEvent";
+    //qDebug() << QString(event->mimeData()->text());
     QTableWidget::dropEvent(event);
     for (int i = 0; i < inventory->getRows(); ++i) {
         for (int j = 0; j < inventory->getColumns(); ++j) {
@@ -66,7 +66,7 @@ void QInvTableWidget::dropEvent(QDropEvent *event)
             }
         }
     }
-    qDebug() << '\n';
+    //qDebug() << '\n';
     refreshCells();
 }
 
@@ -77,7 +77,7 @@ void QInvTableWidget::dragMoveEvent(QDragMoveEvent *event)
 
 void QInvTableWidget::dragEnterEvent(QDragEnterEvent *event)
 {
-    qDebug()<<"TABLE dragEnterEvent";
+    //qDebug()<<"TABLE dragEnterEvent";
     event->acceptProposedAction();
     QTableWidget::dragEnterEvent(event);
 }
@@ -109,14 +109,16 @@ bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Q
     if (dragged_item != NULL) {
         QTableWidgetItem *item = this->item(row, column);
         Item *olditem = inventory->getItem(column, row);
-        qDebug() << "no text" << column << row << dragged_item << olditem;
+        //qDebug() << "no text" << column << row << dragged_item << olditem;
         if (olditem == NULL) {
             inventory->appendItem(dragged_item, column, row);
         } else 
         if ((item != 0) && (olditem != dragged_item)) {
-            olditem = inventory->addItem(dragged_item, column, row);
+            //olditem = inventory->addItem(dragged_item, column, row);
+            //qDebug() << "DROP IN TABLE";
+            inventory->appendItem(dragged_item, column, row);
             if (drag_x != -1) {
-                inventory->delItem(drag_x, drag_y);
+                //inventory->delItem(drag_x, drag_y); //DB TODO
             }
         }
     }
