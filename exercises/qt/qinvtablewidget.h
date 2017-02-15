@@ -27,10 +27,10 @@ public:
 public slots:
     void cellStart(int row, int col);
     void cellEnter(int row, int col);
-    void passItem(Item * item);
+    void passItem(QString path, Item::Item_type type);
 
 signals:
-    void itemPassed(Item * item);
+    void itemPassed(QString path, Item::Item_type type);
 
 protected:
     Inventory *inventory;

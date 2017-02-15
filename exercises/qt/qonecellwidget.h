@@ -19,10 +19,9 @@ public:
     void configure();
 public slots:
     void cellStart(int row, int col);
-    //void passItem(Item * item);
 
 signals:
-    void itemPassed(Item * item);
+    void itemPassed(QString, Item::Item_type);
 
 protected:
     Item * dragged_item;

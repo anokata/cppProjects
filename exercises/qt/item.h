@@ -13,7 +13,7 @@ public:
     Item_type getType();
     QString toString();
     int count;
-    // ID!
+    int ID;
 
 private:
     QString image_path;

@@ -16,7 +16,7 @@ QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent, QWidget
     //qDebug() << "QINV const";
     connect(this, SIGNAL (cellPressed(int, int)), this, SLOT (cellStart(int, int)));
     connect(this, SIGNAL (cellActivated(int, int)), this, SLOT (cellEnter(int, int)));
-    connect(recipient, SIGNAL (itemPassed(Item*)), this, SLOT (passItem(Item*)));
+    connect(recipient, SIGNAL (itemPassed(QString, Item::Item_type)), this, SLOT (passItem(QString, Item::Item_type)));
 
     inventory = new Inventory(columns, rows);
     dragged_item = NULL;
@@ -27,17 +27,16 @@ QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent, QWidget
             this->setItem(i, j, item);
         }
     }
-    //Item *i = new Item("./apple.jpg", Item::FOOD);
-    //inventory->appendItem(i, 2, 2);
     refreshCells();
 }
 QInvTableWidget::~QInvTableWidget() {
         delete inventory;
 }
 
-void QInvTableWidget::passItem(Item * item) {
-        //qDebug() << "get Item SIGNAL";
-        dragged_item = item;
+void QInvTableWidget::passItem(QString path, Item::Item_type type) {
+        // create item TODO DB
+        qDebug() << "pass";
+        dragged_item = new Item(path, type);
         drag_x = -1;
 }
 
@@ -106,6 +105,7 @@ void QInvTableWidget::refreshCells() {
 
 bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Qt::DropAction action)
 {
+    qDebug() << dragged_item;
     if (dragged_item != NULL) {
         QTableWidgetItem *item = this->item(row, column);
         Item *olditem = inventory->getItem(column, row);
