@@ -1,9 +1,6 @@
 #include "window.h"
 #include <QPushButton>
-#include <QFont>
 #include <QApplication>
-#include <QImageReader>
-#include <QMessageBox>
 #include <QDir>
 #include <QMouseEvent>
 #include <QDebug>
@@ -20,6 +17,7 @@
 // try Qt5
 // переделать звук
 // переставить методы от главных к второстепенным
+// корректно отконнектится от бд
 Window::Window(QWidget *parent) : QWidget(parent)
 {
     const int INV_DIMENSION = 3;
@@ -28,9 +26,6 @@ Window::Window(QWidget *parent) : QWidget(parent)
 
     oneItem = new QOneCellWidget(this);
     oneItem->setGeometry(450, 300, 120, 120);
-    QTableWidgetItem *item = new QTableWidgetItem;
-    item->setData(Qt::DecorationRole, QPixmap::fromImage(inventoryWidget->loadFile("./apple.jpg")));
-    oneItem->setItem(0, 0, item);
 
     inventoryWidget = new QInvTableWidget(INV_DIMENSION, INV_DIMENSION, this, oneItem);
     inventoryWidget->setGeometry(10, 100, 400, 400);

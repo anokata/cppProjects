@@ -4,6 +4,9 @@ QOneCellWidget::QOneCellWidget(QWidget *parent) : QTableWidget(1, 1, parent)
 {
     connect(this, SIGNAL (cellPressed(int, int)), this, SLOT (cellStart(int, int)));
     configure();
+    QTableWidgetItem *item = new QTableWidgetItem;
+    item->setData(Qt::DecorationRole, QPixmap::fromImage(loadFile("./apple.jpg")));
+    this->setItem(0, 0, item);
 }
 
 void QOneCellWidget::configure() {
@@ -38,3 +41,12 @@ void QOneCellWidget::mousePressEvent(QMouseEvent *event) {
     }
 }
 
+QImage QOneCellWidget::loadFile(const QString &fileName) {
+    QImageReader reader(fileName);
+    const QImage newImage = reader.read();
+    if (newImage.isNull()) {
+        qDebug() << "Can not load file";
+        return newImage;
+    }
+    return newImage;
+}

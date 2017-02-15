@@ -7,6 +7,7 @@
 #include "item.h"
 #include <QDebug>
 #include <QMouseEvent>
+#include <QImageReader>
 
 class QOneCellWidget : public QTableWidget
 {
@@ -17,6 +18,7 @@ public:
     QOneCellWidget(int rows, int columns, QWidget *parent);
     void mousePressEvent(QMouseEvent *event);
     void configure();
+    QImage loadFile(const QString &fileName);
 public slots:
     void cellStart(int row, int col);
 

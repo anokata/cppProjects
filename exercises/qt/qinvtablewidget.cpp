@@ -34,17 +34,6 @@ void QInvTableWidget::passItem(QString path, Item::Item_type type) {
         dragged_item = new Item(-1, path, type);
 }
 
-QImage QInvTableWidget::loadFile(const QString &fileName)
-{
-    QImageReader reader(fileName);
-    const QImage newImage = reader.read();
-    if (newImage.isNull()) {
-        qDebug() << "Can not load file";
-        return newImage;
-    }
-    return newImage;
-}
-
 void QInvTableWidget::debug_print_all_items() {
     for (int i = 0; i < inventory->getRows(); ++i) {
         for (int j = 0; j < inventory->getColumns(); ++j) {
