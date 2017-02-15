@@ -151,12 +151,16 @@ void Inventory::deleteByIdItem(int id) {
     db.commit();
 }
 
-Item * Inventory::appendItem(Item * item, int col, int row) {
+void Inventory::appendItem(Item * item, int col, int row) {
     auto query = itemAtCell(col, row);
     if (query.next()) {
         // Куда ложим уже есть предмет. Обновим количество.
         int count = query.value(0).toInt(); 
         int id = query.value(1).toInt(); 
+        if (id == item->getId()) {
+            // не обрабатывать на себе
+            return;
+        }
         updateItemCount(id, count + item->count);
 
         if (item->getId() != -1) {
