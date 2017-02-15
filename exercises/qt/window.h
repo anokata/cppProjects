@@ -9,7 +9,6 @@
 #include "item.h"
 #include "inventory.h"
 #include "qonecellwidget.h"
-#include <QSqlDatabase>
 
 class QPushButton;
 class Window : public QWidget
@@ -27,7 +26,6 @@ public:
     QInvTableWidget *inventoryWidget;
     QLabel *imageLabel;
     QOneCellWidget * oneItem;
-    QSqlDatabase db;
 
 
 signals:

@@ -6,6 +6,27 @@ Inventory::Inventory(int cols, int rows)
     for (int i = 0; i < rows; ++i) {
         items[i] = QVector<Item*>(cols);
     }
+
+    db = QSqlDatabase::addDatabase("QSQLITE", "inventory.db");
+    db.setDatabaseName("inventory.db"); 
+    
+    if (db.open()) {
+        qDebug() << "db ok";
+    } else {
+        qDebug() << "db not ok" << db.lastError().text();
+    }
+    QSqlQuery query(db);
+    query.exec("SELECT * FROM Items");
+    while (query.next()) { 
+        QString id = query.value(0).toString(); 
+        QString name = query.value(1).toString(); 
+        qDebug() << id << name;
+    }
+}
+
+Inventory::~Inventory() {
+    db.close();
+    //QSqlDatabase::removeDatabase();
 }
 
 Item * Inventory::getItem(int x, int y) {

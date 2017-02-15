@@ -4,11 +4,15 @@
 #include <QVector>
 #include <QDebug>
 #include "item.h"
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <QSqlQuery>
 
 class Inventory
 {
 public:
     Inventory(int cols, int rows);
+    ~Inventory();
     Item * getItem(int x, int y);
     int getColumns();
     int getRows();
@@ -17,6 +21,7 @@ public:
     void deleteItems();
 private:
     QVector< QVector<Item*> > items;
+    QSqlDatabase db;
 
 };
 
