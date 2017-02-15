@@ -20,6 +20,14 @@ QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent, QWidget
 
     inventory = new Inventory(columns, rows);
     dragged_item = NULL;
+
+    for (int i = 0; i < columns; ++i) {
+        for (int j = 0; j < rows; ++j) {
+            QTableWidgetItem *item = new QTableWidgetItem;
+            this->setItem(i, j, item);
+        }
+    }
+    refreshCells();
 }
 QInvTableWidget::~QInvTableWidget() {
         delete inventory;

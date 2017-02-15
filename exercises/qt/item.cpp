@@ -8,7 +8,7 @@ Item::Item(QString image_path, Item_type type) :
 }
 
 Item::Item(QString image_path, Item_type type, int count) :
-    image_path(image_path), type(type)
+    image_path(image_path), type(type), count(count)
 {
 }
 

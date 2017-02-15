@@ -36,7 +36,7 @@ void Inventory::fromDB() {
         QString img_path = query.value(4).toString(); 
         // createItem()
         Item * item = new Item(img_path, type, count);
-        //items[x][y] = item;
+        items[x][y] = item;
         qDebug() << x << y << count << type << img_path;
     }
     qDebug() << Item::FOOD;

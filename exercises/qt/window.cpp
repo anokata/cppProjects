@@ -45,13 +45,6 @@ Window::Window(QWidget *parent) : QWidget(parent)
     newgame_button->setGeometry(110, 10, 80, 30);
     connect(newgame_button, SIGNAL (clicked()), this, SLOT (newgame()));
 
-    for (int i = 0; i < INV_DIMENSION; ++i) {
-        for (int j = 0; j < INV_DIMENSION; ++j) {
-            QTableWidgetItem *item = new QTableWidgetItem;
-            inventoryWidget->setItem(i, j, item);
-        }
-    }
-
     setAcceptDrops(true);
 }
 
