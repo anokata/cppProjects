@@ -49,18 +49,6 @@ void QInvTableWidget::passItem(QString path, Item::Item_type type) {
         dragged_item = new Item(-1, path, type);
 }
 
-void QInvTableWidget::debug_print_all_items() {
-    for (int i = 0; i < inventory->getRows(); ++i) {
-        for (int j = 0; j < inventory->getColumns(); ++j) {
-            Item * item = inventory->getItem(i, j);
-            if (item != NULL) {
-                qDebug() << i << ':' << j << (item) << item->getCount();
-            }
-        }
-    }
-    qDebug() << '\n';
-}
-
 void QInvTableWidget::dropEvent(QDropEvent *event)
 {
     QTableWidget::dropEvent(event);
@@ -107,4 +95,16 @@ void QInvTableWidget::mousePressEvent(QMouseEvent *event)
             refreshCells();
         }
     }
+}
+
+void QInvTableWidget::debug_print_all_items() {
+    for (int i = 0; i < inventory->getRows(); ++i) {
+        for (int j = 0; j < inventory->getColumns(); ++j) {
+            Item * item = inventory->getItem(i, j);
+            if (item != NULL) {
+                qDebug() << i << ':' << j << (item) << item->getCount();
+            }
+        }
+    }
+    qDebug() << '\n';
 }

@@ -2,12 +2,8 @@
 #define WINDOW_H
 
 #include <QWidget>
-#include <QHeaderView>
-#include <QImage>
 #include <QLabel>
 #include "qinvtablewidget.h"
-#include "item.h"
-#include "inventory.h"
 #include "qonecellwidget.h"
 
 class QPushButton;
@@ -17,14 +13,6 @@ class Window : public QWidget
 public:
     explicit Window(QWidget *parent = 0);
     ~Window();
-    void mousePressEvent(QMouseEvent *event);
-    void dragEnterEvent(QDragEnterEvent *event);
-    void dropEvent(QDropEvent *event);
-    QPushButton *exit_button;
-    QPushButton *newgame_button;
-    QPushButton *mainMenu;
-    QInvTableWidget *inventoryWidget;
-    QOneCellWidget * oneItem;
 
 signals:
 
@@ -34,6 +22,11 @@ public slots:
     void goMainMenu();
 
 private:
+    QPushButton *exit_button;
+    QPushButton *newgame_button;
+    QPushButton *mainMenu;
+    QInvTableWidget *inventoryWidget;
+    QOneCellWidget * oneItem;
 
 };
 

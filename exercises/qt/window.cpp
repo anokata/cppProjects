@@ -16,6 +16,7 @@
 // fixed? сделать чтобы одноячейковый не принимал и не перерисовался?
 // отличать right click from drag
 //
+// refactor - rename
 // try Qt5
 // переделать звук
 // переставить методы от главных к второстепенным
@@ -52,6 +53,12 @@ Window::Window(QWidget *parent) : QWidget(parent)
     setAcceptDrops(true);
 }
 
+Window::~Window() {
+    delete inventoryWidget;
+    delete exit_button;
+    delete oneItem;
+}
+
 void Window::goMainMenu() {
     inventoryWidget->setEnabled(false);
     oneItem->setEnabled(false);
@@ -72,30 +79,5 @@ void Window::newgame() {
 void Window::exit() {
     QApplication::instance()->quit();
     inventoryWidget->wipeInventory();
-}
-
-Window::~Window() {
-    delete inventoryWidget;
-    delete exit_button;
-    delete oneItem;
-}
-
-void Window::mousePressEvent(QMouseEvent *event) {
-    if (event->button() == Qt::LeftButton) {
-    }
-}
-
-void Window::dragEnterEvent(QDragEnterEvent *event)
-{
-    if (inventoryWidget->geometry().contains(event->pos())) {
-        event->acceptProposedAction();
-    }
-}
-
-void Window::dropEvent(QDropEvent *event)
-{
-    if (inventoryWidget->geometry().contains(event->pos())) {
-        inventoryWidget->dropEvent(event);
-    }
 }
 
