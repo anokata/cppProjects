@@ -28,7 +28,6 @@ QOneCellWidget::QOneCellWidget(int rows, int columns, QWidget *parent)
 }
 
 void QOneCellWidget::cellStart(int row, int col) {
-    qDebug()<<"ONE cellStart" << row << col;
 }
 
 void QOneCellWidget::mousePressEvent(QMouseEvent *event) {

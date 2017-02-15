@@ -23,6 +23,7 @@ public:
     void fromDB();
     void wipeDB();
     Item * appendItem(Item * item, int col, int row);
+    bool eatItem(int col, int row);
 private:
     QVector< QVector<Item*> > items;
     QSqlDatabase db;

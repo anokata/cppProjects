@@ -37,7 +37,7 @@ void Inventory::fromDB() {
         // createItem() TODO in DB
         Item * item = new Item(id, img_path, type, count);
         items[x][y] = item;
-        qDebug() << x << y << count << type << img_path;
+        //qDebug() << x << y << count << type << img_path;
     }
 }
 
@@ -152,7 +152,6 @@ void Inventory::deleteByIdItem(int id) {
 }
 
 Item * Inventory::appendItem(Item * item, int col, int row) {
-    qDebug() << "APPEND " << item->getId();
     auto query = itemAtCell(col, row);
     if (query.next()) {
         // Куда ложим уже есть предмет. Обновим количество.
@@ -175,7 +174,6 @@ Item * Inventory::appendItem(Item * item, int col, int row) {
         } else {
             // создаём новый предмет в пустой ячейке
             int lastid = addNewItem("apple", item->count, item->getType(), item->getImagePath());
-            qDebug() << "inserted item ID:"<< lastid;
             addInventoryItem(lastid, col, row);
         }
     }
@@ -183,4 +181,17 @@ Item * Inventory::appendItem(Item * item, int col, int row) {
 
 void Inventory::delItem(int col, int row) {
     items[col][row] = NULL;
+}
+
+bool Inventory::eatItem(int col, int row) {
+    auto query = itemAtCell(col, row);
+    if (query.next()) {
+        int count = query.value(0).toInt(); 
+        int id = query.value(1).toInt(); 
+        if (count == 1) {
+
+        } else {
+            updateItemCount(id, count - 1);
+        }
+    }
 }

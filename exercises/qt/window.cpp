@@ -16,7 +16,6 @@
 // сделать чтобы одноячейковый не принимал и не перерисовался?
 // Съедать + звук
 // выделить модуль БД
-// решить проблему остающихся предметов в бд
 Window::Window(QWidget *parent) : QWidget(parent)
 {
     const int INV_DIMENSION = 3;
@@ -47,7 +46,6 @@ Window::Window(QWidget *parent) : QWidget(parent)
 }
 
 void Window::newgame() {
-    qDebug() << "new";
     inventoryWidget->wipeInventory();
 }
 
@@ -73,8 +71,6 @@ void Window::dropEvent(QDropEvent *event)
 {
     if (inventoryWidget->geometry().contains(event->pos())) {
         inventoryWidget->dropEvent(event);
-    } else {
-        qDebug()<<"miss drop";
     }
 }
 
