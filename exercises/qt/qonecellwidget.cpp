@@ -1,11 +1,31 @@
 #include "qonecellwidget.h"
 
-QOneCellWidget::QOneCellWidget(QWidget *parent, QWidget *recipient) : QInvTableWidget(1, 1, parent)
+QOneCellWidget::QOneCellWidget(QWidget *parent) : QTableWidget(1, 1, parent)
 {
-    Item * item = new Item("./apple.jpg", Item::FOOD);
-    inventory->addItem(item, 0, 0);
     connect(this, SIGNAL (cellPressed(int, int)), this, SLOT (cellStart(int, int)));
-    connect(this, SIGNAL (itemPassed(Item*)), recipient, SLOT (passItem(Item*)));
+    //connect(this, SIGNAL (itemPassed(Item*)), recipient, SLOT (passItem(Item*)));
+    configure();
+}
+
+void QOneCellWidget::configure() {
+    horizontalHeader()->hide();
+    verticalHeader()->hide();
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    verticalHeader()->setResizeMode(QHeaderView::Fixed);
+    verticalHeader()->setDefaultSectionSize(100);
+    horizontalHeader()->setDefaultSectionSize(100);
+    setDragEnabled(true);
+    setDragDropOverwriteMode(true);
+    setDragDropMode(QAbstractItemView::DragDrop);
+    setDefaultDropAction(Qt::CopyAction);
+    setDropIndicatorShown(true);
+    viewport()->setAcceptDrops(true);
+}
+
+QOneCellWidget::QOneCellWidget(int rows, int columns, QWidget *parent)
+    : QTableWidget(rows, columns, parent)
+{
+    configure();
 }
 
 void QOneCellWidget::cellStart(int row, int col) {
@@ -19,7 +39,6 @@ void QOneCellWidget::mousePressEvent(QMouseEvent *event) {
         qDebug() << "QONE Start drag";
         Item * item = new Item("./apple.jpg", Item::FOOD);
         emit itemPassed(item);
-        //emit passItem(item);
     }
 }
 

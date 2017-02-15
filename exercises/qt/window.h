@@ -20,7 +20,6 @@ public:
     void mousePressEvent(QMouseEvent *event);
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
-    void configureTableWidget(QTableWidget *t);
     QPushButton *exit_button;
     QPushButton *newgame_button;
     QInvTableWidget *inventoryWidget;

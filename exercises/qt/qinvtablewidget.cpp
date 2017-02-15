@@ -1,8 +1,5 @@
 #include "qinvtablewidget.h"
 
-QInvTableWidget::QInvTableWidget(QWidget *parent) : QTableWidget(parent)
-{}
-
 void QInvTableWidget::cellStart(int row, int col) {
     dragged_item = inventory->getItem(col, row);
     qDebug()<<"TABLE cellStart" << row << col << "COUTN" << (dragged_item!=NULL?dragged_item->count:0);
@@ -13,25 +10,13 @@ void QInvTableWidget::cellStart(int row, int col) {
 
 void QInvTableWidget::cellEnter(int row, int col) {}
 
-QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent)
-    : QTableWidget(rows, columns, parent)
+QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent, QWidget *recipient)
+    : QOneCellWidget(rows, columns, parent)
 {
-    horizontalHeader()->hide();
-    verticalHeader()->hide();
-    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    verticalHeader()->setResizeMode(QHeaderView::Fixed);
-    verticalHeader()->setDefaultSectionSize(100);
-    horizontalHeader()->setDefaultSectionSize(100);
-    setDragEnabled(true);
-    setDragDropOverwriteMode(true);
-    setDragDropMode(QAbstractItemView::DragDrop);
-    setDefaultDropAction(Qt::CopyAction);
-
-    setDropIndicatorShown(true);
-    viewport()->setAcceptDrops(true);
-
+    qDebug() << "QINV const";
     connect(this, SIGNAL (cellPressed(int, int)), this, SLOT (cellStart(int, int)));
     connect(this, SIGNAL (cellActivated(int, int)), this, SLOT (cellEnter(int, int)));
+    connect(recipient, SIGNAL (itemPassed(Item*)), this, SLOT (passItem(Item*)));
 
     inventory = new Inventory(columns, rows);
     dragged_item = NULL;
@@ -41,7 +26,7 @@ QInvTableWidget::~QInvTableWidget() {
 }
 
 void QInvTableWidget::passItem(Item * item) {
-        qDebug() << "get Item SIGNAL" << inventory->getRows();
+        qDebug() << "get Item SIGNAL";
         dragged_item = item;
         drag_x = -1;
 }

@@ -15,7 +15,7 @@ Inventory::Inventory(int cols, int rows)
     } else {
         qDebug() << "db not ok" << db.lastError().text();
     }
-    //fromDB();
+    fromDB();
 }
 
 Inventory::~Inventory() {

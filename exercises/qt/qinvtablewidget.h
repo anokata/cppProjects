@@ -4,19 +4,16 @@
 #include <QWidget>
 #include <QTableWidget>
 #include <QDropEvent>
-#include <QDebug>
 #include <QImageReader>
 #include <QImage>
-#include "item.h"
 #include "inventory.h"
-#include <QHeaderView>
+#include "qonecellwidget.h"
 
-class QInvTableWidget : public QTableWidget
+class QInvTableWidget : public QOneCellWidget
 {
-    Q_OBJECT
+Q_OBJECT
 public:
-    explicit QInvTableWidget(QWidget *parent = 0);
-    QInvTableWidget(int rows, int columns, QWidget *parent = 0);
+    QInvTableWidget(int rows, int columns, QWidget *parent, QWidget *recipient);
     ~QInvTableWidget();
     void dropEvent(QDropEvent *event);
     bool dropMimeData(int row, int column, const QMimeData *data, Qt::DropAction action);
@@ -27,20 +24,16 @@ public:
     void refreshCells();
     void wipeInventory();
 
-signals:
-    void itemPassed(Item * item);
-
 public slots:
     void cellStart(int row, int col);
     void cellEnter(int row, int col);
     void passItem(Item * item);
 
+signals:
+    void itemPassed(Item * item);
+
 protected:
     Inventory *inventory;
-private:
-    Item * dragged_item;
-    int drag_x;
-    int drag_y;
 };
 
 #endif // QINVTABLEWIDGET_H
