@@ -142,22 +142,38 @@ int Inventory::addNewItem(QString name, int count, Item::Item_type type, QString
     return query.lastInsertId().toInt();
 }
 
+void Inventory::deleteByIdItem(int id) {
+    QSqlQuery query(db);
+    db.transaction();
+    query.prepare("delete from items where ItemID = :id");
+    query.bindValue(":id", id);
+    query.exec();
+    db.commit();
+}
+
 Item * Inventory::appendItem(Item * item, int col, int row) {
     qDebug() << "APPEND " << item->getId();
     auto query = itemAtCell(col, row);
     if (query.next()) {
+        // Куда ложим уже есть предмет. Обновим количество.
         int count = query.value(0).toInt(); 
         int id = query.value(1).toInt(); 
         updateItemCount(id, count + item->count);
 
         if (item->getId() != -1) {
+            // Если ложимый предмет был не новый удалим его со старого места
             deleteById(item->getId());
+            // И удалим со старым значением сам предмет TODO
+            deleteByIdItem(item->getId());
         }
     } else { 
+        // Ложим на пустую ячейку
         if (item->getId() != -1) {
+            // Ложим не новый предмет - удалим сначала со старого места
             deleteById(item->getId());
             addInventoryItem(item->getId(), col, row);
         } else {
+            // создаём новый предмет в пустой ячейке
             int lastid = addNewItem("apple", item->count, item->getType(), item->getImagePath());
             qDebug() << "inserted item ID:"<< lastid;
             addInventoryItem(lastid, col, row);

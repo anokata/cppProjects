@@ -31,6 +31,7 @@ private:
     void updateItemCount(int id, int newCount);
     void addInventoryItem(int id, int row, int col);
     int addNewItem(QString name, int count, Item::Item_type type, QString path);
+    void deleteByIdItem(int id);
 
 };
 
