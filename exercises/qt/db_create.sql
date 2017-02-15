@@ -7,6 +7,7 @@ CREATE TABLE [Items]
 (      [ItemID] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
        [Name] TEXT,
        [Count] INTEGER,
+       [Type] INTEGER,
        [ImagePath] TEXT
 );
 
@@ -21,9 +22,10 @@ CREATE TABLE [Inventory]
 		ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
-INSERT INTO Items VALUES(null,'apple',1,'./apple.jpg');
-INSERT INTO Items VALUES(null,'apple',2,'./apple.jpg');
+INSERT INTO Items VALUES(null,'apple',1,0,'./apple.jpg');
+INSERT INTO Items VALUES(null,'apple',2,0,'./apple.jpg');
 INSERT INTO Inventory VALUES(1, 0, 0);
 INSERT INTO Inventory VALUES(2, 1, 1);
 
+--select X, Y, Count, ImagePath from Inventory inner join Items where Inventory.ItemID = Items.ItemID
 COMMIT;

@@ -19,6 +19,7 @@ public:
     Item * addItem(Item * item, int col, int row);
     void delItem(int col, int row);
     void deleteItems();
+    void fromDB();
 private:
     QVector< QVector<Item*> > items;
     QSqlDatabase db;

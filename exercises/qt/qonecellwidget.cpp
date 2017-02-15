@@ -22,3 +22,4 @@ void QOneCellWidget::mousePressEvent(QMouseEvent *event) {
         //emit passItem(item);
     }
 }
+
