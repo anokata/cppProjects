@@ -189,9 +189,12 @@ bool Inventory::eatItem(int col, int row) {
         int count = query.value(0).toInt(); 
         int id = query.value(1).toInt(); 
         if (count == 1) {
-
+            deleteById(id);
+            deleteByIdItem(id);
         } else {
             updateItemCount(id, count - 1);
         }
+        return true;
     }
+    return false;
 }

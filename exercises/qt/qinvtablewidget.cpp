@@ -109,8 +109,9 @@ void QInvTableWidget::mousePressEvent(QMouseEvent *event)
 {
     QTableWidget::mousePressEvent(event);
     if (event->button() == Qt::RightButton) {
-        inventory->eatItem(this->currentColumn(), this->currentRow());
+        if (inventory->eatItem(this->currentColumn(), this->currentRow())) {
         //sound if eated
         refreshCells();
+        }
     }
 }
