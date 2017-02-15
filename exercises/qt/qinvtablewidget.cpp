@@ -21,6 +21,7 @@ QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent, QWidget
     for (int i = 0; i < columns; ++i) {
         for (int j = 0; j < rows; ++j) {
             QTableWidgetItem *item = new QTableWidgetItem;
+            item->setTextAlignment(Qt::AlignBottom | Qt::AlignRight);
             this->setItem(i, j, item);
         }
     }
