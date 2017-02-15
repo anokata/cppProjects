@@ -34,42 +34,36 @@ Window::Window(QWidget *parent) : QWidget(parent)
     inventoryWidget->setGeometry(10, 100, 400, 400);
     inventoryWidget->setEnabled(false);
 
-    exit_button = new QPushButton(trUtf8("Выход"), this);
-    exit_button->setGeometry(WINDOW_WIDTH - 90, 10, 80, 30);
-    exit_button->setLayoutDirection(Qt::RightToLeft);
-    newgame_button = new QPushButton(trUtf8("Начать"), this);
-    newgame_button->setGeometry(10, 10, 100, 30);
     mainMenu = new QPushButton(trUtf8("Главное меню"), this);
     mainMenu->setGeometry(450, 510, 120, 30);
     mainMenu->setLayoutDirection(Qt::RightToLeft);
     mainMenu->setEnabled(false);
     // Signals
-    connect(exit_button, SIGNAL (clicked()), this, SLOT (exit()));
-    connect(newgame_button, SIGNAL (clicked()), this, SLOT (newgame()));
     connect(mainMenu, SIGNAL (clicked()), this, SLOT (goMainMenu()));
+
+    mainMenuWidget = new MainMenu(this);
 }
 
 Window::~Window() {
     delete inventoryWidget;
-    delete exit_button;
     delete oneItem;
+    delete mainMenu;
+    delete mainMenuWidget;
 }
 
 void Window::goMainMenu() {
     inventoryWidget->setEnabled(false);
     oneItem->setEnabled(false);
     mainMenu->setEnabled(false);
-    newgame_button->setEnabled(true);
-    exit_button->setEnabled(true);
+    mainMenuWidget->enable();
 }
 
 void Window::newgame() {
     inventoryWidget->setEnabled(true);
     oneItem->setEnabled(true);
     mainMenu->setEnabled(true);
-    newgame_button->setEnabled(false);
-    exit_button->setEnabled(false);
     inventoryWidget->wipeInventory();
+    mainMenuWidget->disable();
 }
 
 void Window::exit() {

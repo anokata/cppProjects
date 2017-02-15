@@ -15,7 +15,7 @@ Q_OBJECT
 public:
     QOneCellWidget(int rows, int columns, QWidget *parent);
     QOneCellWidget(QWidget *parent);
-    ~QOneCellWidget() {};
+    ~QOneCellWidget() {}
 
 public slots:
 

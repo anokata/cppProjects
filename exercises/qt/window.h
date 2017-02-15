@@ -5,6 +5,7 @@
 #include <QLabel>
 #include "qinvtablewidget.h"
 #include "qonecellwidget.h"
+#include "mainmenu.h"
 
 class QPushButton;
 class Window : public QWidget
@@ -22,8 +23,7 @@ public slots:
     void goMainMenu();
 
 private:
-    QPushButton *exit_button;
-    QPushButton *newgame_button;
+    MainMenu *mainMenuWidget;
     QPushButton *mainMenu;
     QInvTableWidget *inventoryWidget;
     QOneCellWidget * oneItem;
