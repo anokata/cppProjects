@@ -50,3 +50,7 @@ QImage QOneCellWidget::loadFile(const QString &fileName) {
     }
     return newImage;
 }
+
+void QOneCellWidget::dragEnterEvent(QDragEnterEvent *event)
+{
+}

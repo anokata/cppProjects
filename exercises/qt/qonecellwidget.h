@@ -19,6 +19,7 @@ public:
     void mousePressEvent(QMouseEvent *event);
     void configure();
     QImage loadFile(const QString &fileName);
+    void dragEnterEvent(QDragEnterEvent *event);
 public slots:
     void cellStart(int row, int col);
 

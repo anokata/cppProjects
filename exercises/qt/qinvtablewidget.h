@@ -38,6 +38,7 @@ signals:
 
 protected:
     Inventory *inventory;
+
 };
 
 #endif // QINVTABLEWIDGET_H

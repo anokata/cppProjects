@@ -88,10 +88,12 @@ void QInvTableWidget::refreshCells() {
 
 bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Qt::DropAction action)
 {
-    if (dragged_item != NULL) {
-        inventory->appendItem(dragged_item, column, row);
+    if (row < inventory->getRows() && column < inventory->getColumns()) {
+        if (dragged_item != NULL) {
+            inventory->appendItem(dragged_item, column, row);
+        }
+        return QTableWidget::dropMimeData(row, column, data, action);
     }
-    return QTableWidget::dropMimeData(row, column, data, action);
 }
 
 void QInvTableWidget::mousePressEvent(QMouseEvent *event)
