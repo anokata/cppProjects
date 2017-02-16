@@ -1,5 +1,8 @@
 #include "qinvtablewidget.h"
 
+/* Конструктор виджета инвентаря.
+ * Создаёт объект инвентаря.
+ * Заполняет виджет элементами. */
 QInvTableWidget::QInvTableWidget(int rows, int columns, 
                                  QWidget *parent, QWidget *recipient)
     : QOneCellWidget(rows, columns, parent)
@@ -23,11 +26,13 @@ QInvTableWidget::QInvTableWidget(int rows, int columns,
     refreshCells();
 }
 
+/* Деструктор виджета инвентаря. */
 QInvTableWidget::~QInvTableWidget()
 {
         delete inventory;
 }
 
+/* Метод обновления ячеек виджета в соответствии с инвентарём. */
 void QInvTableWidget::refreshCells()
 {
     inventory->fromDB();
@@ -46,11 +51,13 @@ void QInvTableWidget::refreshCells()
     }
 }
 
+/* Метод запоминающий перетаскиваемый предмет. */
 void QInvTableWidget::cellStart(int row, int col)
 {
     draggedItem = inventory->getItem(col, row);
 }
 
+/* Слот для перетаскиваемого предмета из источника предметов. */
 void QInvTableWidget::passItem(QString path, ItemType type)
 {
         draggedItem = new Item(-1, path, type);
@@ -73,6 +80,7 @@ void QInvTableWidget::dragEnterEvent(QDragEnterEvent *event)
     QTableWidget::dragEnterEvent(event);
 }
 
+/* Метод очитски виджета инвентаря. */
 void QInvTableWidget::wipeInventory()
 {
     inventory->wipeDB();
@@ -85,6 +93,7 @@ bool QInvTableWidget::dropMimeData(int row, int column,
 {
     if (row < inventory->getRows() && column < inventory->getColumns()) {
         if (draggedItem != NULL) {
+            /* Перемещаем предмет */
             inventory->moveItem(draggedItem, column, row);
         }
         return QTableWidget::dropMimeData(row, column, data, action);
@@ -96,6 +105,7 @@ void QInvTableWidget::mousePressEvent(QMouseEvent *event)
 {
     QTableWidget::mousePressEvent(event);
     if (event->button() == Qt::RightButton) {
+        /* Съедаем предмет */
         if (inventory->eatItem(this->currentColumn(), this->currentRow())) {
             QSound::play(appleWav);
             draggedItem = NULL;
@@ -104,6 +114,7 @@ void QInvTableWidget::mousePressEvent(QMouseEvent *event)
     }
 }
 
+/* Отладочный метод  */
 void QInvTableWidget::debugPrintAllItems()
 {
     for (int i = 0; i < inventory->getRows(); ++i) {

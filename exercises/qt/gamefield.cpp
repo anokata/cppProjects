@@ -1,5 +1,6 @@
 #include "gamefield.h"
 
+/* Конструктор виджета игрового поля. Создаёт элементы интерфейса. */
 GameField::GameField(QWidget *parent) : QWidget(parent)
 {
     const int INV_DIMENSION = 3;
@@ -20,6 +21,7 @@ GameField::GameField(QWidget *parent) : QWidget(parent)
     connect(mainMenuButton, SIGNAL (clicked()), parent, SLOT (goMainMenu()));
 }
 
+/* Деструктор виджета игрового поля. Удаляет созданные объекты. */
 GameField::~GameField()
 {
     delete inventoryWidget;
@@ -27,6 +29,7 @@ GameField::~GameField()
     delete mainMenuButton;
 }
 
+/* Включение игрового поля */
 void GameField::enable()
 {
     inventoryWidget->wipeInventory();
@@ -35,6 +38,7 @@ void GameField::enable()
     mainMenuButton->setEnabled(true);
 }
 
+/* Отключение игрового поля */
 void GameField::disable()
 {
     inventoryWidget->wipeInventory();

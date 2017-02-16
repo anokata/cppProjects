@@ -1,5 +1,6 @@
 #include "qonecellwidget.h"
 
+/* Конструктор виджета источника предметов. */
 QOneCellWidget::QOneCellWidget(QWidget *parent) : QTableWidget(1, 1, parent)
 {
     configure();
@@ -10,12 +11,15 @@ QOneCellWidget::QOneCellWidget(QWidget *parent) : QTableWidget(1, 1, parent)
     this->setItem(0, 0, item);
 }
 
+/* Деструктор виджета источника. */
 QOneCellWidget::QOneCellWidget(int rows, int columns, QWidget *parent)
     : QTableWidget(rows, columns, parent)
 {
     configure();
 }
 
+/* Метод конфигурации виджета.
+ * Скрытие заголовков таблицы. Установка размеров и поведения. */
 void QOneCellWidget::configure()
 {
     horizontalHeader()->hide();
@@ -36,10 +40,12 @@ void QOneCellWidget::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         QTableWidget::mousePressEvent(event);
+        /* Вызываем сигнал перетаскивания нового предмета. */
         emit itemPassed(QString("./apple.jpg"), FOOD);
     }
 }
 
+/* Метод для загрузки изображения. */
 QImage QOneCellWidget::loadFile(const QString &fileName)
 {
     QImageReader reader(fileName);

@@ -1,5 +1,7 @@
 #include "mainmenu.h"
 
+/* Конструктор виджета главного меню.
+ * Создают элементы интерфейса. */
 MainMenu::MainMenu(QWidget *parent) : QWidget(parent)
 {
     exitButton = new QPushButton(trUtf8("Выход"), this);
@@ -14,18 +16,21 @@ MainMenu::MainMenu(QWidget *parent) : QWidget(parent)
     connect(newgameButton, SIGNAL (clicked()), parent, SLOT (newgame()));
 }
 
+/* Деструктор виджета главного меню. */
 MainMenu::~MainMenu()
 {
     delete exitButton;
     delete newgameButton;
 }
 
+/* Отключение главного меню */
 void MainMenu::disable()
 {
     newgameButton->setEnabled(false);
     exitButton->setEnabled(false);
 }
 
+/* Включение главного меню */
 void MainMenu::enable()
 {
     newgameButton->setEnabled(true);

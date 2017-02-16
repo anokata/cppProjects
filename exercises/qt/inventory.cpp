@@ -1,5 +1,6 @@
 #include "inventory.h"
 
+/* Конструктор инвентаря. Иницилизация контейнера. Подключение к БД */
 Inventory::Inventory(int cols, int rows)
 {
     items = QVector< QVector<Item*> >(rows);
@@ -11,16 +12,20 @@ Inventory::Inventory(int cols, int rows)
     fromDB();
 }
 
+/* Деструктор инвентаря. Освобождение БД. */
 Inventory::~Inventory()
 {
+    deleteItems();
     delete dataBase;
 }
 
+/* Метод очистки базы данных */
 void Inventory::wipeDB() {
     dataBase->wipeDB();
     fromDB();
 }
 
+/* Метод постройки инвентаря по данным из БД */
 void Inventory::fromDB()
 {
     deleteItems();
@@ -39,21 +44,25 @@ void Inventory::fromDB()
     query.finish();
 }
 
+/* Метод получения предмета */
 Item *Inventory::getItem(int x, int y)
 {
     return (items[x][y]);
 }
 
+/* Метод получения размерности инвентаря по горизонтали */
 int Inventory::getColumns()
 {
     return items[0].size();
 }
 
+/* Метод получения размерности инвентаря по вертикали */
 int Inventory::getRows()
 {
     return items.size();
 }
 
+/* Метод удаления всех предметов */
 void Inventory::deleteItems()
 {
     for (int i = 0; i < items.size(); ++i) {
@@ -64,6 +73,7 @@ void Inventory::deleteItems()
     }
 }
 
+/* Метод перемещения предмета */
 void Inventory::moveItem(Item *item, int col, int row)
 {
     QSqlQuery query = dataBase->itemAtCell(col, row);
@@ -98,6 +108,7 @@ void Inventory::moveItem(Item *item, int col, int row)
     query.finish();
 }
 
+/* Метод съедания предмета */
 bool Inventory::eatItem(int col, int row)
 {
     QSqlQuery query = dataBase->itemAtCell(col, row);

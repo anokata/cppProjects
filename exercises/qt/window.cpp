@@ -1,6 +1,7 @@
 #include "window.h"
 #include <QApplication>
 
+/* Конструктор главного окна */
 Window::Window(QWidget *parent) : QWidget(parent)
 {
     const int WINDOW_WIDTH = 600;
@@ -11,24 +12,28 @@ Window::Window(QWidget *parent) : QWidget(parent)
     gameField = new GameField(this);
 }
 
+/* Деструктор главного окна */
 Window::~Window()
 {
     delete mainMenuWidget;
     delete gameField;
 }
 
+/* Слот для перехода в главное меню */
 void Window::goMainMenu()
 {
     gameField->disable();
     mainMenuWidget->enable();
 }
 
+/* Слот для начала новой игры */
 void Window::newgame()
 {
     gameField->enable();
     mainMenuWidget->disable();
 }
 
+/* Слот для выхода из приложения */
 void Window::exit()
 {
     gameField->enable();

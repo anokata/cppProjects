@@ -1,5 +1,6 @@
 #include "database.h"
 
+/* Конструктор базы данных. Устанавливает соединение. */
 DataBase::DataBase(QString dbName)
 {
     this->dbName = dbName;
@@ -11,12 +12,14 @@ DataBase::DataBase(QString dbName)
     }
 }
 
+/* Деструктор базы данных. Корректно завершает соединение с базой. */
 DataBase::~DataBase()
 {
     db.close();
     QSqlDatabase::removeDatabase(dbName);
 }
 
+/* Метод получения всех предметов в инвентаре */
 QSqlQuery DataBase::getAllItems()
 {
     db = QSqlDatabase::database(dbName);
@@ -27,6 +30,7 @@ QSqlQuery DataBase::getAllItems()
     return query;
 }
 
+/* Метод очистки базы данных */
 void DataBase::wipeDB()
 {
     db = QSqlDatabase::database(dbName);
@@ -41,6 +45,7 @@ void DataBase::wipeDB()
     query.finish();
 }
 
+/* Метод удаления предмета из инвентаря по его id */
 void DataBase::deleteById(int id)
 {
     QSqlQuery query(db);
@@ -52,6 +57,7 @@ void DataBase::deleteById(int id)
     query.finish();
 }
 
+/* Метод получения предмета по координатам ячейки инвентаря */
 QSqlQuery DataBase::itemAtCell(int col, int row)
 {
     db = QSqlDatabase::database(dbName);
@@ -65,6 +71,7 @@ QSqlQuery DataBase::itemAtCell(int col, int row)
     return query;
 }
 
+/* Метод изменения количества предметов у предмета по его id */
 void DataBase::updateItemCount(int id, int newCount)
 {
     QSqlQuery query(db);
@@ -76,6 +83,7 @@ void DataBase::updateItemCount(int id, int newCount)
     db.commit();
 }
 
+/* Метод добавления предмета в инвентарь */
 void DataBase::addInventoryItem(int id, int col, int row)
 {
     db = QSqlDatabase::database(dbName);
@@ -90,6 +98,7 @@ void DataBase::addInventoryItem(int id, int col, int row)
     query.finish();
 }
 
+/* Метод добавления нового предмета */
 int DataBase::addNewItem(QString name, int count, ItemType type, QString path)
 {
     db = QSqlDatabase::database(dbName);
@@ -108,6 +117,7 @@ int DataBase::addNewItem(QString name, int count, ItemType type, QString path)
     return last;
 }
 
+/* Метод удаления самого предмета по его id */
 void DataBase::deleteByIdItem(int id)
 {
     db = QSqlDatabase::database(dbName);
