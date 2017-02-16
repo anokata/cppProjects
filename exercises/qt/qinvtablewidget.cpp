@@ -89,6 +89,7 @@ void QInvTableWidget::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::RightButton) {
         if (inventory->eatItem(this->currentColumn(), this->currentRow())) {
             QSound::play(appleWav);
+            dragged_item = NULL;
             refreshCells();
         }
     }

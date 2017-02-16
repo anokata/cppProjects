@@ -33,6 +33,7 @@ void GameField::enable() {
 }
 
 void GameField::disable() {
+    inventoryWidget->wipeInventory();
     inventoryWidget->setEnabled(false);
     oneItem->setEnabled(false);
     mainMenuButton->setEnabled(false);

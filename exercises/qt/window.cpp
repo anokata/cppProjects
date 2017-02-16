@@ -1,17 +1,14 @@
 #include "window.h"
 #include <QApplication>
 
-// TODO: clang?
+// TODO: 
 // выделить модуль БД
-// отличать right click from drag
-// размер инвентаря. есть?
 // comments to methods. ui create
 // корректно отконнектится от бд
 // refactor - rename
 // case -> _ to cK
 //
-// try Qt5
-// переделать звук
+// при закрытии тоже чистить базу?
 // переставить методы от главных к второстепенным
 // можно бы хранить только уникальные предметы а в инвентаре уже описывать количество.
 Window::Window(QWidget *parent) : QWidget(parent)
