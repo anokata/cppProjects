@@ -20,11 +20,13 @@ QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent, QWidget
     refreshCells();
 }
 
-QInvTableWidget::~QInvTableWidget() {
+QInvTableWidget::~QInvTableWidget()
+{
         delete inventory;
 }
 
-void QInvTableWidget::refreshCells() {
+void QInvTableWidget::refreshCells()
+{
     inventory->fromDB();
     for (int i = 0; i < inventory->getColumns(); ++i) {
         for (int j = 0; j < inventory->getRows(); ++j) {
@@ -41,11 +43,13 @@ void QInvTableWidget::refreshCells() {
     }
 }
 
-void QInvTableWidget::cellStart(int row, int col) {
+void QInvTableWidget::cellStart(int row, int col)
+{
     draggedItem = inventory->getItem(col, row);
 }
 
-void QInvTableWidget::passItem(QString path, ItemType type) {
+void QInvTableWidget::passItem(QString path, ItemType type)
+{
         draggedItem = new Item(-1, path, type);
 }
 
@@ -67,7 +71,8 @@ void QInvTableWidget::dragEnterEvent(QDragEnterEvent *event)
     QTableWidget::dragEnterEvent(event);
 }
 
-void QInvTableWidget::wipeInventory() {
+void QInvTableWidget::wipeInventory()
+{
     inventory->wipeDB();
     refreshCells();
 }
@@ -95,10 +100,11 @@ void QInvTableWidget::mousePressEvent(QMouseEvent *event)
     }
 }
 
-void QInvTableWidget::debugPrintAllItems() {
+void QInvTableWidget::debugPrintAllItems()
+{
     for (int i = 0; i < inventory->getRows(); ++i) {
         for (int j = 0; j < inventory->getColumns(); ++j) {
-            Item * item = inventory->getItem(i, j);
+            Item *item = inventory->getItem(i, j);
             if (item != NULL) {
                 qDebug() << i << ':' << j << (item) << item->getCount();
             }

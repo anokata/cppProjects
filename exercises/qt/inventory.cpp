@@ -33,14 +33,14 @@ void Inventory::fromDB()
         ItemType type = (ItemType) query.value(3).toInt(); 
         QString imagePath = query.value(4).toString();
         int id = query.value(5).toInt(); 
-        Item * item = new Item(id, imagePath, type, count);
+        Item *item = new Item(id, imagePath, type, count);
         items[x][y] = item;
         //qDebug() << x << y << count << type << img_path;
     }
     query.finish();
 }
 
-Item * Inventory::getItem(int x, int y)
+Item *Inventory::getItem(int x, int y)
 {
     return (items[x][y]);
 }
@@ -65,7 +65,7 @@ void Inventory::deleteItems()
     }
 }
 
-void Inventory::moveItem(Item * item, int col, int row)
+void Inventory::moveItem(Item *item, int col, int row)
 {
     auto query = dataBase->itemAtCell(col, row);
     if (query.next()) {

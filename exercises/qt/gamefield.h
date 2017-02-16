@@ -24,7 +24,7 @@ public slots:
 private:
     QPushButton *mainMenuButton;
     QInvTableWidget *inventoryWidget;
-    QOneCellWidget * oneItem;
+    QOneCellWidget *oneItem;
 };
 
 #endif // GAMEFIELD_H

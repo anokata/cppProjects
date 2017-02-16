@@ -28,7 +28,7 @@ protected:
     void dragEnterEvent(QDragEnterEvent *event);
     void configure();
 
-    Item * draggedItem;
+    Item *draggedItem;
 };
 
 #endif // QONECELLWIDGET_H

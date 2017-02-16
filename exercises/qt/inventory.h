@@ -12,10 +12,10 @@ class Inventory
 public:
     Inventory(int cols, int rows);
     ~Inventory();
-    Item * getItem(int x, int y);
+    Item *getItem(int x, int y);
     void fromDB();
     void wipeDB();
-    void moveItem(Item * item, int col, int row);
+    void moveItem(Item *item, int col, int row);
     bool eatItem(int col, int row);
     int getColumns();
     int getRows();

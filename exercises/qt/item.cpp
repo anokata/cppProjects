@@ -11,19 +11,23 @@ Item::Item(int id, QString imagePath, ItemType type, int count) :
     imagePath(imagePath), type(type), count(count), ID(id)
 { }
 
-int Item::getCount() {
+int Item::getCount()
+{
     return count;
 }
 
-int Item::getId() {
+int Item::getId()
+{
     return ID;
 }
 
-QString Item::getImagePath() {
+QString Item::getImagePath()
+{
     return imagePath;
 }
 
-ItemType Item::getType(){
+ItemType Item::getType()
+{
     return type;
 }
 

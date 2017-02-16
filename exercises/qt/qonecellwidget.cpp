@@ -15,7 +15,8 @@ QOneCellWidget::QOneCellWidget(int rows, int columns, QWidget *parent)
     configure();
 }
 
-void QOneCellWidget::configure() {
+void QOneCellWidget::configure()
+{
     horizontalHeader()->hide();
     verticalHeader()->hide();
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -30,14 +31,16 @@ void QOneCellWidget::configure() {
     viewport()->setAcceptDrops(true);
 }
 
-void QOneCellWidget::mousePressEvent(QMouseEvent *event) {
+void QOneCellWidget::mousePressEvent(QMouseEvent *event)
+{
     if (event->button() == Qt::LeftButton) {
         QTableWidget::mousePressEvent(event);
         emit itemPassed(QString("./apple.jpg"), FOOD);
     }
 }
 
-QImage QOneCellWidget::loadFile(const QString &fileName) {
+QImage QOneCellWidget::loadFile(const QString &fileName)
+{
     QImageReader reader(fileName);
     const QImage newImage = reader.read();
     if (newImage.isNull()) {
@@ -47,6 +50,7 @@ QImage QOneCellWidget::loadFile(const QString &fileName) {
     return newImage;
 }
 
-void QOneCellWidget::dragEnterEvent(QDragEnterEvent *event) { 
+void QOneCellWidget::dragEnterEvent(QDragEnterEvent *event)
+{ 
     event->ignore();
 }

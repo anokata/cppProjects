@@ -4,8 +4,9 @@
 // TODO: 
 // comments to methods. ui create
 // refactor - rename
-// case -> _ to cK
 // styling, linter
+//   скобочки 
+//   пробелы(приведения-нет, *som, &ys)
 // переставить методы от главных к второстепенным
 // выложить.
 //
@@ -24,22 +25,26 @@ Window::Window(QWidget *parent) : QWidget(parent)
     gameField = new GameField(this);
 }
 
-Window::~Window() {
+Window::~Window()
+{
     delete mainMenuWidget;
     delete gameField;
 }
 
-void Window::goMainMenu() {
+void Window::goMainMenu()
+{
     gameField->disable();
     mainMenuWidget->enable();
 }
 
-void Window::newgame() {
+void Window::newgame()
+{
     gameField->enable();
     mainMenuWidget->disable();
 }
 
-void Window::exit() {
+void Window::exit()
+{
     gameField->enable();
     QApplication::instance()->quit();
 }

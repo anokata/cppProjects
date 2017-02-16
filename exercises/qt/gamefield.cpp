@@ -19,20 +19,23 @@ GameField::GameField(QWidget *parent) : QWidget(parent)
     connect(mainMenuButton, SIGNAL (clicked()), parent, SLOT (goMainMenu()));
 }
 
-GameField::~GameField() {
+GameField::~GameField()
+{
     delete inventoryWidget;
     delete oneItem;
     delete mainMenuButton;
 }
 
-void GameField::enable() {
+void GameField::enable()
+{
     inventoryWidget->wipeInventory();
     inventoryWidget->setEnabled(true);
     oneItem->setEnabled(true);
     mainMenuButton->setEnabled(true);
 }
 
-void GameField::disable() {
+void GameField::disable()
+{
     inventoryWidget->wipeInventory();
     inventoryWidget->setEnabled(false);
     oneItem->setEnabled(false);

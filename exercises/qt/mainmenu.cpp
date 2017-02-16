@@ -14,17 +14,20 @@ MainMenu::MainMenu(QWidget *parent) : QWidget(parent)
     connect(newgameButton, SIGNAL (clicked()), parent, SLOT (newgame()));
 }
 
-MainMenu::~MainMenu() {
+MainMenu::~MainMenu()
+{
     delete exitButton;
     delete newgameButton;
 }
 
-void MainMenu::disable() {
+void MainMenu::disable()
+{
     newgameButton->setEnabled(false);
     exitButton->setEnabled(false);
 }
 
-void MainMenu::enable() {
+void MainMenu::enable()
+{
     newgameButton->setEnabled(true);
     exitButton->setEnabled(true);
 }

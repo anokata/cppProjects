@@ -11,12 +11,14 @@ DataBase::DataBase(QString dbName)
     }
 }
 
-DataBase::~DataBase() {
+DataBase::~DataBase()
+{
     db.close();
     QSqlDatabase::removeDatabase(dbName);
 }
 
-QSqlQuery DataBase::getAllItems() {
+QSqlQuery DataBase::getAllItems()
+{
     db = QSqlDatabase::database(dbName);
     QSqlQuery query(db);
     query.exec("select X, Y, Count, Type, ImagePath, Items.ItemID from Inventory \
@@ -24,7 +26,8 @@ QSqlQuery DataBase::getAllItems() {
     return query;
 }
 
-void DataBase::wipeDB() {
+void DataBase::wipeDB()
+{
     db = QSqlDatabase::database(dbName);
     QSqlQuery query(db);
     db.transaction();
@@ -37,7 +40,8 @@ void DataBase::wipeDB() {
     query.finish();
 }
 
-void DataBase::deleteById(int id) {
+void DataBase::deleteById(int id)
+{
     QSqlQuery query(db);
     db.transaction();
     query.prepare("delete from inventory where ItemID = :id");
@@ -47,7 +51,8 @@ void DataBase::deleteById(int id) {
     query.finish();
 }
 
-QSqlQuery DataBase::itemAtCell(int col, int row) {
+QSqlQuery DataBase::itemAtCell(int col, int row)
+{
     db = QSqlDatabase::database(dbName);
     QSqlQuery query(db);
     query.prepare("select Count, Items.ItemID, Type, ImagePath from Inventory "
@@ -59,7 +64,8 @@ QSqlQuery DataBase::itemAtCell(int col, int row) {
     return query;
 }
 
-void DataBase::updateItemCount(int id, int newCount) {
+void DataBase::updateItemCount(int id, int newCount)
+{
     QSqlQuery query(db);
     db.transaction();
     query.prepare("UPDATE Items SET Count = :count WHERE ItemID = :id ");
@@ -69,7 +75,8 @@ void DataBase::updateItemCount(int id, int newCount) {
     db.commit();
 }
 
-void DataBase::addInventoryItem(int id, int col, int row) {
+void DataBase::addInventoryItem(int id, int col, int row)
+{
     db = QSqlDatabase::database(dbName);
     QSqlQuery query(db);
     db.transaction();
@@ -82,7 +89,8 @@ void DataBase::addInventoryItem(int id, int col, int row) {
     query.finish();
 }
 
-int DataBase::addNewItem(QString name, int count, ItemType type, QString path) {
+int DataBase::addNewItem(QString name, int count, ItemType type, QString path)
+{
     db = QSqlDatabase::database(dbName);
     QSqlQuery query(db);
     db.transaction();
@@ -99,7 +107,8 @@ int DataBase::addNewItem(QString name, int count, ItemType type, QString path) {
     return last;
 }
 
-void DataBase::deleteByIdItem(int id) {
+void DataBase::deleteByIdItem(int id)
+{
     db = QSqlDatabase::database(dbName);
     QSqlQuery query(db);
     db.transaction();
