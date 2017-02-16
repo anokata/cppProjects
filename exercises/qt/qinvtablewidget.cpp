@@ -1,10 +1,13 @@
 #include "qinvtablewidget.h"
 
-QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent, QWidget *recipient)
+QInvTableWidget::QInvTableWidget(int rows, int columns, 
+                                 QWidget *parent, QWidget *recipient)
     : QOneCellWidget(rows, columns, parent)
 {
-    connect(this, SIGNAL (cellPressed(int, int)), this, SLOT (cellStart(int, int)));
-    connect(recipient, SIGNAL (itemPassed(QString, ItemType)), this, SLOT (passItem(QString, ItemType)));
+    connect(this, SIGNAL (cellPressed(int, int)), 
+            this, SLOT (cellStart(int, int)));
+    connect(recipient, SIGNAL (itemPassed(QString, ItemType)), 
+            this, SLOT (passItem(QString, ItemType)));
 
     inventory = new Inventory(columns, rows);
     draggedItem = NULL;
@@ -77,7 +80,9 @@ void QInvTableWidget::wipeInventory()
     refreshCells();
 }
 
-bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Qt::DropAction action)
+bool QInvTableWidget::dropMimeData(int row, int column, 
+                                   const QMimeData *data, 
+                                   Qt::DropAction action)
 {
     if (row < inventory->getRows() && column < inventory->getColumns()) {
         if (draggedItem != NULL) {

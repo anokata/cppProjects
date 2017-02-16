@@ -4,7 +4,8 @@ QOneCellWidget::QOneCellWidget(QWidget *parent) : QTableWidget(1, 1, parent)
 {
     configure();
     QTableWidgetItem *item = new QTableWidgetItem;
-    item->setData(Qt::DecorationRole, QPixmap::fromImage(loadFile("./apple.jpg")));
+    item->setData(Qt::DecorationRole, 
+                  QPixmap::fromImage(loadFile("./apple.jpg")));
     item->setFlags(item->flags() ^ Qt::ItemIsEditable);
     this->setItem(0, 0, item);
 }
