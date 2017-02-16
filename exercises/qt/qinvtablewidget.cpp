@@ -59,7 +59,6 @@ void QInvTableWidget::passItem(QString path, ItemType type)
 void QInvTableWidget::dropEvent(QDropEvent *event)
 {
     QTableWidget::dropEvent(event);
-    //debug_print_all_items();
     refreshCells();
 }
 

@@ -1,21 +1,6 @@
 #include "window.h"
 #include <QApplication>
 
-// TODO: 
-// comments to methods. ui create
-// refactor - rename
-// styling, linter
-//   скобочки 
-//   пробелы(приведения-нет, *som, &ys)
-// переставить методы от главных к второстепенным
-// выложить.
-//
-// сеть.
-//
-// при закрытии тоже чистить базу?
-// можно бы хранить только уникальные предметы а 
-//   в инвентаре уже описывать количество.
-// инвентарь не запрос получать а коллекцию?
 Window::Window(QWidget *parent) : QWidget(parent)
 {
     const int WINDOW_WIDTH = 600;

@@ -35,7 +35,6 @@ void Inventory::fromDB()
         int id = query.value(5).toInt(); 
         Item *item = new Item(id, imagePath, type, count);
         items[x][y] = item;
-        //qDebug() << x << y << count << type << img_path;
     }
     query.finish();
 }
