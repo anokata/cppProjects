@@ -67,7 +67,7 @@ void Inventory::deleteItems()
 
 void Inventory::moveItem(Item *item, int col, int row)
 {
-    auto query = dataBase->itemAtCell(col, row);
+    QSqlQuery query = dataBase->itemAtCell(col, row);
     if (query.next()) {
         // Куда ложим уже есть предмет. Обновим количество.
         int count = query.value(0).toInt(); 
@@ -101,7 +101,7 @@ void Inventory::moveItem(Item *item, int col, int row)
 
 bool Inventory::eatItem(int col, int row)
 {
-    auto query = dataBase->itemAtCell(col, row);
+    QSqlQuery query = dataBase->itemAtCell(col, row);
     if (query.next()) {
         int count = query.value(0).toInt(); 
         int id = query.value(1).toInt(); 

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QWidget>
 #include <QPushButton>
+
 #include "qinvtablewidget.h"
 #include "qonecellwidget.h"
 

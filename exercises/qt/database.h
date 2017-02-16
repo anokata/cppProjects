@@ -5,6 +5,7 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QDebug>
+
 #include "const.h"
 
 class DataBase

@@ -21,8 +21,9 @@ QSqlQuery DataBase::getAllItems()
 {
     db = QSqlDatabase::database(dbName);
     QSqlQuery query(db);
-    query.exec("select X, Y, Count, Type, ImagePath, Items.ItemID from Inventory \
-                inner join Items where Inventory.ItemID = Items.ItemID");
+    query.exec("select X, Y, Count, Type, ImagePath, Items.ItemID "
+               "from Inventory inner join Items "
+               "where Inventory.ItemID = Items.ItemID");
     return query;
 }
 

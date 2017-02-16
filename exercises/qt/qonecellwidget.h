@@ -4,10 +4,11 @@
 #include <QWidget>
 #include <QTableWidget>
 #include <QHeaderView>
-#include "item.h"
 #include <QDebug>
 #include <QMouseEvent>
 #include <QImageReader>
+
+#include "item.h"
 
 class QOneCellWidget : public QTableWidget
 {

@@ -5,7 +5,8 @@ GameField::GameField(QWidget *parent) : QWidget(parent)
     const int INV_DIMENSION = 3;
     oneItem = new QOneCellWidget(this);
     oneItem->setEnabled(false);
-    inventoryWidget = new QInvTableWidget(INV_DIMENSION, INV_DIMENSION, this, oneItem);
+    inventoryWidget = new QInvTableWidget(INV_DIMENSION, 
+                                          INV_DIMENSION, this, oneItem);
     inventoryWidget->setEnabled(false);
     mainMenuButton = new QPushButton(trUtf8("Главное меню"), this);
     mainMenuButton->setLayoutDirection(Qt::RightToLeft);
