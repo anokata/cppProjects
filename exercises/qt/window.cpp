@@ -4,7 +4,6 @@
 // TODO: 
 // выделить модуль БД
 // comments to methods. ui create
-// корректно отконнектится от бд
 // refactor - rename
 // case -> _ to cK
 //

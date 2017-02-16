@@ -37,6 +37,7 @@ void Inventory::fromDB()
         items[x][y] = item;
         //qDebug() << x << y << count << type << img_path;
     }
+    query.finish();
 }
 
 Item * Inventory::getItem(int x, int y)
@@ -95,6 +96,7 @@ void Inventory::moveItem(Item * item, int col, int row)
             dataBase->addInventoryItem(lastid, col, row);
         }
     }
+    query.finish();
 }
 
 bool Inventory::eatItem(int col, int row)
@@ -109,7 +111,9 @@ bool Inventory::eatItem(int col, int row)
         } else {
             dataBase->updateItemCount(id, count - 1);
         }
+        query.finish();
         return true;
     }
+    query.finish();
     return false;
 }

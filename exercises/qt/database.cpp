@@ -13,6 +13,7 @@ DataBase::DataBase(QString dbName)
 
 DataBase::~DataBase() {
     db.close();
+    db = QSqlDatabase();
     QSqlDatabase::removeDatabase(dbName);
 }
 
@@ -28,9 +29,11 @@ void DataBase::wipeDB() {
     db.transaction();
     query.exec("delete from inventory");
     db.commit();
+    query.finish();
     db.transaction();
     query.exec("delete from items");
     db.commit();
+    query.finish();
 }
 
 void DataBase::deleteById(int id) {
@@ -40,6 +43,7 @@ void DataBase::deleteById(int id) {
     query.bindValue(":id", id);
     query.exec();
     db.commit();
+    query.finish();
 }
 
 QSqlQuery DataBase::itemAtCell(int col, int row) {
@@ -72,6 +76,7 @@ void DataBase::addInventoryItem(int id, int col, int row) {
     query.bindValue(":y", row); 
     query.exec();
     db.commit();
+    query.finish();
 }
 
 int DataBase::addNewItem(QString name, int count, Item_type type, QString path) {
@@ -85,7 +90,9 @@ int DataBase::addNewItem(QString name, int count, Item_type type, QString path) 
     query.bindValue(":path", path); 
     query.exec();
     db.commit();
-    return query.lastInsertId().toInt();
+    int last = query.lastInsertId().toInt();
+    query.finish();
+    return last;
 }
 
 void DataBase::deleteByIdItem(int id) {
@@ -95,4 +102,5 @@ void DataBase::deleteByIdItem(int id) {
     query.bindValue(":id", id);
     query.exec();
     db.commit();
+    query.finish();
 }
