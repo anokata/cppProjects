@@ -1,6 +1,7 @@
 #ifndef ITEM_H
 #define ITEM_H
 #include <QString>
+
 #include "const.h"
 
 class Item

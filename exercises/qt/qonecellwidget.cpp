@@ -1,4 +1,5 @@
 #include "qonecellwidget.h"
+static const char *appleImage = "./resources/apple.jpg";
 
 /* Конструктор виджета источника предметов. */
 QOneCellWidget::QOneCellWidget(QWidget *parent) : QTableWidget(1, 1, parent)
@@ -6,7 +7,7 @@ QOneCellWidget::QOneCellWidget(QWidget *parent) : QTableWidget(1, 1, parent)
     configure();
     QTableWidgetItem *item = new QTableWidgetItem;
     item->setData(Qt::DecorationRole, 
-                  QPixmap::fromImage(loadFile("./apple.jpg")));
+                  QPixmap::fromImage(loadFile(appleImage)));
     item->setFlags(item->flags() ^ Qt::ItemIsEditable);
     this->setItem(0, 0, item);
 }
@@ -41,7 +42,7 @@ void QOneCellWidget::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton) {
         QTableWidget::mousePressEvent(event);
         /* Вызываем сигнал перетаскивания нового предмета. */
-        emit itemPassed(QString("./apple.jpg"), FOOD);
+        emit itemPassed(QString(appleImage), FOOD);
     }
 }
 
