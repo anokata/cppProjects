@@ -1,14 +1,14 @@
 #include "item.h"
 #include <QStringList>
 
-Item::Item(int id, QString image_path, Item_type type) :
-    image_path(image_path), type(type), ID(id)
+Item::Item(int id, QString imagePath, ItemType type) :
+    imagePath(imagePath), type(type), ID(id)
 {
     count = 1;
 }
 
-Item::Item(int id, QString image_path, Item_type type, int count) :
-    image_path(image_path), type(type), count(count), ID(id)
+Item::Item(int id, QString imagePath, ItemType type, int count) :
+    imagePath(imagePath), type(type), count(count), ID(id)
 { }
 
 int Item::getCount() {
@@ -20,10 +20,10 @@ int Item::getId() {
 }
 
 QString Item::getImagePath() {
-    return image_path;
+    return imagePath;
 }
 
-Item_type Item::getType(){
+ItemType Item::getType(){
     return type;
 }
 

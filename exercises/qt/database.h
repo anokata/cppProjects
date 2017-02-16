@@ -16,7 +16,7 @@ public:
     void deleteById(int id);
     void updateItemCount(int id, int newCount);
     void addInventoryItem(int id, int row, int col);
-    int addNewItem(QString name, int count, Item_type type, QString path);
+    int addNewItem(QString name, int count, ItemType type, QString path);
     void deleteByIdItem(int id);
     QSqlQuery getAllItems();
     void wipeDB();

@@ -145,7 +145,8 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		qinvtablewidget.h \
 		qonecellwidget.h \
 		window.h \
-		database.h gamefield.cpp \
+		database.h \
+		const.h gamefield.cpp \
 		inventory.cpp \
 		item.cpp \
 		main.cpp \
@@ -339,7 +340,7 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents gamefield.h inventory.h item.h mainmenu.h qinvtablewidget.h qonecellwidget.h window.h database.h $(DISTDIR)/
+	$(COPY_FILE) --parents gamefield.h inventory.h item.h mainmenu.h qinvtablewidget.h qonecellwidget.h window.h database.h const.h $(DISTDIR)/
 	$(COPY_FILE) --parents gamefield.cpp inventory.cpp item.cpp main.cpp mainmenu.cpp qinvtablewidget.cpp qonecellwidget.cpp window.cpp database.cpp $(DISTDIR)/
 
 
@@ -369,6 +370,8 @@ compiler_moc_header_clean:
 moc_gamefield.cpp: qinvtablewidget.h \
 		inventory.h \
 		item.h \
+		const.h \
+		database.h \
 		qonecellwidget.h \
 		gamefield.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ksi/cppProjects/exercises/qt -I/home/ksi/cppProjects/exercises/qt -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSql -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include gamefield.h -o moc_gamefield.cpp
@@ -378,11 +381,14 @@ moc_mainmenu.cpp: mainmenu.h
 
 moc_qinvtablewidget.cpp: inventory.h \
 		item.h \
+		const.h \
+		database.h \
 		qonecellwidget.h \
 		qinvtablewidget.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ksi/cppProjects/exercises/qt -I/home/ksi/cppProjects/exercises/qt -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSql -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include qinvtablewidget.h -o moc_qinvtablewidget.cpp
 
 moc_qonecellwidget.cpp: item.h \
+		const.h \
 		qonecellwidget.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ksi/cppProjects/exercises/qt -I/home/ksi/cppProjects/exercises/qt -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSql -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include qonecellwidget.h -o moc_qonecellwidget.cpp
 
@@ -391,6 +397,8 @@ moc_window.cpp: mainmenu.h \
 		qinvtablewidget.h \
 		inventory.h \
 		item.h \
+		const.h \
+		database.h \
 		qonecellwidget.h \
 		window.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ksi/cppProjects/exercises/qt -I/home/ksi/cppProjects/exercises/qt -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtMultimedia -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtSql -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include window.h -o moc_window.cpp
@@ -413,14 +421,19 @@ gamefield.o: gamefield.cpp gamefield.h \
 		qinvtablewidget.h \
 		inventory.h \
 		item.h \
+		const.h \
+		database.h \
 		qonecellwidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o gamefield.o gamefield.cpp
 
 inventory.o: inventory.cpp inventory.h \
-		item.h
+		item.h \
+		const.h \
+		database.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o inventory.o inventory.cpp
 
-item.o: item.cpp item.h
+item.o: item.cpp item.h \
+		const.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o item.o item.cpp
 
 main.o: main.cpp window.h \
@@ -429,6 +442,8 @@ main.o: main.cpp window.h \
 		qinvtablewidget.h \
 		inventory.h \
 		item.h \
+		const.h \
+		database.h \
 		qonecellwidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
@@ -438,11 +453,14 @@ mainmenu.o: mainmenu.cpp mainmenu.h
 qinvtablewidget.o: qinvtablewidget.cpp qinvtablewidget.h \
 		inventory.h \
 		item.h \
+		const.h \
+		database.h \
 		qonecellwidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qinvtablewidget.o qinvtablewidget.cpp
 
 qonecellwidget.o: qonecellwidget.cpp qonecellwidget.h \
-		item.h
+		item.h \
+		const.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qonecellwidget.o qonecellwidget.cpp
 
 window.o: window.cpp window.h \
@@ -451,10 +469,13 @@ window.o: window.cpp window.h \
 		qinvtablewidget.h \
 		inventory.h \
 		item.h \
+		const.h \
+		database.h \
 		qonecellwidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o window.o window.cpp
 
-database.o: database.cpp database.h
+database.o: database.cpp database.h \
+		const.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o database.o database.cpp
 
 moc_gamefield.o: moc_gamefield.cpp 

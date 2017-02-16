@@ -23,10 +23,10 @@ public:
 
 public slots:
     void cellStart(int row, int col);
-    void passItem(QString path, Item_type type);
+    void passItem(QString path, ItemType type);
 
 signals:
-    void itemPassed(QString path, Item_type type);
+    void itemPassed(QString path, ItemType type);
 
 protected:
     Inventory *inventory;
@@ -37,7 +37,7 @@ private:
     void dragMoveEvent(QDragMoveEvent *event);
     void mousePressEvent(QMouseEvent *event);
     void refreshCells();
-    void debug_print_all_items();
+    void debugPrintAllItems();
 
 };
 

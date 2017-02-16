@@ -20,7 +20,7 @@ public:
 public slots:
 
 signals:
-    void itemPassed(QString, Item_type);
+    void itemPassed(QString, ItemType);
 
 protected:
     void mousePressEvent(QMouseEvent *event);
@@ -28,7 +28,7 @@ protected:
     void dragEnterEvent(QDragEnterEvent *event);
     void configure();
 
-    Item * dragged_item;
+    Item * draggedItem;
 };
 
 #endif // QONECELLWIDGET_H

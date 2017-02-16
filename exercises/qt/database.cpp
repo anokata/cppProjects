@@ -60,12 +60,12 @@ QSqlQuery DataBase::itemAtCell(int col, int row) {
 }
 
 void DataBase::updateItemCount(int id, int newCount) {
-    QSqlQuery quer_upd(db);
+    QSqlQuery query(db);
     db.transaction();
-    quer_upd.prepare("UPDATE Items SET Count = :count WHERE ItemID = :id ");
-    quer_upd.bindValue(":id", id); 
-    quer_upd.bindValue(":count", newCount); 
-    quer_upd.exec();
+    query.prepare("UPDATE Items SET Count = :count WHERE ItemID = :id ");
+    query.bindValue(":id", id);
+    query.bindValue(":count", newCount);
+    query.exec();
     db.commit();
 }
 
@@ -82,7 +82,7 @@ void DataBase::addInventoryItem(int id, int col, int row) {
     query.finish();
 }
 
-int DataBase::addNewItem(QString name, int count, Item_type type, QString path) {
+int DataBase::addNewItem(QString name, int count, ItemType type, QString path) {
     db = QSqlDatabase::database(dbName);
     QSqlQuery query(db);
     db.transaction();

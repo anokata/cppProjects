@@ -30,10 +30,10 @@ void Inventory::fromDB()
         int x = query.value(0).toInt(); 
         int y = query.value(1).toInt(); 
         int count = query.value(2).toInt(); 
-        Item_type type = (Item_type) query.value(3).toInt(); 
-        QString img_path = query.value(4).toString(); 
+        ItemType type = (ItemType) query.value(3).toInt(); 
+        QString imagePath = query.value(4).toString();
         int id = query.value(5).toInt(); 
-        Item * item = new Item(id, img_path, type, count);
+        Item * item = new Item(id, imagePath, type, count);
         items[x][y] = item;
         //qDebug() << x << y << count << type << img_path;
     }

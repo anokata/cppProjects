@@ -2,29 +2,29 @@
 
 MainMenu::MainMenu(QWidget *parent) : QWidget(parent)
 {
-    exit_button = new QPushButton(trUtf8("Выход"), this);
-    newgame_button = new QPushButton(trUtf8("Начать"), this);
-    exit_button->setLayoutDirection(Qt::RightToLeft);
+    exitButton = new QPushButton(trUtf8("Выход"), this);
+    newgameButton = new QPushButton(trUtf8("Начать"), this);
+    exitButton->setLayoutDirection(Qt::RightToLeft);
 
     this->setGeometry(0, 0, parent->width(), 40);
-    newgame_button->setGeometry(10, 10, 100, 30);
-    exit_button->setGeometry(parent->width() - 90, 10, 80, 30);
+    newgameButton->setGeometry(10, 10, 100, 30);
+    exitButton->setGeometry(parent->width() - 90, 10, 80, 30);
 
-    connect(exit_button, SIGNAL (clicked()), parent, SLOT (exit()));
-    connect(newgame_button, SIGNAL (clicked()), parent, SLOT (newgame()));
+    connect(exitButton, SIGNAL (clicked()), parent, SLOT (exit()));
+    connect(newgameButton, SIGNAL (clicked()), parent, SLOT (newgame()));
 }
 
 MainMenu::~MainMenu() {
-    delete exit_button;
-    delete newgame_button;
+    delete exitButton;
+    delete newgameButton;
 }
 
 void MainMenu::disable() {
-    newgame_button->setEnabled(false);
-    exit_button->setEnabled(false);
+    newgameButton->setEnabled(false);
+    exitButton->setEnabled(false);
 }
 
 void MainMenu::enable() {
-    newgame_button->setEnabled(true);
-    exit_button->setEnabled(true);
+    newgameButton->setEnabled(true);
+    exitButton->setEnabled(true);
 }

@@ -6,18 +6,18 @@
 class Item
 {
 public:
-    Item(int id, QString image_path, Item_type type);
-    Item(int id, QString image_path, Item_type type, int count);
+    Item(int id, QString imagePath, ItemType type);
+    Item(int id, QString imagePath, ItemType type, int count);
     QString getImagePath();
-    Item_type getType();
+    ItemType getType();
     int getId();
     int getCount();
 
 private:
-    QString image_path;
-    Item_type type;
-    int ID;
+    QString imagePath;
+    ItemType type;
     int count;
+    int ID;
 
 };
 

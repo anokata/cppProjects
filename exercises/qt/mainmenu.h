@@ -18,8 +18,8 @@ signals:
 
 public slots:
 private:
-    QPushButton *exit_button;
-    QPushButton *newgame_button;
+    QPushButton *exitButton;
+    QPushButton *newgameButton;
 };
 
 #endif // MAINMENU_H

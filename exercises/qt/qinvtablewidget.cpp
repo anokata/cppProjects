@@ -4,10 +4,10 @@ QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent, QWidget
     : QOneCellWidget(rows, columns, parent)
 {
     connect(this, SIGNAL (cellPressed(int, int)), this, SLOT (cellStart(int, int)));
-    connect(recipient, SIGNAL (itemPassed(QString, Item_type)), this, SLOT (passItem(QString, Item_type)));
+    connect(recipient, SIGNAL (itemPassed(QString, ItemType)), this, SLOT (passItem(QString, ItemType)));
 
     inventory = new Inventory(columns, rows);
-    dragged_item = NULL;
+    draggedItem = NULL;
 
     for (int i = 0; i < columns; ++i) {
         for (int j = 0; j < rows; ++j) {
@@ -29,12 +29,12 @@ void QInvTableWidget::refreshCells() {
     for (int i = 0; i < inventory->getColumns(); ++i) {
         for (int j = 0; j < inventory->getRows(); ++j) {
             QTableWidgetItem *item = this->item(i, j);
-            Item *inv_item = inventory->getItem(j, i);
+            Item *invItem = inventory->getItem(j, i);
             item->setText("");
             item->setData(Qt::DecorationRole, QVariant());
-            if (inv_item != NULL) {
-                item->setText(QString::number(inv_item->getCount()));
-                QImage image = loadFile(inv_item->getImagePath());
+            if (invItem != NULL) {
+                item->setText(QString::number(invItem->getCount()));
+                QImage image = loadFile(invItem->getImagePath());
                 item->setData(Qt::DecorationRole, QPixmap::fromImage(image));
             }
         }
@@ -42,11 +42,11 @@ void QInvTableWidget::refreshCells() {
 }
 
 void QInvTableWidget::cellStart(int row, int col) {
-    dragged_item = inventory->getItem(col, row);
+    draggedItem = inventory->getItem(col, row);
 }
 
-void QInvTableWidget::passItem(QString path, Item_type type) {
-        dragged_item = new Item(-1, path, type);
+void QInvTableWidget::passItem(QString path, ItemType type) {
+        draggedItem = new Item(-1, path, type);
 }
 
 void QInvTableWidget::dropEvent(QDropEvent *event)
@@ -75,8 +75,8 @@ void QInvTableWidget::wipeInventory() {
 bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Qt::DropAction action)
 {
     if (row < inventory->getRows() && column < inventory->getColumns()) {
-        if (dragged_item != NULL) {
-            inventory->moveItem(dragged_item, column, row);
+        if (draggedItem != NULL) {
+            inventory->moveItem(draggedItem, column, row);
         }
         return QTableWidget::dropMimeData(row, column, data, action);
     }
@@ -89,13 +89,13 @@ void QInvTableWidget::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::RightButton) {
         if (inventory->eatItem(this->currentColumn(), this->currentRow())) {
             QSound::play(appleWav);
-            dragged_item = NULL;
+            draggedItem = NULL;
             refreshCells();
         }
     }
 }
 
-void QInvTableWidget::debug_print_all_items() {
+void QInvTableWidget::debugPrintAllItems() {
     for (int i = 0; i < inventory->getRows(); ++i) {
         for (int j = 0; j < inventory->getColumns(); ++j) {
             Item * item = inventory->getItem(i, j);

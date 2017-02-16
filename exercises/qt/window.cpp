@@ -2,14 +2,18 @@
 #include <QApplication>
 
 // TODO: 
-// выделить модуль БД
 // comments to methods. ui create
 // refactor - rename
 // case -> _ to cK
+// styling, linter
+// переставить методы от главных к второстепенным
+// выложить.
+//
+// сеть.
 //
 // при закрытии тоже чистить базу?
-// переставить методы от главных к второстепенным
 // можно бы хранить только уникальные предметы а в инвентаре уже описывать количество.
+// инвентарь не запрос получать а коллекцию?
 Window::Window(QWidget *parent) : QWidget(parent)
 {
     const int WINDOW_WIDTH = 600;

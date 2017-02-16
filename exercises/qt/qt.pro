@@ -17,7 +17,8 @@ HEADERS += gamefield.h \
            qinvtablewidget.h \
            qonecellwidget.h \
            window.h \
-    database.h
+    database.h \
+    const.h
 SOURCES += gamefield.cpp \
            inventory.cpp \
            item.cpp \
