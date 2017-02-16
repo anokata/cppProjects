@@ -55,7 +55,8 @@ SOURCES       = gamefield.cpp \
 		mainmenu.cpp \
 		qinvtablewidget.cpp \
 		qonecellwidget.cpp \
-		window.cpp moc_gamefield.cpp \
+		window.cpp \
+		database.cpp moc_gamefield.cpp \
 		moc_mainmenu.cpp \
 		moc_qinvtablewidget.cpp \
 		moc_qonecellwidget.cpp \
@@ -68,6 +69,7 @@ OBJECTS       = gamefield.o \
 		qinvtablewidget.o \
 		qonecellwidget.o \
 		window.o \
+		database.o \
 		moc_gamefield.o \
 		moc_mainmenu.o \
 		moc_qinvtablewidget.o \
@@ -142,14 +144,16 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		mainmenu.h \
 		qinvtablewidget.h \
 		qonecellwidget.h \
-		window.h gamefield.cpp \
+		window.h \
+		database.h gamefield.cpp \
 		inventory.cpp \
 		item.cpp \
 		main.cpp \
 		mainmenu.cpp \
 		qinvtablewidget.cpp \
 		qonecellwidget.cpp \
-		window.cpp
+		window.cpp \
+		database.cpp
 QMAKE_TARGET  = qt
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = qt
@@ -335,8 +339,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents gamefield.h inventory.h item.h mainmenu.h qinvtablewidget.h qonecellwidget.h window.h $(DISTDIR)/
-	$(COPY_FILE) --parents gamefield.cpp inventory.cpp item.cpp main.cpp mainmenu.cpp qinvtablewidget.cpp qonecellwidget.cpp window.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents gamefield.h inventory.h item.h mainmenu.h qinvtablewidget.h qonecellwidget.h window.h database.h $(DISTDIR)/
+	$(COPY_FILE) --parents gamefield.cpp inventory.cpp item.cpp main.cpp mainmenu.cpp qinvtablewidget.cpp qonecellwidget.cpp window.cpp database.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -449,6 +453,9 @@ window.o: window.cpp window.h \
 		item.h \
 		qonecellwidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o window.o window.cpp
+
+database.o: database.cpp database.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o database.o database.cpp
 
 moc_gamefield.o: moc_gamefield.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_gamefield.o moc_gamefield.cpp

@@ -1,11 +1,11 @@
 #ifndef ITEM_H
 #define ITEM_H
 #include <QString>
+#include "const.h"
 
 class Item
 {
 public:
-    enum Item_type { FOOD };
     Item(int id, QString image_path, Item_type type);
     Item(int id, QString image_path, Item_type type, int count);
     QString getImagePath();

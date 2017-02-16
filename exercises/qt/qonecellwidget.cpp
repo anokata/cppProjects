@@ -33,7 +33,7 @@ void QOneCellWidget::configure() {
 void QOneCellWidget::mousePressEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         QTableWidget::mousePressEvent(event);
-        emit itemPassed(QString("./apple.jpg"), Item::FOOD);
+        emit itemPassed(QString("./apple.jpg"), FOOD);
     }
 }
 

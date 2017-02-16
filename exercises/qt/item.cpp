@@ -23,7 +23,7 @@ QString Item::getImagePath() {
     return image_path;
 }
 
-Item::Item_type Item::getType(){
+Item_type Item::getType(){
     return type;
 }
 

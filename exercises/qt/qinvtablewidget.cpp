@@ -4,7 +4,7 @@ QInvTableWidget::QInvTableWidget(int rows, int columns, QWidget *parent, QWidget
     : QOneCellWidget(rows, columns, parent)
 {
     connect(this, SIGNAL (cellPressed(int, int)), this, SLOT (cellStart(int, int)));
-    connect(recipient, SIGNAL (itemPassed(QString, Item::Item_type)), this, SLOT (passItem(QString, Item::Item_type)));
+    connect(recipient, SIGNAL (itemPassed(QString, Item_type)), this, SLOT (passItem(QString, Item_type)));
 
     inventory = new Inventory(columns, rows);
     dragged_item = NULL;
@@ -45,7 +45,7 @@ void QInvTableWidget::cellStart(int row, int col) {
     dragged_item = inventory->getItem(col, row);
 }
 
-void QInvTableWidget::passItem(QString path, Item::Item_type type) {
+void QInvTableWidget::passItem(QString path, Item_type type) {
         dragged_item = new Item(-1, path, type);
 }
 

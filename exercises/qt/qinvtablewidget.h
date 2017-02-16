@@ -8,6 +8,7 @@
 #include <QSound>
 #include "inventory.h"
 #include "qonecellwidget.h"
+#include "const.h"
 
 const QString appleWav = "./apple-crunch.wav";
 
@@ -22,10 +23,10 @@ public:
 
 public slots:
     void cellStart(int row, int col);
-    void passItem(QString path, Item::Item_type type);
+    void passItem(QString path, Item_type type);
 
 signals:
-    void itemPassed(QString path, Item::Item_type type);
+    void itemPassed(QString path, Item_type type);
 
 protected:
     Inventory *inventory;

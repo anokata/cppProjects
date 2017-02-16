@@ -20,7 +20,7 @@ public:
 public slots:
 
 signals:
-    void itemPassed(QString, Item::Item_type);
+    void itemPassed(QString, Item_type);
 
 protected:
     void mousePressEvent(QMouseEvent *event);
