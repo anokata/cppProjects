@@ -3,7 +3,7 @@
 DataBase::DataBase(QString dbName)
 {
     this->dbName = dbName;
-    db = QSqlDatabase::addDatabase("QSQLITE", dbName);
+    db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(dbName); 
     
     if (!db.open()) {
@@ -13,11 +13,11 @@ DataBase::DataBase(QString dbName)
 
 DataBase::~DataBase() {
     db.close();
-    db = QSqlDatabase();
     QSqlDatabase::removeDatabase(dbName);
 }
 
 QSqlQuery DataBase::getAllItems() {
+    db = QSqlDatabase::database(dbName);
     QSqlQuery query(db);
     query.exec("select X, Y, Count, Type, ImagePath, Items.ItemID from Inventory \
                 inner join Items where Inventory.ItemID = Items.ItemID");
@@ -25,6 +25,7 @@ QSqlQuery DataBase::getAllItems() {
 }
 
 void DataBase::wipeDB() {
+    db = QSqlDatabase::database(dbName);
     QSqlQuery query(db);
     db.transaction();
     query.exec("delete from inventory");
@@ -47,6 +48,7 @@ void DataBase::deleteById(int id) {
 }
 
 QSqlQuery DataBase::itemAtCell(int col, int row) {
+    db = QSqlDatabase::database(dbName);
     QSqlQuery query(db);
     query.prepare("select Count, Items.ItemID, Type, ImagePath from Inventory "
                 "inner join Items where Inventory.ItemID = Items.ItemID "
@@ -68,6 +70,7 @@ void DataBase::updateItemCount(int id, int newCount) {
 }
 
 void DataBase::addInventoryItem(int id, int col, int row) {
+    db = QSqlDatabase::database(dbName);
     QSqlQuery query(db);
     db.transaction();
     query.prepare("INSERT INTO Inventory VALUES (:iid, :x, :y)");
@@ -80,6 +83,7 @@ void DataBase::addInventoryItem(int id, int col, int row) {
 }
 
 int DataBase::addNewItem(QString name, int count, Item_type type, QString path) {
+    db = QSqlDatabase::database(dbName);
     QSqlQuery query(db);
     db.transaction();
     query.prepare("INSERT INTO Items (ItemID, Name, Count, Type, ImagePath) "
@@ -96,6 +100,7 @@ int DataBase::addNewItem(QString name, int count, Item_type type, QString path) 
 }
 
 void DataBase::deleteByIdItem(int id) {
+    db = QSqlDatabase::database(dbName);
     QSqlQuery query(db);
     db.transaction();
     query.prepare("delete from items where ItemID = :id");
