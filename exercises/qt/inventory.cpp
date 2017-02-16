@@ -1,4 +1,5 @@
 #include "inventory.h"
+static const char *dbFile = "./resources/inventory.db";
 
 /* Конструктор инвентаря. Иницилизация контейнера. Подключение к БД */
 Inventory::Inventory(int cols, int rows)
@@ -8,7 +9,7 @@ Inventory::Inventory(int cols, int rows)
         items[i] = QVector<Item*>(cols);
     }
 
-    dataBase = new DataBase(QString("inventory.db"));
+    dataBase = new DataBase(QString(dbFile));
     fromDB();
 }
 
