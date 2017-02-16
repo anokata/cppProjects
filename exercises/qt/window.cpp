@@ -6,9 +6,9 @@
 // отличать right click from drag
 // размер инвентаря. есть?
 // comments to methods. ui create
-// private методы убрать, задать интерфейс.
 // корректно отконнектится от бд
 // refactor - rename
+// case -> _ to cK
 //
 // try Qt5
 // переделать звук

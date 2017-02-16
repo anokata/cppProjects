@@ -136,7 +136,7 @@ void Inventory::deleteByIdItem(int id) {
     db.commit();
 }
 
-void Inventory::appendItem(Item * item, int col, int row) {
+void Inventory::moveItem(Item * item, int col, int row) {
     auto query = itemAtCell(col, row);
     if (query.next()) {
         // Куда ложим уже есть предмет. Обновим количество.

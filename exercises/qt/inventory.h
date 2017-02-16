@@ -16,7 +16,7 @@ public:
     Item * getItem(int x, int y);
     void fromDB();
     void wipeDB();
-    void appendItem(Item * item, int col, int row);
+    void moveItem(Item * item, int col, int row);
     bool eatItem(int col, int row);
     int getColumns();
     int getRows();

@@ -76,7 +76,7 @@ bool QInvTableWidget::dropMimeData(int row, int column, const QMimeData *data, Q
 {
     if (row < inventory->getRows() && column < inventory->getColumns()) {
         if (dragged_item != NULL) {
-            inventory->appendItem(dragged_item, column, row);
+            inventory->moveItem(dragged_item, column, row);
         }
         return QTableWidget::dropMimeData(row, column, data, action);
     }
@@ -88,10 +88,7 @@ void QInvTableWidget::mousePressEvent(QMouseEvent *event)
     QTableWidget::mousePressEvent(event);
     if (event->button() == Qt::RightButton) {
         if (inventory->eatItem(this->currentColumn(), this->currentRow())) {
-            Phonon::MediaObject *music =
-            Phonon::createPlayer(Phonon::MusicCategory,
-                                 Phonon::MediaSource("./apple-crunch.wav"));
-            music->play();
+            QSound::play(appleWav);
             refreshCells();
         }
     }

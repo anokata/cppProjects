@@ -19,7 +19,7 @@ void QOneCellWidget::configure() {
     horizontalHeader()->hide();
     verticalHeader()->hide();
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    verticalHeader()->setResizeMode(QHeaderView::Fixed);
+    verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     verticalHeader()->setDefaultSectionSize(120);
     horizontalHeader()->setDefaultSectionSize(120);
     setDragEnabled(true);

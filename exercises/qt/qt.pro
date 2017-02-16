@@ -2,29 +2,26 @@
 QMAKE_CXXFLAGS += -std=c++11
 CONFIG += c++11
 TEMPLATE = app
-TARGET = 
-DEPENDPATH += .
+TARGET = qt
 INCLUDEPATH += .
+DEPENDPATH += .
 QT += sql
-# QT += multimedia
-QT += phonon
+QT += multimedia
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 # Input
-SOURCES += \
-    window.cpp \
-    main.cpp \
-    qinvtablewidget.cpp \
-    item.cpp \
-    inventory.cpp \
-    qonecellwidget.cpp \
-    mainmenu.cpp \
-    gamefield.cpp
-
-HEADERS += \
-    window.h \
-    qinvtablewidget.h \
-    item.h \
-    inventory.h \
-    qonecellwidget.h \
-    mainmenu.h \
-    gamefield.h
+HEADERS += gamefield.h \
+           inventory.h \
+           item.h \
+           mainmenu.h \
+           qinvtablewidget.h \
+           qonecellwidget.h \
+           window.h
+SOURCES += gamefield.cpp \
+           inventory.cpp \
+           item.cpp \
+           main.cpp \
+           mainmenu.cpp \
+           qinvtablewidget.cpp \
+           qonecellwidget.cpp \
+           window.cpp
