@@ -1,15 +1,12 @@
 #include "cli.h"
 
-Client::Client(QWidget *parent) : QDialog(parent)
+Client::Client(QWidget *parent) : QWidget(parent)
 {
-    qDebug() << "construct(cli)";
+    qDebug() << "(client)construct(cli)";
     sock = new QTcpSocket(this);
-    sock->connectToHost("localhost", 10000);
+    sock->connectToHost("127.0.0.1", 10000);
     connect(sock, SIGNAL(connected()), this, SLOT(connected()));
     connect(sock, SIGNAL(readyRead()), this, SLOT(readyRead()));
-    connect(sock, SIGNAL(error(QAbstractSocket::socketError)), this, SLOT(error(QAbstractSocket::socketError)));
-
-    //connect(this, SIGNAL(returnPressed()), this, SLOT(sendToServer()));
 }
 
 Client::~Client()
@@ -17,23 +14,38 @@ Client::~Client()
     delete sock;
 }
 
+void Client::mousePressEvent(QMouseEvent *event)
+{
+    sendToServer();
+}
+
 void Client::readyRead()
 {
+    qDebug() << "(client)ready read";
+    QDataStream in(sock);
+    in.setVersion(QDataStream::Qt_5_5);
+    for (;;) {
 
-    qDebug() << "ready(cli)";
+    }
 }
 void Client::sendToServer()
 {
-
-    qDebug() << "send(client)";
+    QByteArray a;
+    QDataStream out(&a, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_5_5);
+    out << quint16(0) << QTime::currentTime() << "Message from client";
+    out.device()->seek(0);
+    out << quint16(a.size() - sizeof(quint16));
+    sock->write(a);
+    qDebug() << "(client)send";
 }
 void Client::connected()
 {
 
-    qDebug() << "connected(client)";
+    qDebug() << "(client)connected(client)";
 }
 void Client::error(QAbstractSocket::SocketError)
 {
 
-    qDebug() << "error";
+    qDebug() << "(client)error";
 }

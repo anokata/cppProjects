@@ -3,7 +3,7 @@
 #include <QtWidgets>
 #include <QDebug>
 
-class Server : public QDialog
+class Server : public QWidget
 {
     Q_OBJECT
 
@@ -18,4 +18,5 @@ private slots:
 private:
     void sendToClient(QTcpSocket *sock, const QString &str);
     QTcpServer *tcpServer;
+    void mousePressEvent(QMouseEvent *event);
 };

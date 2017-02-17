@@ -3,13 +3,14 @@
 #include <QtWidgets>
 #include <QDebug>
 
-class Client : public QDialog
+class Client : public QWidget
 {
     Q_OBJECT
 
 public:
     explicit Client(QWidget *parent = Q_NULLPTR);
     ~Client();
+    void mousePressEvent(QMouseEvent *event);
 
 private slots:
     void readyRead();
