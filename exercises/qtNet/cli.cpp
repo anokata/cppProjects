@@ -23,6 +23,7 @@ void Client::readyRead()
 {
     qDebug() << "(client)ready read";
     QDataStream in(sock);
+    data = "";
     in.setVersion(QDataStream::Qt_5_5);
     for (;;) {
         if (!blockSize) {
@@ -45,17 +46,6 @@ void Client::readyRead()
     qDebug() << data;
 }
 
-void Client::sendToServer()
-{
-    QByteArray a;
-    QDataStream out(&a, QIODevice::WriteOnly);
-    out.setVersion(QDataStream::Qt_5_5);
-    out << quint16(0) << QTime::currentTime() << "Message from client";
-    out.device()->seek(0);
-    out << quint16(a.size() - sizeof(quint16));
-    sock->write(a);
-    qDebug() << "(client)send";
-}
 void Client::connected()
 {
 
@@ -65,4 +55,15 @@ void Client::error(QAbstractSocket::SocketError)
 {
 
     qDebug() << "(client)error";
+}
+void Client::sendToServer()
+{
+    QByteArray a;
+    QDataStream out(&a, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_5_5);
+    out << quint16(0) << QTime::currentTime() << QString("Message from client");
+    out.device()->seek(0);
+    out << quint16(a.size() - sizeof(quint16));
+    sock->write(a);
+    qDebug() << "(client)send";
 }
