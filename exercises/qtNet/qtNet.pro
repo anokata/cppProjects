@@ -6,6 +6,8 @@ TEMPLATE = app
 TARGET = qt
 INCLUDEPATH += .
 QT += network widgets
+QMAKE_CXXFLAGS += -std=c++11
+CONFIG += c++11
 
 # Input
 HEADERS += ser.h cli.h

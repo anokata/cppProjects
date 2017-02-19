@@ -17,7 +17,9 @@ Server::~Server()
 
 void Server::mousePressEvent(QMouseEvent *event)
 {
-    //sendToClient(clientSocket, "Some DAta from server");
+    for (auto c : clients) {
+        sendToClient(c, "Some DAta from server");
+    }
 }
 
 void Server::newConn()
@@ -28,12 +30,35 @@ void Server::newConn()
     connect(clientSocket, SIGNAL(readyRead()), this, SLOT(readClient()));
     sendToClient(clientSocket, "Connected");
     qDebug() << "(server)client connn";
+    clients.append(clientSocket);
 }
         
 void Server::readClient()
 {
-
     qDebug() << "(server)read from client ";
+    QTcpSocket* sock = (QTcpSocket*)sender();
+    QDataStream in(sock);
+    data = "";
+    in.setVersion(QDataStream::Qt_5_5);
+    for (;;) {
+        if (!blockSize) {
+            if (sock->bytesAvailable() < sizeof(quint16)) {
+                break;
+            }
+            in >> blockSize;
+        }
+
+        if (sock->bytesAvailable() < blockSize) {
+            break;
+        }
+
+        QTime time;
+        QString str;
+        in >> time >> str;
+        data += time.toString() + " " + str + '\n';
+        blockSize = 0;
+    }
+    qDebug() << data;
 }
 
 void Server::sendToClient(QTcpSocket *sock, const QString &str)

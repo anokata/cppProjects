@@ -25,9 +25,26 @@ void Client::readyRead()
     QDataStream in(sock);
     in.setVersion(QDataStream::Qt_5_5);
     for (;;) {
+        if (!blockSize) {
+            if (sock->bytesAvailable() < sizeof(quint16)) {
+                break;
+            }
+            in >> blockSize;
+        }
 
+        if (sock->bytesAvailable() < blockSize) {
+            break;
+        }
+
+        QTime time;
+        QString str;
+        in >> time >> str;
+        data += time.toString() + " " + str + '\n';
+        blockSize = 0;
     }
+    qDebug() << data;
 }
+
 void Client::sendToServer()
 {
     QByteArray a;

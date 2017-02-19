@@ -20,4 +20,6 @@ private slots:
 
 private:
     QTcpSocket *sock;
+    quint16 blockSize;
+    QString data;
 };
