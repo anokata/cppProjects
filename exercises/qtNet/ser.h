@@ -1,8 +1,7 @@
 #pragma once
-#include <QtNetwork>
 #include <QtWidgets>
 #include <QDebug>
-#include <QVector>
+#include "server.h"
 
 class ServerWidget : public QWidget
 {
@@ -13,14 +12,9 @@ public:
     ~ServerWidget();
 
 private slots:
-    void newConn();
-    void readClient();
+    void haveData();
 
 private:
-    void sendToClient(QTcpSocket *sock, const QString &str);
-    QTcpServer *tcpServer;
+    Server* server;
     void mousePressEvent(QMouseEvent *event);
-    quint16 blockSize;
-    QString data;
-    QVector<QTcpSocket*> clients;
 };

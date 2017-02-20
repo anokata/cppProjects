@@ -10,5 +10,5 @@ QMAKE_CXXFLAGS += -std=c++11
 CONFIG += c++11
 
 # Input
-HEADERS += ser.h cli.h client.h
-SOURCES += main.cpp client.cpp ser.cpp cli.cpp
+HEADERS += ser.h cli.h client.h server.h
+SOURCES += main.cpp client.cpp ser.cpp cli.cpp server.cpp

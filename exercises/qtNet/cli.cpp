@@ -4,6 +4,7 @@ ClientWidget::ClientWidget(QWidget *parent) : QWidget(parent)
 {
     client = new Client("127.0.0.1", 10000);
     connect(client, SIGNAL(dataRecived()), this, SLOT(haveData()));
+    setStyleSheet("background-color:white;");
 }
 
 void ClientWidget::haveData()

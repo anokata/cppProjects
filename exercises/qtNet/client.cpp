@@ -1,4 +1,5 @@
 #include "client.h"
+#include <QDebug>
 
 Client::Client(QString host, int port) : QObject()
 {
@@ -18,6 +19,7 @@ void Client::readyRead()
     QDataStream in(sock);
     data = "";
     in.setVersion(QDataStream::Qt_5_5);
+    blockSize = 0;
     for (;;) {
         if (!blockSize) {
             if (sock->bytesAvailable() < sizeof(quint16)) {
@@ -42,8 +44,10 @@ void Client::readyRead()
 void Client::connected()
 { }
 
-void Client::error(QAbstractSocket::SocketError)
-{ }
+void Client::error(QAbstractSocket::SocketError err)
+{ 
+    qDebug() << err << sock->errorString();
+}
 
 void Client::sendToServer(QString data)
 {

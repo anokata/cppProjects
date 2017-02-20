@@ -51,16 +51,20 @@ OBJECTS_DIR   = ./
 SOURCES       = main.cpp \
 		client.cpp \
 		ser.cpp \
-		cli.cpp moc_ser.cpp \
+		cli.cpp \
+		server.cpp moc_ser.cpp \
 		moc_cli.cpp \
-		moc_client.cpp
+		moc_client.cpp \
+		moc_server.cpp
 OBJECTS       = main.o \
 		client.o \
 		ser.o \
 		cli.o \
+		server.o \
 		moc_ser.o \
 		moc_cli.o \
-		moc_client.o
+		moc_client.o \
+		moc_server.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -126,10 +130,12 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		qtNet.pro ser.h \
 		cli.h \
-		client.h main.cpp \
+		client.h \
+		server.h main.cpp \
 		client.cpp \
 		ser.cpp \
-		cli.cpp
+		cli.cpp \
+		server.cpp
 QMAKE_TARGET  = qt
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = qt
@@ -311,8 +317,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ser.h cli.h client.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp client.cpp ser.cpp cli.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ser.h cli.h client.h server.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp client.cpp ser.cpp cli.cpp server.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -335,9 +341,9 @@ check: first
 
 compiler_rcc_make_all:
 compiler_rcc_clean:
-compiler_moc_header_make_all: moc_ser.cpp moc_cli.cpp moc_client.cpp
+compiler_moc_header_make_all: moc_ser.cpp moc_cli.cpp moc_client.cpp moc_server.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_ser.cpp moc_cli.cpp moc_client.cpp
+	-$(DEL_FILE) moc_ser.cpp moc_cli.cpp moc_client.cpp moc_server.cpp
 moc_ser.cpp: ser.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ksi/cppProjects/exercises/qtNet -I/home/ksi/cppProjects/exercises/qtNet -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ser.h -o moc_ser.cpp
 
@@ -347,6 +353,9 @@ moc_cli.cpp: client.h \
 
 moc_client.cpp: client.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ksi/cppProjects/exercises/qtNet -I/home/ksi/cppProjects/exercises/qtNet -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include client.h -o moc_client.cpp
+
+moc_server.cpp: server.h
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ksi/cppProjects/exercises/qtNet -I/home/ksi/cppProjects/exercises/qtNet -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include server.h -o moc_server.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -377,6 +386,9 @@ cli.o: cli.cpp cli.h \
 		client.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o cli.o cli.cpp
 
+server.o: server.cpp server.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o server.o server.cpp
+
 moc_ser.o: moc_ser.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_ser.o moc_ser.cpp
 
@@ -385,6 +397,9 @@ moc_cli.o: moc_cli.cpp
 
 moc_client.o: moc_client.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_client.o moc_client.cpp
+
+moc_server.o: moc_server.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_server.o moc_server.cpp
 
 ####### Install
 
