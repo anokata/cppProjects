@@ -1,7 +1,7 @@
 #pragma once
-#include <QtNetwork>
 #include <QtWidgets>
 #include <QDebug>
+#include "client.h"
 
 class ClientWidget : public QWidget
 {
@@ -13,13 +13,8 @@ public:
     void mousePressEvent(QMouseEvent *event);
 
 private slots:
-    void readyRead();
-    void sendToServer();
-    void connected();
-    void error(QAbstractSocket::SocketError);
+    void haveData();
 
 private:
-    QTcpSocket *sock;
-    quint16 blockSize;
-    QString data;
+    Client *client;
 };
