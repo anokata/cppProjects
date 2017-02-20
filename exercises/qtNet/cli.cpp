@@ -1,6 +1,6 @@
 #include "cli.h"
 
-Client::Client(QWidget *parent) : QWidget(parent)
+ClientWidget::ClientWidget(QWidget *parent) : QWidget(parent)
 {
     qDebug() << "(client)construct(cli)";
     sock = new QTcpSocket(this);
@@ -9,17 +9,17 @@ Client::Client(QWidget *parent) : QWidget(parent)
     connect(sock, SIGNAL(readyRead()), this, SLOT(readyRead()));
 }
 
-Client::~Client()
+ClientWidget::~ClientWidget()
 {
     delete sock;
 }
 
-void Client::mousePressEvent(QMouseEvent *event)
+void ClientWidget::mousePressEvent(QMouseEvent *event)
 {
     sendToServer();
 }
 
-void Client::readyRead()
+void ClientWidget::readyRead()
 {
     qDebug() << "(client)ready read";
     QDataStream in(sock);
@@ -46,17 +46,17 @@ void Client::readyRead()
     qDebug() << data;
 }
 
-void Client::connected()
+void ClientWidget::connected()
 {
 
     qDebug() << "(client)connected(client)";
 }
-void Client::error(QAbstractSocket::SocketError)
+void ClientWidget::error(QAbstractSocket::SocketError)
 {
 
     qDebug() << "(client)error";
 }
-void Client::sendToServer()
+void ClientWidget::sendToServer()
 {
     QByteArray a;
     QDataStream out(&a, QIODevice::WriteOnly);

@@ -4,13 +4,13 @@
 #include <QDebug>
 #include <QVector>
 
-class Server : public QWidget
+class ServerWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit Server(QWidget *parent = Q_NULLPTR);
-    ~Server();
+    explicit ServerWidget(QWidget *parent = Q_NULLPTR);
+    ~ServerWidget();
 
 private slots:
     void newConn();

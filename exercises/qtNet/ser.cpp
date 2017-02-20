@@ -1,6 +1,6 @@
 #include "ser.h"
 
-Server::Server(QWidget *parent) : QWidget(parent)
+ServerWidget::ServerWidget(QWidget *parent) : QWidget(parent)
 {
     qDebug() << "(server)constructor";
     tcpServer = new QTcpServer();
@@ -9,20 +9,20 @@ Server::Server(QWidget *parent) : QWidget(parent)
     connect(tcpServer, SIGNAL(newConnection()), this, SLOT(newConn()));
 }
 
-Server::~Server()
+ServerWidget::~ServerWidget()
 {
     tcpServer->close();
     delete tcpServer;
 }
 
-void Server::mousePressEvent(QMouseEvent *event)
+void ServerWidget::mousePressEvent(QMouseEvent *event)
 {
     for (auto c : clients) {
         sendToClient(c, "Some DAta from server");
     }
 }
 
-void Server::newConn()
+void ServerWidget::newConn()
 {
     qDebug() << "(server)new connection";
     QTcpSocket *clientSocket = tcpServer->nextPendingConnection();
@@ -33,7 +33,7 @@ void Server::newConn()
     clients.append(clientSocket);
 }
         
-void Server::readClient()
+void ServerWidget::readClient()
 {
     qDebug() << "(server)read from client ";
     QTcpSocket* sock = (QTcpSocket*)sender();
@@ -61,7 +61,7 @@ void Server::readClient()
     qDebug() << data;
 }
 
-void Server::sendToClient(QTcpSocket *sock, const QString &str)
+void ServerWidget::sendToClient(QTcpSocket *sock, const QString &str)
 {
     QByteArray a;
     QDataStream out(&a, QIODevice::WriteOnly);

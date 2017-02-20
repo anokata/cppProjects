@@ -6,28 +6,32 @@
 #include "ser.h"
 #include "cli.h"
 
-int main(int argc, char *argv[])
+void chooseClientOrServer() 
 {
-    QApplication app(argc, argv);
-    QGuiApplication::setApplicationDisplayName(Server::tr("Server/Client"));
-    Server *server;
-    Client *client;
-
+    ServerWidget *server;
+    ClientWidget *client;
     QMessageBox msgBox;
-    msgBox.setText("Server?");
+
+    msgBox.setText("Run server?");
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     int ret = msgBox.exec();
     switch (ret) {
         case QMessageBox::Yes:
-            server = new Server();
+            server = new ServerWidget();
             server->show();
             break;
         case QMessageBox::No:
-            client = new Client();
+            client = new ClientWidget();
             client->show();
             break;
     }
+}
 
+int main(int argc, char *argv[])
+{
+    QApplication app(argc, argv);
+    QGuiApplication::setApplicationDisplayName(ServerWidget::tr("Server/Client"));
+    chooseClientOrServer();
     app.exec();
     return 0;
 }
