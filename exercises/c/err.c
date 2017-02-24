@@ -53,7 +53,7 @@ int main(int argc, char* argv[], char* envp[]) {
     error_test();
     env_test();
     atexit(exit_func);
-    int pid = fork();
+    pid_t pid = fork();
     if (pid == -1) {
         perror("fork: ");
         return 0;
@@ -61,6 +61,9 @@ int main(int argc, char* argv[], char* envp[]) {
     if (pid == 0) {
         printf("I am child.\n");
         name = "child";
+        printf("try execl.\n");
+        execl("/bin/ls", "ls", ".", NULL);
+        perror("exec: ");
     } else {
         printf("I am parent of %d.\n", pid);
         name = "parent";
