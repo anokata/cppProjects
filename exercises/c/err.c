@@ -50,10 +50,7 @@ void buf_stream_test() {
     printf("code=%d\n", c);
 }
 
-int main(int argc, char* argv[], char* envp[]) {
-    error_test();
-    env_test();
-    atexit(exit_func);
+void fork_exec_test() {
     pid_t pid = fork();
     if (pid == -1) {
         perror("fork: ");
@@ -68,9 +65,17 @@ int main(int argc, char* argv[], char* envp[]) {
     } else {
         printf("I am parent of %d.\n", pid);
         name = "parent";
-        //...
         int *status;
         waitpid(pid, &status, 0); // Correct wait for end.
     }
+}
+
+
+int main(int argc, char* argv[], char* envp[]) {
+    error_test();
+    env_test();
+    atexit(exit_func);
+    fork_exec_test();
+
     return 0;
 }
