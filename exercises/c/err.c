@@ -3,6 +3,7 @@
 #include <stdio.h> // fprintf
 #include <errno.h> // errno
 #include <stdlib.h> // getenv atexit
+#include <sys/wait.h> // waitpid
 //#include <fcntl.h> // how to get file attr? stat?
 extern char **environ;
 
@@ -67,6 +68,9 @@ int main(int argc, char* argv[], char* envp[]) {
     } else {
         printf("I am parent of %d.\n", pid);
         name = "parent";
+        //...
+        int *status;
+        waitpid(pid, &status, 0); // Correct wait for end.
     }
     return 0;
 }
