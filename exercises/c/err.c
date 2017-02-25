@@ -54,7 +54,7 @@ void fork_exec_test() {
     pid_t pid = fork();
     if (pid == -1) {
         perror("fork: ");
-        return 0;
+        return;
     }
     if (pid == 0) {
         printf("I am child.\n");
@@ -62,20 +62,37 @@ void fork_exec_test() {
         printf("try execl.\n");
         execl("/bin/ls", "ls", ".", NULL);
         perror("exec: ");
+        exit(0);
     } else {
         printf("I am parent of %d.\n", pid);
         name = "parent";
         int *status;
-        waitpid(pid, &status, 0); // Correct wait for end.
+        waitpid(pid, status, 0); // Correct wait for end.
     }
 }
 
+void demonize() {
+    //fork
+    //chdir("/");
+    //setsid
+    //fclose(stdin)
+    //fclose(stdout)
+    //fclose(stderr)
+}
+
+void dem_test() {
+    for (int i = 0; i < 100; i++) {
+        printf("[%d]", i*i-i/2);
+        fflush(stdout);
+        usleep(50000);
+    }
+}
 
 int main(int argc, char* argv[], char* envp[]) {
-    error_test();
-    env_test();
-    atexit(exit_func);
-    fork_exec_test();
-
+    //error_test();
+    //env_test();
+    //atexit(exit_func);
+    //fork_exec_test();
+    dem_test();
     return 0;
 }
