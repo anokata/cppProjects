@@ -3,6 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include "mylib.h"
 
 #define BUFSIZE 30
 
@@ -48,7 +49,7 @@ int ppid_tree(char* start_pid) {
     char* pids = get_ppid(start_pid);
     while (strcmp(pids, "1") != 0) {
         printf("%s\n", pids);
-        pids = get_ppid(pids);
+        pids = get_ppid_s(pids);
     }
     printf("%s\n", pids);
     return 0;

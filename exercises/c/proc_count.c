@@ -2,68 +2,47 @@
 #include <dirent.h>
 #include <string.h>
 #include <ctype.h>
+#include "mylib.h"
 
-int is_digit_name(char *str) {
-    while(*str) {
-        if (isdigit(*str))
-            return -1;
-        str++;
+int compare_and_count_name(char* content) {
+    static char name[] = "tmux";
+    static int count = 0;
+    if (strcmp(content, name) == 0) {
+        count++;
     }
-    return 0;
+    return count;
 }
 
-char* read_onestr_file(char *filename) {
-    FILE *fd = fopen(filename, "r");
-    if (!fd) {
-        perror("open file: ");
-        return NULL;
-    }
-    static char buf[256];
-    char* res = fgets(buf, 255, fd);
-    if (!res) {
-        perror("read file: ");
-        return NULL;
-    }
-    buf[strlen(buf) - 1] = '\0';
-    return buf;
-
-    if (!fclose(fd)) {
-        perror("close file: ");
-        return NULL;
-    }
-}
-
-int main() {
-    char name[] = "genenv";
-    char path[] = "/proc/";
+int proc_dir(char* fn, int(*fun)(char*)) {
+    int res = 0;
+    static char path[] = "/proc/";
     char filename[256];
     DIR *dir = opendir(path);
     if (!dir) {
         perror("opendir: ");
         return 0;
     }
-
     struct dirent* cur;
     cur = readdir(dir);
-    int count = 0;
     while (cur) {
         if (is_digit_name(cur->d_name)) {
-            sprintf(filename, "/proc/%s/comm", cur->d_name);
+            sprintf(filename, "/proc/%s/%s", cur->d_name, fn);
             char* content = read_onestr_file(filename);
             if (content) {
-                if (strcmp(content, name) == 0) {
-                    count++;
-                }
+                res = fun(content);
             }
         }
         cur = readdir(dir);
     }
-
-
-    printf("%d\n", count);
     if (closedir(dir)) {
         perror("closedir: ");
         return 0;
     }
+    return res;
+}
+
+int main() {
+    int count = proc_dir("comm", compare_and_count_name);
+    printf("%d\n", count);
     return 0;
 }
