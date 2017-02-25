@@ -4,7 +4,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-int main() {
+int main(int argc, char** argv) {
     const int BUFSIZE = 30;
     char *proc_path = "/proc/self/status";
     char *ppid_str = "PPid";
