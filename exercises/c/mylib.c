@@ -14,22 +14,33 @@ char* read_onestr_file(char *filename) { //mylib
         return NULL;
     }
     buf[strlen(buf) - 1] = '\0';
-    return buf;
-    if (!fclose(fd)) {
+    if (fclose(fd) != 0) {
         perror("close file: ");
         return NULL;
     }
+    return buf;
+}
+
+char* get_ppid_from_stat(char* stat) {
+    char s1[BUFSIZE];
+    char s2[BUFSIZE];
+    char s3[BUFSIZE];
+    static char ppid[BUFSIZE];
+    sscanf(stat, "%s %s %s %s", s1, s2, s3, ppid);
+    return ppid;
+}
+
+char* get_pid_from_stat(char* stat) {
+    static char ppid[BUFSIZE];
+    sscanf(stat, "%s", ppid);
+    return ppid;
 }
 
 char* get_ppid_s(char* pid) { // mylib
     char proc_path[BUFSIZE];
     sprintf(proc_path, "/proc/%s/stat", pid);
     char* stat = read_onestr_file(proc_path);
-    char s1[BUFSIZE];
-    char s2[BUFSIZE];
-    char s3[BUFSIZE];
-    static char ppid[BUFSIZE];
-    sscanf(stat, "%s %s %s %s", s1, s2, s3, ppid);
+    char* ppid = get_ppid_from_stat(stat);
     return ppid;
 }
 
