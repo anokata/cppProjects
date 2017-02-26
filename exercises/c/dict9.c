@@ -66,11 +66,8 @@ struct sentence make_form(char* form, struct pairs* face) {
             sprintf(result.rus, form, p.rus, face->fst, v[0]);
             sprintf(result.eng, form, p.eng, face->efst, v[1]);
         } else {
-            v[1] = strdup(v[1]);
-            strcat(v[1], "s");
             sprintf(result.rus, form, p.rus, face->snd, v[0]);
             sprintf(result.eng, form, p.eng, face->esnd, v[1]);
-            free(v[1]);
         }
     } else {
         sprintf(result.rus, form, p.rus, v[0]);
@@ -80,7 +77,21 @@ struct sentence make_form(char* form, struct pairs* face) {
 }
 
 struct sentence make_affirmative() {
-    return make_form("%s %s", NULL);
+    char* form = "%s %s";
+    static struct sentence result;
+    struct pronoun p = choose_pronoun();
+    char** v = choose_verb();
+    if (p.face) {
+        sprintf(result.rus, form, p.rus, v[0]);
+        sprintf(result.eng, form, p.eng, v[1]);
+    } else {
+        v[1] = strdup(v[1]);
+        strcat(v[1], "s");
+        sprintf(result.rus, form, p.rus, v[0]);
+        sprintf(result.eng, form, p.eng, v[1]);
+        free(v[1]);
+    }
+    return result;
 }
 struct sentence make_affirmative_future() {
     struct pairs neg_do = {" будет ", " will ", " будет ", " will "};
@@ -107,10 +118,7 @@ struct sentence make_interr() {
     if (p.face) {
         sprintf(result.eng, "Do %s %s?", p.eng, v[1]);
     } else {
-        v[1] = strdup(v[1]);
-        strcat(v[1], "s");
         sprintf(result.eng, "Does %s %s?", p.eng, v[1]);
-        free(v[1]);
     }
     return result;
 }
@@ -122,10 +130,7 @@ struct sentence make_interr_future() {
     if (p.face) {
         sprintf(result.eng, "Will %s %s?", p.eng, v[1]);
     } else {
-        v[1] = strdup(v[1]);
-        strcat(v[1], "s");
         sprintf(result.eng, "Will %s %s?", p.eng, v[1]);
-        free(v[1]);
     }
     return result;
 }
@@ -137,10 +142,7 @@ struct sentence make_interr_past() {
     if (p.face) {
         sprintf(result.eng, "Did %s %s?", p.eng, v[1]);
     } else {
-        v[1] = strdup(v[1]);
-        strcat(v[1], "s");
         sprintf(result.eng, "Did %s %s?", p.eng, v[1]);
-        free(v[1]);
     }
     return result;
 }
