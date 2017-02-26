@@ -1,7 +1,8 @@
-#include <unistd.h> // write
-#include <stdio.h> // fprintf
-#include <errno.h> // errno
-#include <stdlib.h> // getenv atexit
+#include <unistd.h>
+#include <stdio.h>
+#include <errno.h>
+#include <stdlib.h>
+#include <signal.h>
 
 void fork_fun(void(*daemon_func)(), void(*parent_func)(pid_t pid)) {
     pid_t pid = fork();
@@ -22,7 +23,20 @@ void parent_func(pid_t pid) {
     printf("%d\n", pid);
 }
 
+void signal_handler(int s) {
+    //printf("signal %d\n", s);
+    exit(0);
+}
+
 void daemon_func() {
+    //signal
+    struct sigaction new_action, old_action;
+    new_action.sa_handler = signal_handler;
+    sigemptyset(&new_action.sa_mask);
+    new_action.sa_flags = 0;
+    //sigaction(SIGURG, NULL, &old_action);
+    sigaction(SIGURG, &new_action, NULL);
+
     chdir("/");
     if (setsid() == -1) {
         perror("setsid: ");
@@ -30,9 +44,7 @@ void daemon_func() {
     }
     fclose(stdin);
     fclose(stderr);
-    //int i = 3;
     fclose(stdout);
-    //while(i--) usleep(500000);
     while(1) usleep(500000);
 }
 
