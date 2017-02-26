@@ -4,6 +4,8 @@
 #include <ctype.h>
 #include "mylib.h"
 #include <stdlib.h> 
+#include <signal.h>
+
 int proc_dir(char* fn, int(*fun)(char*, char*), char* cur_pid);
 
 int count_childrens(char* content, char* cur_pid) {
@@ -66,10 +68,18 @@ int proc_dir(char* fn, int(*fun)(char*, char*), char* cur_pid) {
     return res;
 }
 
+void my_sig_int(int x) {
+    printf("(%d) Ты закрыл меня!\n", x);
+    exit(0);
+}
+
 int main(int argc, char** argv) {
     int count;
     //count = proc_dir("comm", compare_and_count_name, NULL);
     //printf("%d\n", count);
+    signal(SIGINT, my_sig_int);
+    //while(1);
+
     if (argc < 2) return 0;
     count = 0;
     count = proc_dir("stat", count_childrens, argv[1]);
