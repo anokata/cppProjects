@@ -22,7 +22,7 @@ int server() {
     cs = accept(s, NULL, NULL);
 
     char buf[50];
-    read(cs, buf, 29); //recv
+    read(cs, buf, 29); //recv recvfrom and & sock addr and get addr of sender
     printf("(server recv) %s\n", buf);
     close(cs);
     return 0;
