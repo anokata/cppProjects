@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 #include <sys/socket.h>
@@ -7,11 +8,11 @@
 
 struct sockaddr_in local;
 
-int server() {
+int server(char* host, uint32_t port) {
     int s = socket(AF_INET, SOCK_STREAM, 0);
     int cs;
-    inet_aton("127.0.0.1", &local.sin_addr);
-    local.sin_port = htons(1234);
+    inet_aton(host, &local.sin_addr);
+    local.sin_port = htons(port);
     local.sin_family = AF_INET;
     int result = bind(s, (struct sockaddr*) &local, sizeof(local));
     if (result) {
@@ -28,12 +29,11 @@ int server() {
     return 0;
 }
 
-int client() {
+int client(char* host, uint32_t port) {
     int s = socket(AF_INET, SOCK_STREAM, 0);
-    inet_aton("127.0.0.1", &local.sin_addr);
-    local.sin_port = htons(1234);
+    inet_aton(host, &local.sin_addr);
+    local.sin_port = htons(port);
     local.sin_family = AF_INET;
-    //int result = bind(s, (struct sockaddr*) &local, sizeof(local));
     connect(s, (struct sockaddr*) &local, sizeof(local));
     char buf[50] = "(client send) client connected\n";
     write(s, buf, strlen(buf) + 1); //send
@@ -42,14 +42,15 @@ int client() {
 }
 
 int main(int argc, char** argv) {
-    if (argc < 2) {
+    if (argc < 3) {
+        printf("Add options s/c progname host port\n");
         return 0;
     }
     //struct sockaddr_in local;
     if (argv[1][0] == 's') {
-        server();
+        server(argv[2], atol(argv[3]));
     } else { 
-        client();
+        client(argv[2], atol(argv[3]));
     }
     return 0;
 }
