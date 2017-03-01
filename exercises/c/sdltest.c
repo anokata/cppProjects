@@ -1,6 +1,8 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
+#include <SDL/SDL_gfxPrimitives.h>
 
+//TODO: basic lines
 #define FRAMES_PER_SECOND 20
 
 static uint32_t start = 0;
@@ -42,6 +44,15 @@ int main( int argc, char* args[] )
     }
     SDL_BlitSurface( hello, NULL, screen, NULL );
     SDL_Flip( screen );
+    uint32_t* pixels = screen->pixels;
+    for (uint32_t x = 0; x < 100; x++) {
+        pixels[x*x] = 0xFF0000;
+    }
+    //lineRGBA(screen, 0, 0, 100, 50, 100, 0, 0, 255);
+    aalineRGBA(screen, 0, 0, 100, 50, 100, 0, 0, 200);
+    boxColor(screen, 10, 10, 100, 50, 0xFFFF00AA);
+    //filledEllipseRGBA(screen, 100, 100, 100, 50, 200, 0, 100, 255);
+    aaellipseRGBA(screen, 100, 100, 100, 50, 200, 0, 100, 255);
     while (quit == 0) {
         start_timer();
         while (SDL_PollEvent(&event)) {
