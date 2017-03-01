@@ -8,10 +8,21 @@
 
 #define FRAMES_PER_SECOND 60
 
+typedef struct {
+    SDL_Color text_color;
+    SDL_Color rect_color;
+    char* text;
+    char texts[32];
+} list_node;
+
+void render_list(SDL_Surface* surface, GList* list);
+
 static FPSmanager frames;
 static SDL_Surface* screen = NULL;
 static TTF_Font* font = NULL;
 static SDL_Surface* hello = NULL;
+
+static GList* test_list = NULL;
 
 int 
 sdl_init() {
@@ -37,10 +48,10 @@ init_render() {
         perror("render text");
         return -1;
     }
-    SDL_Rect r = {10, 200};
+    SDL_Rect r = {200, 200};
     SDL_BlitSurface( hello, NULL, screen, &r );
     SDL_Flip( screen );
-    boxColor(screen, 10, 10, 100, 50, 0xFFFF00AA);
+    boxColor(screen, 200, 200, 100, 50, 0xFFFF00AA);
     return 0;
 }
 
@@ -61,7 +72,8 @@ main_loop() {
                 }
             }
         }
-        SDL_Flip( screen );
+        render_list(screen, test_list);
+        SDL_Flip(screen);
         SDL_framerateDelay(&frames);
     }
     return 0;
@@ -69,8 +81,36 @@ main_loop() {
 
 void 
 sdl_free() {
-    SDL_FreeSurface( hello );
+    SDL_FreeSurface(hello);
     SDL_Quit();
+}
+
+void render_list(SDL_Surface* surface, GList* list) {
+    list_node* p = NULL;
+    GList* cur = list;
+    SDL_Surface* img = NULL;
+    SDL_Rect r;
+    r.y = 0;
+    r.x = 10;
+    while (cur != NULL) {
+        // void render_boxnode(
+        p = cur->data;
+        Uint32 rgbColor = SDL_MapRGB(screen->format, p->rect_color.r, p->rect_color.g, p->rect_color.b);
+        //boxColor(screen, r.x, r.y, r.x+100, r.y+40, rgbColor);
+        boxRGBA(screen, r.x, r.y, r.x+100, r.y+40, 
+                p->rect_color.r,
+                p->rect_color.g,
+                p->rect_color.b,
+                255
+                );
+        printf("render %s %x\n", p->texts, rgbColor);
+        //printf("%d %d \n", r.x, r.y);
+        //printf("%d %d %d\n", p->rect_color.r, p->rect_color.g, p->rect_color.b);
+        img = TTF_RenderText_Shaded(font, p->texts, p->text_color, p->rect_color);
+        SDL_BlitSurface(img, NULL, screen, &r);
+        cur = cur->next;
+        r.y += 40;
+    }
 }
 
 void glibtest() {
@@ -86,6 +126,11 @@ void glibtest() {
         p = p->next;
     }
     g_list_free(l);
+
+    static list_node node1 = {{255, 0, 255}, {0, 0, 130}, NULL, "AbcD"};
+    test_list = g_list_append(test_list, &node1);
+    static list_node node2 = {{255, 0, 0}, {0, 100, 0}, NULL, "9_8"};
+    test_list = g_list_append(test_list, &node2);
 }
 
 int 
