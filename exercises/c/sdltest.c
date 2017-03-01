@@ -3,6 +3,7 @@
 #include <SDL/SDL_gfxPrimitives.h>
 #include <SDL/SDL_framerate.h>
 #include <glib.h>
+#include <string.h>
 
 //TODO: 
 
@@ -11,16 +12,25 @@
 typedef struct {
     SDL_Color text_color;
     SDL_Color rect_color;
+	uint32_t padx;
+	uint32_t pady;
+} node_options;
+
+typedef struct {
     char* text;
     char texts[32];
+	char selected;
+	node_options* options;
+	// pointer to option struct
 } list_node;
+// struct for common node options like padding, colors
+// constructor for default
 
-void render_list(SDL_Surface* surface, GList* list);
+void render_list(SDL_Surface* surface, GList* list, uint32_t x, uint32_t y);
 
 static FPSmanager frames;
 static SDL_Surface* screen = NULL;
 static TTF_Font* font = NULL;
-static SDL_Surface* hello = NULL;
 
 static GList* test_list = NULL;
 
@@ -41,17 +51,8 @@ sdl_init() {
 
 int 
 init_render() {
-    SDL_Color textColor = {255, 0, 255};
-    SDL_Color bgColor = {0, 0, 0};
-    hello = TTF_RenderText_Shaded(font, "Hello text", textColor, bgColor);
-    if (hello == NULL) {
-        perror("render text");
-        return -1;
-    }
     SDL_Rect r = {200, 200};
-    SDL_BlitSurface( hello, NULL, screen, &r );
     SDL_Flip( screen );
-    boxColor(screen, 200, 200, 100, 50, 0xFFFF00AA);
     return 0;
 }
 
@@ -72,7 +73,7 @@ main_loop() {
                 }
             }
         }
-        render_list(screen, test_list);
+        render_list(screen, test_list, 100, 50);
         SDL_Flip(screen);
         SDL_framerateDelay(&frames);
     }
@@ -81,56 +82,53 @@ main_loop() {
 
 void 
 sdl_free() {
-    SDL_FreeSurface(hello);
     SDL_Quit();
 }
 
-void render_list(SDL_Surface* surface, GList* list) {
+
+
+void render_list(SDL_Surface* surface, GList* list, uint32_t x, uint32_t y) {
+    uint32_t height = 30;
+    uint32_t width = 20;
     list_node* p = NULL;
     GList* cur = list;
+	node_options* options = NULL;
     SDL_Surface* img = NULL;
     SDL_Rect r;
-    r.y = 0;
-    r.x = 10;
+	r.y = y;
     while (cur != NULL) {
-        // void render_boxnode(
+        // void render_boxnode(list_node* p)
+		r.x = x;
         p = cur->data;
-        Uint32 rgbColor = SDL_MapRGB(screen->format, p->rect_color.r, p->rect_color.g, p->rect_color.b);
-        //boxColor(screen, r.x, r.y, r.x+100, r.y+40, rgbColor);
-        boxRGBA(screen, r.x, r.y, r.x+100, r.y+40, 
-                p->rect_color.r,
-                p->rect_color.g,
-                p->rect_color.b,
+		options = p->options;
+        img = TTF_RenderText_Shaded(font, p->texts, options->text_color, options->rect_color);
+		width = img->w + options->padx; 
+		height = img->h + options->pady;
+        Uint32 rgbColor = SDL_MapRGB(screen->format, 
+				options->rect_color.r, 
+				options->rect_color.g, 
+				options->rect_color.b);
+        boxRGBA(screen, r.x, r.y, r.x + width, r.y+height, 
+                options->rect_color.r,
+                options->rect_color.g,
+                options->rect_color.b,
                 255
                 );
-        printf("render %s %x\n", p->texts, rgbColor);
-        //printf("%d %d \n", r.x, r.y);
-        //printf("%d %d %d\n", p->rect_color.r, p->rect_color.g, p->rect_color.b);
-        img = TTF_RenderText_Shaded(font, p->texts, p->text_color, p->rect_color);
+		r.x += (width - img->w) / 2;
+		r.y += (height - img->h) / 2;
         SDL_BlitSurface(img, NULL, screen, &r);
         cur = cur->next;
-        r.y += 40;
+        r.y += height;
     }
 }
 
 void glibtest() {
-    GList *l = NULL;
-    int z = 0x00414200;
-    l = g_list_append(l, "first");
-    l = g_list_append(l, &z);
-    l = g_list_append(l, "t");
-    GList *p = l;
-    while (p != NULL) {
-        char* str = p->data;
-        printf("%s\n", str);
-        p = p->next;
-    }
-    g_list_free(l);
-
-    static list_node node1 = {{255, 0, 255}, {0, 0, 130}, NULL, "AbcD"};
+	static node_options opts = {{0x60, 0x80, 0xC0}, {0x30, 0, 0x40}, 30, 10};
+    static list_node node1 = {NULL, "AbcD", 0, &opts};
     test_list = g_list_append(test_list, &node1);
-    static list_node node2 = {{255, 0, 0}, {0, 100, 0}, NULL, "9_8"};
+    static list_node node2 = {NULL, "[text node.]", 0, &opts};
     test_list = g_list_append(test_list, &node2);
+    //g_list_free(l);
 }
 
 int 
