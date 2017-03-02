@@ -58,6 +58,33 @@ init_render() {
     return 0;
 }
 
+// State System
+#define STATE_DEFAULT 1
+#define STATE_EDIT 2
+#define STATE_MAX_HANDLERS 100
+static int state = STATE_DEFAULT;
+typedef void (*state_handler)(void);
+static state_handler handlers[STATE_MAX_HANDLERS] = {0};
+//state_handler[STATE_EDIT] = //
+//static 
+void state_set(int s) {
+	state = s;
+}
+
+void state_set_handler(int st, int event, state_handler fun) {
+
+}
+
+void edit_current() {
+	state_set(STATE_EDIT);
+}
+
+void key_handler(char k) {
+	switch (k) {
+		case 'e': edit_current(); break;
+	}
+}
+
 int 
 main_loop() {
     SDL_Event event;
@@ -74,6 +101,7 @@ main_loop() {
                     default: printf("key%d %c\n", event.key.keysym.sym, event.key.keysym.sym); 
                 }
 				char key = event.key.keysym.sym;
+				key_handler(key);
 				if (key >= 'a' && key <= 'z') {
 					add_node("key");
 				}
