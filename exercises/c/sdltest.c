@@ -18,7 +18,7 @@ typedef struct {
 
 typedef struct {
     char* text;
-    char texts[32];
+    //char texts[32];
 	char selected;
 	node_options* options;
 	// pointer to option struct
@@ -27,12 +27,14 @@ typedef struct {
 // constructor for default
 
 void render_list(SDL_Surface* surface, GList* list, uint32_t x, uint32_t y);
+void add_node(char* text);
 
 static FPSmanager frames;
 static SDL_Surface* screen = NULL;
 static TTF_Font* font = NULL;
 
 static GList* test_list = NULL;
+static node_options opts = {{0x60, 0x80, 0xC0}, {0x30, 0, 0x40}, 30, 10};
 
 int 
 sdl_init() {
@@ -69,8 +71,12 @@ main_loop() {
                 //GetModState
                 switch (event.key.keysym.sym) {
                     case SDLK_ESCAPE: quit = 1; break;
-                    default: printf("key%d\n", event.key.keysym.sym); 
+                    default: printf("key%d %c\n", event.key.keysym.sym, event.key.keysym.sym); 
                 }
+				char key = event.key.keysym.sym;
+				if (key >= 'a' && key <= 'z') {
+					add_node("key");
+				}
             }
         }
         render_list(screen, test_list, 100, 50);
@@ -85,7 +91,12 @@ sdl_free() {
     SDL_Quit();
 }
 
-
+void add_node(char* text) {
+	list_node *node_new = calloc(1, sizeof(list_node));
+	node_new->text = text;
+	node_new->options = &opts;
+    test_list = g_list_append(test_list, node_new);
+}
 
 void render_list(SDL_Surface* surface, GList* list, uint32_t x, uint32_t y) {
     uint32_t height = 30;
@@ -101,7 +112,8 @@ void render_list(SDL_Surface* surface, GList* list, uint32_t x, uint32_t y) {
 		r.x = x;
         p = cur->data;
 		options = p->options;
-        img = TTF_RenderText_Shaded(font, p->texts, options->text_color, options->rect_color);
+		char* text = p->text; 
+        img = TTF_RenderText_Shaded(font, text, options->text_color, options->rect_color);
 		width = img->w + options->padx; 
 		height = img->h + options->pady;
         Uint32 rgbColor = SDL_MapRGB(screen->format, 
@@ -123,12 +135,9 @@ void render_list(SDL_Surface* surface, GList* list, uint32_t x, uint32_t y) {
 }
 
 void glibtest() {
-	static node_options opts = {{0x60, 0x80, 0xC0}, {0x30, 0, 0x40}, 30, 10};
-    static list_node node1 = {NULL, "AbcD", 0, &opts};
-    test_list = g_list_append(test_list, &node1);
-    static list_node node2 = {NULL, "[text node.]", 0, &opts};
-    test_list = g_list_append(test_list, &node2);
-    //g_list_free(l);
+	add_node("Abcd_");
+	add_node("[text node]");
+	add_node("add with func");
 }
 
 int 
@@ -139,5 +148,6 @@ main( int argc, char* args[] )
     init_render();
     main_loop();
     sdl_free();
+	g_list_free(test_list);
     return 0;
 }
