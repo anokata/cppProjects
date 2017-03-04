@@ -3,9 +3,8 @@
 #include <SDL/SDL_gfxPrimitives.h>
 #include <SDL/SDL_framerate.h>
 #include <glib.h>
-#include <string.h>
 
-//TODO: 
+//TODO: make demo scene
 
 #define FRAMES_PER_SECOND 60
 
@@ -28,6 +27,8 @@ typedef struct {
 
 void render_list(SDL_Surface* surface, GList* list, uint32_t x, uint32_t y);
 void add_node(char* text);
+void demo_run();
+void demo(int tick);
 
 static FPSmanager frames;
 static SDL_Surface* screen = NULL;
@@ -108,6 +109,7 @@ main_loop() {
             }
         }
         render_list(screen, test_list, 100, 50);
+		demo_run();
         SDL_Flip(screen);
         SDL_framerateDelay(&frames);
     }
@@ -160,6 +162,21 @@ void render_list(SDL_Surface* surface, GList* list, uint32_t x, uint32_t y) {
         cur = cur->next;
         r.y += height;
     }
+}
+
+void demo_run() {
+	static int t = 0;
+	const int m = 10;
+	if (t % m == 0) {
+		demo(t++ / m);
+	} else t++;
+}
+void demo(int tick) {
+    SDL_Surface* img = NULL;
+	char text[20];
+	sprintf(text, "%d", tick);
+	img = TTF_RenderText_Shaded(font, text, opts.text_color, opts.rect_color);
+	SDL_BlitSurface(img, NULL, screen, NULL);
 }
 
 void glibtest() {
