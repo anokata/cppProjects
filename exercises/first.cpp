@@ -1857,10 +1857,39 @@ int fib_rec(int n) {
     if (n < 3) return 1;
     return fib_rec(n - 1) + fib_rec(n - 2);
 }
+using namespace std;
 
+class SequenceSum{
+  int count;
+  public:
+  string sum;
+  SequenceSum (int);
+  string showSequence(){
+  	return sum;
+  }
+};
 
+SequenceSum::SequenceSum (int c) {
+  count = c;
+  if (c == 0) {
+  	sum = "0=0";
+    return;
+  }
+  if (c < 0) {
+    sum = to_string(c) + "<0";
+    return;
+  }
+  int s = 0;
+  
+  for (int i=0; i < c; ++i) {
+    sum += to_string(i) + "+";
+    s += i;
+  }
+  s += c;
+  sum += to_string(c) + " = " + to_string(s);
+}
 
-int main() {
+void test1() {
     cout << IsPointInSquare(1.0, 0.1) << abs(-1) << abs(-1.0) << std::abs(1) << std::abs(-1.0);
     cout << endl << power(2.3, 2);
     cout << endl << power(0.1, -2);
@@ -1871,6 +1900,11 @@ int main() {
     cout << endl << qpower(0.1, -2);
     //cout << endl << sum_rec();
     cout << endl << fib_rec(7);
+}
+
+int main() {
+    SequenceSum seqsum (6);
+    seqsum.showSequence();
     return 0;
 }
 // algorithm std::swap
