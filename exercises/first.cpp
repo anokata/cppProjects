@@ -1902,9 +1902,19 @@ void test1() {
     cout << endl << fib_rec(7);
 }
 
+string rotStr(string s, int index) {
+    if (!index) return s;
+    rotate(s.begin(), s.begin()+index, s.end());
+    return s;
+}
+
 int main() {
-    SequenceSum seqsum (6);
-    seqsum.showSequence();
+    //SequenceSum seqsum (6);
+    //seqsum.showSequence();
+    cout << rotStr("abcde", 0) << endl;
+    cout << rotStr("abcde", 1) << endl;
+    cout << rotStr("abcde", 2) << endl;
+    cout << rotStr("abcde", 3) << endl;
     return 0;
 }
 // algorithm std::swap
