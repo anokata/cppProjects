@@ -2045,7 +2045,169 @@ string SubtractSum(int n)
   return v[n];
 }
 
-int main() {
+map<string, string> MORSE_CODE = {
+    {".-", "A"},
+    {"-...", "B"},
+    {"-.-.", "C"},
+    {"-..", "D"},
+    {".", "E"},
+    {"..-.", "F"},
+    {"--.", "G"},
+    {"....", "H"},
+    {"..", "I"},
+    {".---", "J"},
+    {"-.-", "K"},
+    {".-..", "L"},
+    {"--", "M"},
+    {"-.", "N"},
+    {"---", "O"},
+    {".--.", "P"},
+    {"--.-", "Q"},
+    {".-.", "R"},
+    {"...", "S"},
+    {"-", "T"},
+    {"..-", "U"},
+    {"...-", "V"},
+    {".--", "W"},
+    {"-..-", "X"},
+    {"-.--", "Y"},
+    {"--..", "Z"},
+    {".----", "1"},
+    {"..---", "2"},
+    {"...--", "3"},
+    {"....-", "4"},
+    {".....", "5"},
+    {"-....", "6"},
+    {"--...", "7"},
+    {"---..", "8"},
+    {"----.", "9"},
+    {"-----", "0"}
+};
+string trim_ws(string s) {
+    size_t start = s.find_first_not_of(" \t\n");
+    string trimed = s.substr(
+            start,
+            s.find_last_not_of(" \t\n") - start + 1
+            );
+    return trimed;
+}
+
+string decodeMorse(string morseCode) {
+    string msg = "";
+    string buf = "";
+    bool space = false;
+    morseCode = trim_ws(morseCode);
+    for (int i = 0; i < morseCode.size(); ++i) {
+        if (morseCode[i] == ' ') {
+            if (MORSE_CODE.find(buf) != MORSE_CODE.end()) {
+                //cout << buf << endl;
+                msg += MORSE_CODE.at(buf);
+                buf = "";
+            } else if (!space) {
+                space = true;
+                msg += " ";
+                buf = "";
+            }
+        } else { 
+            space = false;
+            buf += morseCode[i];
+        }
+    }
+    msg += MORSE_CODE.at(buf);
+
+    return msg;
+}
+
+string trim_chars(string s, string trim) {
+    size_t start = s.find_first_not_of(trim);
+    string trimed = s.substr(
+            start,
+            s.find_last_not_of(trim) - start + 1
+            );
+    return trimed;
+}
+string decodeBitsAdvanced (const char *bits) {
+   string bitstr = string(bits); 
+   string msg = "";
+   bitstr = trim_chars(bitstr, "0");
+   vector<int> wides;
+   vector<int> zwides;
+   int count = 0;
+   int zcount = 0;
+   // count uniq
+   for (char c : bitstr) {
+       if (c == '0') {
+           zcount++;
+           if (find(wides.begin(), wides.end(), count) == wides.end() && count) {
+               wides.push_back(count);
+           }
+           count = 0;
+       } else {
+           count++;
+           if (find(zwides.begin(), zwides.end(), zcount) == zwides.end() && zcount) {
+               zwides.push_back(zcount);
+           }
+           zcount = 0;
+       }
+   }
+   // sort
+   sort(wides.begin(), wides.end());
+   sort(zwides.begin(), zwides.end());
+   for (auto x : zwides) cout << x << ' ';
+   // choose edge
+   int edge = 0;
+   for (auto x : wides) {
+       if (x * x > wides.back()) {
+           edge = x;
+           break;
+       }
+   }
+   int zedge = 0;
+   int zedge2 = 0;
+   int step = zwides.size() / 3 - 1;
+   for (int i = 0; i < zwides.size(); ++i) {
+       int val = (i + step) < zwides.size() ? zwides[i + step] : zwides[zwides.size() - 1];
+       if (zwides[i] * 2 > val) {
+           zedge = zwides[i];
+           break;
+       }
+   }
+   cout << 'z' << zedge << ' ' << zedge2<<endl;
+   // decode
+   count = 0;
+   zcount = 0;
+   for (char c : bitstr) {
+       if (c == '0') {
+           zcount++;
+           if (count) {
+               //cout << count << ' ' << edge << endl;
+               if (count <= edge) {
+                   msg += '.';
+               } else {
+                   msg += '-';
+               }
+               count = 0;
+           }
+       } else {
+           count++;
+           if (zcount) {
+               msg += zcount <= edge ? "" : " ";
+               zcount = 0;
+           }
+       }
+   }
+   if (count) {
+       if (count <= edge) {
+           msg += '.';
+       } else {
+           msg += '-';
+       }
+   }
+
+   return msg;
+}
+
+void test3() {
     //SequenceSum seqsum (6);
     //seqsum.showSequence();
     cout << rotStr("abcde", 0) << endl;
@@ -2060,6 +2222,34 @@ int main() {
     cout << amIWilson(5) << endl;
     cout << amIWilson(17) << endl;
     cout << SubtractSum(325);
+}
+
+void test() {
+    cout << "|" << decodeMorse(".... . -.--   .--- ..- -.. .") << "|" << endl;
+    cout << "|" << decodeMorse("....") << "|" << endl;
+    cout << "|" << decodeMorse(".") << "|" << endl;
+    cout << "|" << decodeMorse(" . ") << "|" << endl;
+    cout << ".... . -.--   .--- ..- -.. ." << endl;
+    cout << ".....-.--.---..--..." << endl;
+    string s = decodeBitsAdvanced("0000000011011010011100000110000001111110100111110011111100000000000111011111111011111011111000000101100011111100000111110011101100000100000");
+    cout << s << endl;
+    cout << decodeMorse(s);
+    
+}
+//0000000011011010011100000110000001111110100111110011111100000000000
+//111011111111011111011111000000101100011111100000111110011101100000100000
+//8
+//1 2 1 3 2 6 1 5 6 3 8 5 5 1 2 6 5 3 2 1
+//1 2 3 5 6 8 
+//0 1 2 1 2 
+//0 0 1 0 
+//0 0 0
+//1 2 3 5 6 9 
+//0 1 1 4 3
+//0 1 0 3
+//0 0 0
+int main() {
+    test();
     return 0;
 }
 // algorithm std::swap
