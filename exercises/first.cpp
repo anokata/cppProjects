@@ -1908,6 +1908,143 @@ string rotStr(string s, int index) {
     return s;
 }
 
+unsigned fact(unsigned n) {
+    unsigned f = 1;
+    for (unsigned i = 2; i <= n; i++) {
+        f *= i;
+    }
+    return f;
+}
+
+
+bool amIWilson(unsigned p) {
+    return (fact(p-1) + 1) % (p * p) == 0;
+}
+
+bool wilsonPrime(unsigned p) {
+    return (fact(p-1) + 1) % (p * p) == 0;
+}
+
+int subSum(int n) {
+  int m = n;
+  int sum = n % 10;
+  for (int i = 0; i < 4; ++i) {
+    n /= 10;
+    sum += n  % 10;
+  }
+  return m - sum;
+}
+
+string SubtractSum(int n)
+{
+  while (n > 100) {
+      n = subSum(n);
+  }
+  vector<string> v = {
+    "kiwi",
+    "pear",
+    "kiwi",
+    "banana",
+    "melon",
+    "banana",
+    "melon",
+    "pineapple",
+    "apple",
+    "pineapple",
+    "cucumber",
+    "pineapple",
+    "cucumber",
+    "orange",
+    "grape",
+    "orange",
+    "grape",
+    "apple",
+    "grape",
+    "cherry",
+    "pear",
+    "cherry",
+    "pear",
+    "kiwi",
+    "banana",
+    "kiwi",
+    "apple",
+    "melon",
+    "banana",
+    "melon",
+    "pineapple",
+    "melon",
+    "pineapple",
+    "cucumber",
+    "orange",
+    "apple",
+    "orange",
+    "grape",
+    "orange",
+    "grape",
+    "cherry",
+    "pear",
+    "cherry",
+    "pear",
+    "apple",
+    "pear",
+    "kiwi",
+    "banana",
+    "kiwi",
+    "banana",
+    "melon",
+    "pineapple",
+    "melon",
+    "apple",
+    "cucumber",
+    "pineapple",
+    "cucumber",
+    "orange",
+    "cucumber",
+    "orange",
+    "grape",
+    "cherry",
+    "apple",
+    "cherry",
+    "pear",
+    "cherry",
+    "pear",
+    "kiwi",
+    "pear",
+    "kiwi",
+    "banana",
+    "apple",
+    "banana",
+    "melon",
+    "pineapple",
+    "melon",
+    "pineapple",
+    "cucumber",
+    "pineapple",
+    "cucumber",
+    "apple",
+    "grape",
+    "orange",
+    "grape",
+    "cherry",
+    "grape",
+    "cherry",
+    "pear",
+    "cherry",
+    "apple",
+    "kiwi",
+    "banana",
+    "kiwi",
+    "banana",
+    "melon",
+    "banana",
+    "melon",
+    "pineapple",
+    "apple",
+    "pineapple"
+  };
+  return v[n];
+}
+
 int main() {
     //SequenceSum seqsum (6);
     //seqsum.showSequence();
@@ -1915,6 +2052,14 @@ int main() {
     cout << rotStr("abcde", 1) << endl;
     cout << rotStr("abcde", 2) << endl;
     cout << rotStr("abcde", 3) << endl;
+    cout << fact(5) << endl;
+    cout << amIWilson(9) << endl;
+    cout << amIWilson(9) << endl;
+    cout << amIWilson(6) << endl;
+    cout << amIWilson(2) << endl;
+    cout << amIWilson(5) << endl;
+    cout << amIWilson(17) << endl;
+    cout << SubtractSum(325);
     return 0;
 }
 // algorithm std::swap
