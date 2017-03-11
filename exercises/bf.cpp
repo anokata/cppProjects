@@ -134,7 +134,8 @@ void Machine::printState() {
         cout << code << endl;
         for (int i = 0; i < ip; ++i) cout << ' ';
         cout << '^' << endl;
-        cout << out << endl;
+        cout << std::dec;
+        cout << "out:[" << out << "]" << "BIN{" << (unsigned int) out[0] << "}" << out.size() << endl;
     }
 }
 
@@ -175,8 +176,8 @@ void Machine::step() {
 void Machine::run() {
     while(ip < code.size()) {
         step();
-        usleep(200000);
-        printState();
+        //usleep(200000);
+        //printState();
     }
 }
 
@@ -184,7 +185,7 @@ std::string brainLuck(std::string code, std::string input)
 {
     Machine m(code, input);
     m.run();
-    m.printState();
+    //m.printState();
     return m.getOutput();
 }
 
@@ -192,5 +193,16 @@ int main() {
     string in = "Hi";
     in.append(1,(char)255);
     cout << brainLuck(",+[-.,+]", in);
+
+    std::string mw = "codewars";
+    mw.append(1,(char)0);
+    cout << brainLuck(",[.[-],]",mw);
+
+    std::string dw;
+    dw.append(1, (char) 7);
+    dw.append(1, (char) 3);
+    std::string result;
+    cout << brainLuck(",>,<[>[->+>+<<]>>[-<<+>>]<<<-]>>.",dw);
+      
     return 0;
 }
