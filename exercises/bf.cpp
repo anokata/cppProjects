@@ -185,7 +185,7 @@ std::string brainLuck(std::string code, std::string input)
 {
     Machine m(code, input);
     m.run();
-    //m.printState();
+    m.printState();
     return m.getOutput();
 }
 
