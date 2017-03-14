@@ -7,6 +7,7 @@
 
 #define BF_MEMORY_SIZE 30000
 #define BF_LOOPS_SIZE 1000
+#define BF_OUT_SIZE 1000
 typedef struct Machine {
     uint8_t *data; 
     uint8_t dp; // Data pointer
@@ -32,7 +33,7 @@ Machine* make_machine(char* code, char* input) {
     m->ii = 0;
     m->code = code;
     m->code_size = strlen(code);
-    m->output = malloc(100);
+    m->output = malloc(BF_OUT_SIZE);
     m->input = input;
     m->input_size = strlen(input);
 
@@ -60,7 +61,17 @@ void down_machine(Machine* m) {
     free(m);
 }
 
-void print_machine(Machine* m) {
+int machine_reset(Machine* m) {
+    m->dp = 0;
+    m->ip = 0;
+    m->oi = 0;
+    m->ii = 0;
+    memset(m->output, 0, BF_OUT_SIZE);
+    memset(m->data, 0, BF_MEMORY_SIZE);
+    return 1;
+}
+
+int print_machine(Machine* m) {
     printf("%s\n", m->code);
     for (int i = 0; i < m->ip; i++) {
         printf(" ");
@@ -88,6 +99,7 @@ void print_machine(Machine* m) {
         }
     }
     printf("\n");
+    return 1;
 }
 
 void machine_cmd_dpinc(Machine* m) {
@@ -130,7 +142,7 @@ void machine_cmd_loop_end(Machine* m) {
     }
 }
 
-void machine_step(Machine* m) {
+int machine_step(Machine* m) {
     switch (m->code[m->ip]) {
         case '>':
             machine_cmd_dpinc(m);
@@ -158,6 +170,7 @@ void machine_step(Machine* m) {
             break;
     }
     m->ip++;
+    return 1;
 }
 
 void test_instructions(Machine* m) {
@@ -177,26 +190,49 @@ void test_instructions(Machine* m) {
     machine_cmd_out(m);
 }
 
-void machine_run(Machine* m) {
+int machine_run(Machine* m) {
     while (m->ip < m->code_size) {
         machine_step(m);
-        print_machine(m);
-        usleep(100000);
+        //print_machine(m);
+        //usleep(100000);
     }
+    return 1;
 }
 
-typedef void (*cmd_func)(Machine*);
+int exit_func(Machine* m) {
+    return 0;
+}
+
+int help_func(Machine* m) {
+    static const char help[] = "Possible commands: \n\trun\texit";
+    printf("%s\n", help);
+    return 1;
+}
+
+typedef int (*cmd_func)(Machine*);
 
 typedef struct {
     char cmd[30];
     cmd_func func;
 } Command;
 Command commands[] = {
-    {"run", machine_run}
+    {"run", machine_run},
+    {"print", print_machine},
+    {"p", print_machine},
+    {"pr", print_machine},
+    {"step", machine_step},
+    {"s", machine_step},
+    {"reset", machine_reset},
+    {"r", machine_reset},
+    {"exit", exit_func},
+    {"q", exit_func},
+    {"quit", exit_func},
+    {"help", help_func},
+    {"h", help_func},
 };
 
 cmd_func find_cmd_func(char *cmd) {
-    for (int i = 0; i < sizeof(commands); i++) {
+    for (int i = 0; i < sizeof(commands)/sizeof(Command); i++) {
         if (strcmp(commands[i].cmd, cmd) == 0) {
             return commands[i].func;
         }
@@ -205,10 +241,8 @@ cmd_func find_cmd_func(char *cmd) {
 }
 
 #define INPUT_BUF 200
-void repl() {
+int repl_one(Machine* m) {
     static const char promt[] = " > ";
-    static const char help[] = "Possible commands: \n\trun\texit";
-    printf("%s\n", help);
     printf("%s", promt);
 
     char buf[INPUT_BUF];
@@ -216,22 +250,26 @@ void repl() {
     char cmd[INPUT_BUF];
     char arg1[INPUT_BUF];
     sscanf(buf, "%s %s", cmd, arg1);
-    // cmd func find()
     cmd_func f = find_cmd_func(cmd);
     if (f) {
-        printf("! %p\n", f);
+        return f(m);
     } else {
-        printf("! Not Found!");
+        printf("Command '%s' not found! [h for help]\n", cmd);
+        return 1;
     }
+    return 1;
+}
 
+void repl(Machine* m) {
+    while(repl_one(m));
 }
 
 void test_m() {
     char input[] = "some\xFF";
     char code[] = ",+[-.,+]";
     Machine* m = make_machine(code, input);
-    printf("> Machine maked.\n");
-    repl();
+    printf("** Machine maked.\n");
+    repl(m);
     //machine_run(m);
     //test_instructions(m);
     //print_machine(m);
@@ -241,8 +279,8 @@ void test_m() {
 //TODO: interactive commands: view state, make step, run, reset, break at, 
 // mem edit, input edit, code edit, loops view colors, Exec instruction
 int main(int argc, char** argv) {
-    printf("Brainfuck interpreter v 0.0 (q)\n");
+    printf("* Brainfuck interpreter v 0.0 (q)\n");
     test_m();
-    printf("Quited.");
+    printf("* Quited.");
     return 0;
 }
