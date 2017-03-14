@@ -185,19 +185,61 @@ void machine_run(Machine* m) {
     }
 }
 
+typedef void (*cmd_func)(Machine*);
+
+typedef struct {
+    char cmd[30];
+    cmd_func func;
+} Command;
+Command commands[] = {
+    {"run", machine_run}
+};
+
+cmd_func find_cmd_func(char *cmd) {
+    for (int i = 0; i < sizeof(commands); i++) {
+        if (strcmp(commands[i].cmd, cmd) == 0) {
+            return commands[i].func;
+        }
+    }
+    return NULL;
+}
+
+#define INPUT_BUF 200
+void repl() {
+    static const char promt[] = " > ";
+    static const char help[] = "Possible commands: \n\trun\texit";
+    printf("%s\n", help);
+    printf("%s", promt);
+
+    char buf[INPUT_BUF];
+    fgets(buf, INPUT_BUF, stdin);
+    char cmd[INPUT_BUF];
+    char arg1[INPUT_BUF];
+    sscanf(buf, "%s %s", cmd, arg1);
+    // cmd func find()
+    cmd_func f = find_cmd_func(cmd);
+    if (f) {
+        printf("! %p\n", f);
+    } else {
+        printf("! Not Found!");
+    }
+
+}
+
 void test_m() {
     char input[] = "some\xFF";
     char code[] = ",+[-.,+]";
     Machine* m = make_machine(code, input);
     printf("> Machine maked.\n");
-    machine_run(m);
-
+    repl();
+    //machine_run(m);
     //test_instructions(m);
-    
-    print_machine(m);
+    //print_machine(m);
     down_machine(m);
 }
 
+//TODO: interactive commands: view state, make step, run, reset, break at, 
+// mem edit, input edit, code edit, loops view colors, Exec instruction
 int main(int argc, char** argv) {
     printf("Brainfuck interpreter v 0.0 (q)\n");
     test_m();
