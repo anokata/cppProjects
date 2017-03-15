@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <ncurses.h>
 //optarg
 
 #define BF_MEMORY_SIZE 30000
@@ -71,6 +72,29 @@ int machine_reset(Machine* m) {
     return 1;
 }
 
+char* get_data_str(Machine* m) {
+    char buf[128];
+    static char str[1024];
+    const int maxv = 64;
+    str[0] = ' ';
+    str[1] = 0;
+    for (int base = 0; base < maxv; base += 16) {
+        sprintf(buf, " 0x%04X:    ", base);
+        strcat(str, buf);
+        for (int i = 0; i < 16; i++) {
+            sprintf(buf, "%02X ", m->data[base + i]);
+            strcat(str, buf);
+        }
+        for (int i = 0; i < 16; i++) {
+            sprintf(buf, "%c", m->data[base + i]);
+            strcat(str, buf);
+        }
+        sprintf(buf, "\n ");
+        strcat(str, buf);
+    }
+    return str;
+}
+
 int print_machine(Machine* m) {
     printf("%s\n", m->code);
     for (int i = 0; i < m->ip; i++) {
@@ -81,17 +105,7 @@ int print_machine(Machine* m) {
     printf("II: %d  OI: %d \n", m->ii, m->oi);
     printf("OUT: '%s'\n", m->output);
     printf("Data:\n");
-    const int maxv = 64;
-    for (int base = 0; base < maxv; base += 16) {
-        printf("0x%04X:    ", base);
-        for (int i = 0; i < 16; i++) {
-            printf("%02X ", m->data[base + i]);
-        }
-        for (int i = 0; i < 16; i++) {
-            printf("%c", m->data[base + i]);
-        }
-        printf("\n");
-    }
+    printf("%s", get_data_str(m));
     printf("Loops: [%p]:  ", m->loops);
     for (int i = 0; i < BF_LOOPS_SIZE/sizeof(uint32_t); i++) {
         if (m->loops[i] && i < m->loops[i]) {
@@ -204,10 +218,18 @@ int exit_func(Machine* m) {
 }
 
 int help_func(Machine* m) {
-    static const char help[] = "Possible commands: \n\trun\texit";
+    static const char help[] = "Possible commands: \n"
+        "run\texit\n"
+        "print\t"
+        "step\t"
+        "reset\n"
+        "c\t"
+        "\n";
     printf("%s\n", help);
     return 1;
 }
+
+int enter_curses_mode(Machine*);
 
 typedef int (*cmd_func)(Machine*);
 
@@ -229,6 +251,7 @@ Command commands[] = {
     {"quit", exit_func},
     {"help", help_func},
     {"h", help_func},
+    {"c", enter_curses_mode},
 };
 
 cmd_func find_cmd_func(char *cmd) {
@@ -276,8 +299,108 @@ void test_m() {
     down_machine(m);
 }
 
+// curses
+#define MAX_WINDOWS 4
+static int width;
+static int heigth;
+static WINDOW* wins[MAX_WINDOWS];
+
+void curses_init() {
+	initscr();
+	start_color();
+	init_pair(1, COLOR_RED, COLOR_BLACK);
+	init_pair(2, COLOR_GREEN, COLOR_YELLOW);
+	init_pair(3, COLOR_GREEN, COLOR_WHITE);
+	init_pair(4, COLOR_BLACK, COLOR_WHITE);
+	init_pair(5, COLOR_WHITE, COLOR_BLACK);
+	attron(COLOR_PAIR(4));
+	refresh();
+    width = getmaxx(stdscr);
+    heigth = getmaxy(stdscr);
+}
+
+void curses_end() {
+	endwin();
+	printf("* End curses\n");
+}
+
+WINDOW* make_window(int n, int m) {
+	WINDOW* win = newwin(heigth/2, width/2, n * (heigth/2), m * (width/2));
+	wattron(win, 0);
+	wbkgdset(win, COLOR_PAIR(4)  | ' ');
+	wclear(win);
+    return win;
+}
+
+void win_refresh(Machine* m) {
+    for (int i = 0; i < MAX_WINDOWS; i++) {
+        WINDOW* win1 = wins[i];
+        box(win1, 0, 0);
+        refresh();
+        wrefresh(win1);
+    }
+}
+
+void win_data_refresh(Machine* m) {
+    WINDOW* win1 = wins[1];
+    if (m) {
+        wmove(win1, 1, 0);
+        wprintw(win1, "%s", get_data_str(m));
+        wrefresh(win1);
+    }
+    box(win1, 0, 0);
+    wmove(win1, 0, 1);
+	wprintw(win1, "Data");
+    wrefresh(win1);
+}
+
+void win1_refresh(Machine* m) {
+    WINDOW* win1 = wins[0];
+    wmove(win1, 0, 1);
+	wprintw(win1, "Code");
+    if (m) {
+        wmove(win1, 1, 2);
+        wprintw(win1, "%s", m->code);
+        wrefresh(win1);
+    }
+}
+
+void makeWins() {
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            WINDOW* win = (make_window(i, j));
+            wins[i*2+j] = win;
+        }
+    }
+    win_refresh(NULL);
+}
+
+void processInput(Machine* m) {
+	int ch = getch();
+	while(ch != 'q') {
+		clear();
+		if (ch != '\t');
+
+        win_refresh(m);
+        win1_refresh(m);
+        win_data_refresh(m);
+		//mvprintw(0, 0, "q = exit;");
+		refresh();
+		ch = getch();
+	}
+}
+
+int enter_curses_mode(Machine* m) {
+    curses_init();
+    makeWins();
+    processInput(m);
+    curses_end();
+    return 0;
+}
+
 //TODO: interactive commands: view state, make step, run, reset, break at, 
 // mem edit, input edit, code edit, loops view colors, Exec instruction
+// forth lisp...
 int main(int argc, char** argv) {
     printf("* Brainfuck interpreter v 0.0 (q)\n");
     test_m();
