@@ -95,17 +95,27 @@ char* get_data_str(Machine* m) {
     return str;
 }
 
+char* get_machine_state_str(Machine* m) {
+    char buf[128];
+    static char str[1024];
+    str[0] = ' ';
+    str[1] = 0;
+    sprintf(buf, "IP: %d  DP: %d \n", m->ip, m->dp);
+    strcat(str, buf);
+    sprintf(buf, "II: %d  OI: %d \n", m->ii, m->oi);
+    strcat(str, buf);
+    sprintf(buf, "OUT: '%s'\n", m->output);
+    return str;
+}
+
 int print_machine(Machine* m) {
     printf("%s\n", m->code);
     for (int i = 0; i < m->ip; i++) {
         printf(" ");
     }
     printf("^\n");
-    printf("IP: %d  DP: %d \n", m->ip, m->dp);
-    printf("II: %d  OI: %d \n", m->ii, m->oi);
-    printf("OUT: '%s'\n", m->output);
-    printf("Data:\n");
-    printf("%s", get_data_str(m));
+    printf("%s", get_machine_state_str(m));
+    printf("Data:\n%s", get_data_str(m));
     printf("Loops: [%p]:  ", m->loops);
     for (int i = 0; i < BF_LOOPS_SIZE/sizeof(uint32_t); i++) {
         if (m->loops[i] && i < m->loops[i]) {
@@ -317,6 +327,7 @@ void curses_init() {
 	refresh();
     width = getmaxx(stdscr);
     heigth = getmaxy(stdscr);
+    curs_set(0);
 }
 
 void curses_end() {
@@ -327,7 +338,7 @@ void curses_end() {
 WINDOW* make_window(int n, int m) {
 	WINDOW* win = newwin(heigth/2, width/2, n * (heigth/2), m * (width/2));
 	wattron(win, 0);
-	wbkgdset(win, COLOR_PAIR(4)  | ' ');
+	wbkgdset(win, COLOR_PAIR(5)  | ' ');
 	wclear(win);
     return win;
 }
@@ -339,6 +350,32 @@ void win_refresh(Machine* m) {
         refresh();
         wrefresh(win1);
     }
+}
+
+void win_help_refresh(Machine* m) {
+    WINDOW* win = wins[3];
+    if (m) {
+        wmove(win, 1, 0);
+        wprintw(win, "%s", " s - one step\n");
+        wrefresh(win);
+    }
+    box(win, 0, 0);
+    wmove(win, 0, 1);
+	wprintw(win, "Help");
+    wrefresh(win);
+}
+
+void win_state_refresh(Machine* m) {
+    WINDOW* win = wins[2];
+    if (m) {
+        wmove(win, 1, 0);
+        wprintw(win, "%s", get_machine_state_str(m));
+        wrefresh(win);
+    }
+    box(win, 0, 0);
+    wmove(win, 0, 1);
+	wprintw(win, "State");
+    wrefresh(win);
 }
 
 void win_data_refresh(Machine* m) {
@@ -375,17 +412,23 @@ void makeWins() {
     win_refresh(NULL);
 }
 
+void curses_allwin_refresh(Machine* m) {
+        win_refresh(m);
+        win1_refresh(m);
+        win_data_refresh(m);
+        win_state_refresh(m);
+        win_help_refresh(m);
+		refresh();
+}
+
 void processInput(Machine* m) {
 	int ch = getch();
 	while(ch != 'q') {
 		clear();
 		if (ch != '\t');
 
-        win_refresh(m);
-        win1_refresh(m);
-        win_data_refresh(m);
+        curses_allwin_refresh(m);
 		//mvprintw(0, 0, "q = exit;");
-		refresh();
 		ch = getch();
 	}
 }
@@ -393,6 +436,7 @@ void processInput(Machine* m) {
 int enter_curses_mode(Machine* m) {
     curses_init();
     makeWins();
+    curses_allwin_refresh(m);
     processInput(m);
     curses_end();
     return 0;
@@ -401,6 +445,7 @@ int enter_curses_mode(Machine* m) {
 //TODO: interactive commands: view state, make step, run, reset, break at, 
 // mem edit, input edit, code edit, loops view colors, Exec instruction
 // forth lisp...
+// highlight current instruction and data byte in colors
 int main(int argc, char** argv) {
     printf("* Brainfuck interpreter v 0.0 (q)\n");
     test_m();
