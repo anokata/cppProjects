@@ -102,9 +102,10 @@ char* get_machine_state_str(Machine* m) {
     str[1] = 0;
     sprintf(buf, "IP: %d  DP: %d \n", m->ip, m->dp);
     strcat(str, buf);
-    sprintf(buf, "II: %d  OI: %d \n", m->ii, m->oi);
+    sprintf(buf, " II: %d  OI: %d \n", m->ii, m->oi);
     strcat(str, buf);
-    sprintf(buf, "OUT: '%s'\n", m->output);
+    sprintf(buf, " OUT: '%s'\n", m->output);
+    strcat(str, buf);
     return str;
 }
 
@@ -254,8 +255,8 @@ Command commands[] = {
     {"pr", print_machine},
     {"step", machine_step},
     {"s", machine_step},
-    {"reset", machine_reset},
-    {"r", machine_reset},
+    {"Reset", machine_reset},
+    {"R", machine_reset},
     {"exit", exit_func},
     {"q", exit_func},
     {"quit", exit_func},
@@ -263,6 +264,15 @@ Command commands[] = {
     {"h", help_func},
     {"c", enter_curses_mode},
 };
+
+cmd_func find_char_func(char c) {
+    for (int i = 0; i < sizeof(commands)/sizeof(Command); i++) {
+        if (commands[i].cmd[0] == c) {
+            return commands[i].func;
+        }
+    }
+    return NULL;
+}
 
 cmd_func find_cmd_func(char *cmd) {
     for (int i = 0; i < sizeof(commands)/sizeof(Command); i++) {
@@ -397,7 +407,13 @@ void win1_refresh(Machine* m) {
 	wprintw(win1, "Code");
     if (m) {
         wmove(win1, 1, 2);
-        wprintw(win1, "%s", m->code);
+        for (int i = 0; i < strlen(m->code); i++) {
+            if (i != m->ip) {
+                waddch(win1, m->code[i]);
+            } else {
+                waddch(win1, m->code[i] | COLOR_PAIR(1) | A_BOLD);
+            }
+        }
         wrefresh(win1);
     }
 }
@@ -425,7 +441,11 @@ void processInput(Machine* m) {
 	int ch = getch();
 	while(ch != 'q') {
 		clear();
-		if (ch != '\t');
+		//if (ch != '\t');
+        cmd_func f = find_char_func(ch);
+        if (f) {
+            f(m);
+        }
 
         curses_allwin_refresh(m);
 		//mvprintw(0, 0, "q = exit;");
@@ -446,6 +466,7 @@ int enter_curses_mode(Machine* m) {
 // mem edit, input edit, code edit, loops view colors, Exec instruction
 // forth lisp...
 // highlight current instruction and data byte in colors
+// code and data editor
 int main(int argc, char** argv) {
     printf("* Brainfuck interpreter v 0.0 (q)\n");
     test_m();
