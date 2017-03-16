@@ -1,9 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef struct List {
+typedef struct List { // Node
     struct List* next;
     void* data;
+    //on delete func. store on main list struct.
 } List;
 
 typedef void* (*List_map_func)(void*);
@@ -27,6 +28,24 @@ void list_push(List* list, void* data) {
         list = list->next;
     }
     list->next = new_elem;
+}
+
+void* list_pop(List** list) {
+    List* lst = *list;
+    if (lst->next == 0) {
+        //free
+        void* data = lst->data;
+        list = 0;
+        return data;
+    } else {
+        while (lst->next->next != 0) {
+            lst = lst->next;
+        }
+        void* data = lst->next->data;
+        //free
+        lst->next = 0;
+        return data;
+    }
 }
 
 List* list_add(List** list, void* data) { // no empty
