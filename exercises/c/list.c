@@ -18,20 +18,18 @@ List* list_new(void* data) {
     return new_elem;
 }
 
-void list_push(List** list, void* data) {
-    List* new_elem = list_new(data);
-
-    if (*list == 0) {
-        (*list) = new_elem;
+void list_push(List* list, void* data) {
+    if (list == 0) {
         return;
     }
-    while ((*list)->next) {
-        *list = (*list)->next;
+    List* new_elem = list_new(data);
+    while (list->next) {
+        list = list->next;
     }
-    (*list)->next = new_elem;
+    list->next = new_elem;
 }
 
-List* list_add(List** list, void* data) {
+List* list_add(List** list, void* data) { // no empty
     List* new_elem = list_new(data);
 
     if (list == 0) {
@@ -97,7 +95,7 @@ int main() {
     list_p(l);
 
     int b = 3; int c = 4;
-    l = 0;
+    l = list_new(&s);
     list_push(l, &a);
     list_push(l, &b);
     list_push(l, &c);
