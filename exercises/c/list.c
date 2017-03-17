@@ -2,30 +2,42 @@
 #include <stdio.h>
 #include <stdint.h>
 
+typedef void (*free_node_fnc)(void*);
 typedef struct ListNode { // Node
     struct ListNode* next;
     void* data;
 } ListNode;
 
-//on delete func. store on main list struct.
 typedef struct List {
     ListNode* head;
     ListNode* tail;
     uint32_t length;
+    free_node_fnc free_fnc;
 } List;
 
 typedef void* (*List_map_func)(void*);
 ListNode* list_newnode(void* data);
 List* list_new();
+void* list_pop(List* list);
+void list_p(List* list);
+void list_print(List *list);
+void list_map(List* list, List_map_func f);
+void* list_print_func(void* data);
+void* list_pop(List* list);
 int list_push(List* list, void* data);
 int list_add(List* list, void* data);
-void* list_pop(List* list);
+int list_remove(List* list);
+
+void free_node_stumb(void* ptr) {
+    printf("* Free at %p\n", ptr);
+}
 
 List* list_new() {
     List* list = malloc(sizeof(*list));
     list->length = 0;
     list->head = 0;
     list->tail = 0;
+    list->free_fnc = free_node_stumb;
     return list;
 }
 
@@ -53,13 +65,29 @@ int list_push(List* list, void* data) {
     return 0;
 }
 
+int list_remove(List* list) {
+    if (list->length == 0) {
+        return 0;
+    }
+    ListNode* old_head = list->head;
+    list->head = list->head->next;
+    list->free_fnc(old_head->data);
+    free(old_head);
+    list->length--;
+    if (list->length == 0) {
+        list->tail = 0;
+    }
+    return 0;
+}
+
 void* list_pop(List* list) {
     ListNode* lst = list->head;
     if (list->length == 0) {
         return 0;
     }
     if (list->length == 1) {
-        //free
+        list->free_fnc(list->head->data);
+        free(list->head);
         void* data = lst->data;
         list->head = 0;
         list->tail = 0;
@@ -71,7 +99,8 @@ void* list_pop(List* list) {
             lst = lst->next;
         }
         void* data = lst->next->data;
-        //free
+        list->free_fnc(lst->next->data);
+        free(lst->next);
         lst->next = 0;
         list->tail = lst;
         return data;
@@ -124,16 +153,37 @@ void list_p(List* list) {
     list_map(list, list_print_func);
 }
 
+ListNode* list_delete_node(List* list, ListNode* ln) {
+    ListNode* next = ln->next;
+    list->free_fnc(ln->data);
+    free(ln);
+    return next;
+}
+
+void list_delete(List* list) {
+    ListNode* cur = list->head;
+    while(cur) {
+        ListNode* next = cur->next;
+        list->free_fnc(cur->data);
+        free(cur);
+        cur = next;
+    }
+    list->length = 0;
+    list->head = 0;
+    list->tail = 0;
+}
+
 
 // save(func to save one elem(fd))
 // push pop append remove take head tail slice reduce
 // delete delete_map
+// get erase insert
 // save/load serialization
 #define DEBUG
 
 #ifdef DEBUG
 #include <string.h>
-int main() {
+void test() {
     List *l; 
     int a = 812;
     char s[] = "Linked List.";
@@ -145,7 +195,6 @@ int main() {
     printf("%s\n", (char*)l->head->data);
     list_print(l);
     list_p(l);
-
     int b = 3; int c = 4;
     l = list_new();
     list_push(l, &a);
@@ -174,6 +223,21 @@ int main() {
     printf("t = %p\n", (int*)l->tail);
     printf("\n");
     list_p(l);
+    l = list_new();
+    list_push(l, &x1);
+    list_push(l, &x2);
+    list_push(l, &x3);
+    list_add(l, &c);
+    list_add(l, &d);
+    list_remove(l);
+    printf("pop = %d len(%d)\n", *(int*)list_pop(l), l->length);
+    list_remove(l);
+    list_p(l);
+    list_delete(l);
+    list_p(l);
+}
+int main() {
+    test();
     return 0;
 }
 #endif
