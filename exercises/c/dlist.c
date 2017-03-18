@@ -76,9 +76,8 @@ int list_push(DList* list, void* data) {
         list->tail = new_elem;
         return 0;
     }
-    ln = list->tail;
-    ln->next = new_elem;
-    ln->back = ln;
+    list->tail->next = new_elem;
+    new_elem->back = list->tail;
     list->tail = new_elem;
     return 0;
 }
@@ -89,7 +88,7 @@ int list_remove(DList* list) {
     }
     DListNode* old_head = list->head;
     list->head = list->head->next;
-    list->head->back = list->tail;
+    list->head->back = 0;
     list->free_fnc(old_head->data);
     free(old_head);
     list->length--;
@@ -114,7 +113,7 @@ void* list_pop(DList* list) {
         return data;
     } else {
         list->length--;
-        lst = list->tail;
+        lst = list->tail->back;
         void* data = lst->next->data;
         list->free_fnc(lst->next->data);
         free(lst->next);
@@ -264,8 +263,114 @@ DList *list_loadfile(char* fn) {
 
 #ifdef DEBUG
 #include <string.h>
-void test() {
-    //separate test one func
+void test_create() {
+    printf("* TEST create \n");
+    DList *l; 
+    l = list_new();
+    l->head = 0;
+}
+void test_create_and_remove() {
+    printf("* TEST create and remove one \n");
+    DList *l; 
+    l = list_new();
+    list_remove(l);
+}
+void test_create_and_delete() {
+    printf("* TEST create and delete all\n");
+    DList *l; 
+    l = list_new();
+    list_delete(l);
+}
+void test_add() {
+    printf("* TEST ADD\n");
+    DList *l = list_new();
+    int a = 5;
+    int b = 6;
+    list_add(l, &a);
+    list_add(l, &b);
+    printf("Len:%d\tH:%p\tT:%p\n", l->length, l->head, l->tail);
+    printf("Head next %p\t back %p\t data %p(%d)\n", l->head->next, l->head->back, l->head->data, *(int*)l->head->data);
+    list_print(l);
+    list_remove(l);
+    list_print(l);
+    list_add(l, &b);
+    list_print(l);
+    list_delete(l);
+}
+void test_push() {
+    printf("* TEST PUSH\n");
+    DList *l = list_new();
+    int a = 5;
+    int b = 6;
+    list_push(l, &a);
+    list_push(l, &b);
+    printf("Len:%d\tH:%p\tT:%p\n", l->length, l->head, l->tail);
+    printf("Head next %p\t back %p\t data %p(%d)\n", l->head->next, l->head->back, l->head->data, *(int*)l->head->data);
+    list_print(l);
+    list_remove(l);
+    list_print(l);
+    list_push(l, &b);
+    list_print(l);
+    list_delete(l);
+}
+void test_pop() {
+    printf("* TEST POP\n");
+    DList *l = list_new();
+    int a = 5;
+    int b = 6;
+    list_push(l, &a);
+    list_push(l, &b);
+    printf("Len:%d\tH:%p\tT:%p\n", l->length, l->head, l->tail);
+    printf("Head next %p\t back %p\t data %p(%d)\n", l->head->next, l->head->back, l->head->data, *(int*)l->head->data);
+    list_print(l);
+    int x = *(int*)list_pop(l);
+    printf("poped: %d\n", x);
+    list_print(l);
+    list_push(l, &b);
+    list_print(l);
+    x = *(int*)list_pop(l);
+    printf("poped: %d\n", x);
+    x = *(int*)list_pop(l);
+    printf("poped: %d\n", x);
+    list_print(l);
+    list_push(l, &b);
+    list_add(l, &a);
+    list_print(l);
+    list_delete(l);
+}
+void test_backs() {
+    printf("* TEST BACKS\n");
+    DList *l = list_new();
+    int a = 5;
+    int b = 6;
+    list_push(l, &a);
+    list_push(l, &b);
+    DListNode* c = l->tail;
+    while (c) {
+        printf("self %p\tnext %p\t back %p\t data %p(%d)\n", c, c->next, c->back, c->data, *(int*)c->data);
+        c = c->back;
+    }
+    list_print(l);
+    list_remove(l);
+    list_print(l);
+    a = 8;
+    list_push(l, &a);
+    list_print(l);
+    c = l->tail;
+    while (c) {
+        printf("self %p\tnext %p\t back %p\t data %p(%d)\n", c, c->next, c->back, c->data, *(int*)c->data);
+        c = c->back;
+    }
+    list_pop(l);
+    list_push(l, &a);
+    c = l->tail;
+    while (c) {
+        printf("self %p\tnext %p\t back %p\t data %p(%d)\n", c, c->next, c->back, c->data, *(int*)c->data);
+        c = c->back;
+    }
+    list_delete(l);
+}
+void test_all() {
     DList *l; 
     int a = 812;
     char s[] = "Linked List.";
@@ -322,6 +427,18 @@ void test() {
     list_p(l);
 }
 
+void test() {
+    test_create();
+    test_create_and_delete();
+    test_create_and_remove();
+    test_add();
+    test_push();
+    test_backs();
+    test_pop();
+    test_all();
+    return;
+}
+
 void test_save() {
     int a = 1; int b = 2;
     DList* l = list_new();
@@ -339,7 +456,7 @@ void test_load() {
 }
 
 int main() {
-    //test();
+    test();
     //test_save();
     //test_load();
     return 0;
