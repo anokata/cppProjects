@@ -4,5 +4,7 @@ sdl:
 	gcc sdltest.c -lSDL -lSDL_ttf -lSDL_gfx `pkg-config --cflags --libs glib-2.0` -o sdltest && ./sdltest
 one: 
 	gcc bf.c -lcurses && ./a.out
+two:
+	gcc hashmap.c && ./a.out
 debug: 
 	gcc sdltest.c -g -lSDL -lSDL_ttf -lSDL_gfx `pkg-config --cflags --libs glib-2.0` -o sdltest && ./sdltest
