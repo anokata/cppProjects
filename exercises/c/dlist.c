@@ -36,7 +36,6 @@ typedef struct DList {
 
 DListNode* list_newnode(void* data);
 DList* list_new();
-void* list_pop(DList* list);
 void list_p(DList* list);
 void list_print(DList *list);
 void list_map(DList* list, List_map_func f);
@@ -88,7 +87,8 @@ int list_remove(DList* list) {
     }
     DListNode* old_head = list->head;
     list->head = list->head->next;
-    list->head->back = 0;
+    if (list->head)
+        list->head->back = 0;
     list->free_fnc(old_head->data);
     free(old_head);
     list->length--;
@@ -104,9 +104,9 @@ void* list_pop(DList* list) {
         return 0;
     }
     if (list->length == 1) {
+        void* data = list->head->data;
         list->free_fnc(list->head->data);
         free(list->head);
-        void* data = lst->data;
         list->head = 0;
         list->tail = 0;
         list->length--;
@@ -191,6 +191,7 @@ void list_delete(DList* list) {
     list->length = 0;
     list->head = 0;
     list->tail = 0;
+    free(list);
 }
 
 const static uint32_t LIST_MAGIC = 
@@ -268,12 +269,14 @@ void test_create() {
     DList *l; 
     l = list_new();
     l->head = 0;
+    list_delete(l);
 }
 void test_create_and_remove() {
     printf("* TEST create and remove one \n");
     DList *l; 
     l = list_new();
     list_remove(l);
+    list_delete(l);
 }
 void test_create_and_delete() {
     printf("* TEST create and delete all\n");
@@ -426,6 +429,39 @@ void test_all() {
     list_delete(l);
     list_p(l);
 }
+void test_leaks() {
+    DList* l = list_new();
+    int a = 1;
+    int b = 2;
+    list_push(l, &a);
+    list_push(l, &a);
+    list_push(l, &a);
+    list_pop(l);
+    list_pop(l);
+    list_pop(l);
+    list_add(l, &a);
+    list_add(l, &a);
+    list_add(l, &a);
+    list_pop(l);
+    list_pop(l);
+    list_pop(l);
+    list_delete(l);
+    l = list_new();
+    list_add(l, &a);
+    list_add(l, &b);
+    list_add(l, &a);
+    printf("3 rem\n");
+    list_remove(l);
+    list_remove(l);
+    list_remove(l);
+    list_push(l, &a);
+    list_push(l, &a);
+    list_push(l, &a);
+    list_remove(l);
+    list_remove(l);
+    list_remove(l);
+    list_delete(l);
+}
 
 void test() {
     test_create();
@@ -436,6 +472,9 @@ void test() {
     test_backs();
     test_pop();
     test_all();
+    //test_save();
+    //test_load();
+    test_leaks();
     return;
 }
 
@@ -457,8 +496,7 @@ void test_load() {
 
 int main() {
     test();
-    //test_save();
-    //test_load();
+    //test_leaks();
     return 0;
 }
 #endif
