@@ -79,6 +79,7 @@ void* hash_get(Hash *h, index_t key) {
 #define DEBUG
 #ifdef DEBUG
 #include <stdio.h>
+#include <math.h>
 void test_create() {
     Hash *h = hash_new();
     hash_delete(h);
@@ -100,13 +101,49 @@ void test_add() {
     hash_delete(h);
 }
 void test_collisions() {
+    Hash *h = hash_new();
+    for (int i = 0; i < 10; i++) {
+        index_t k = hash_addi(h, i);
+        void *d =hash_get(h, k);
+        printf("add %d key %d get val %ld", i, k, (long)d);
+        if (i == (long)d)
+            printf(" OK\n");
+        else
+            printf(" NOT!!\n");
+    }
 
+    index_t k = hash_addi(h, 241);
+    void *d =hash_get(h, k);
+    printf("add %d key %d get val %ld", 241, k, (long)d);
+    k = hash_addi(h, 741);
+    d =hash_get(h, k);
+    printf("add %d key %d get val %ld", 741, k, (long)d);
+    // TODO KEY:VALUE !! need key in nodelist. add with hash?(key):val
+    hash_delete(h);
+}
+uint32_t test_find_collision() {
+    Hash *h = hash_new();
+    srand(time(0));
+    index_t x = rand() % 1000;
+    index_t y = rand() % 1000;
+    index_t k1 = hash_addi(h, x);
+    index_t k2 = hash_addi(h, y);
+    while (k1 != k2) {
+        x = rand() % 1000;
+        y = rand() % 1000;
+        k1 = hash_addi(h, x);
+        k2 = hash_addi(h, y);
+    }
+    printf("\n%d %d %d\n", x, y, k1);
+    hash_delete(h);
+    // 241 741
 }
 
 void test() {
     test_create();
     test_add();
     test_collisions();
+    test_find_collision();
     //test_hashs();
     getc(stdin);
 }
