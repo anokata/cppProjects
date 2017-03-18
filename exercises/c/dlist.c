@@ -11,6 +11,7 @@ typedef char* (*data_to_str_fnc)(void*);
 
 void free_node_stumb(void* ptr) {
     printf("* Free at %p\n", ptr);
+    //free(ptr);
 }
 
 char* data_to_str_stumb(void* data) { // ALLOC
@@ -44,6 +45,7 @@ void* list_pop(DList* list);
 int list_push(DList* list, void* data);
 int list_add(DList* list, void* data);
 int list_remove(DList* list);
+void list_delete(DList* list);
 
 
 DList* list_new() {
@@ -194,12 +196,7 @@ void list_delete(DList* list) {
     free(list);
 }
 
-const static uint32_t LIST_MAGIC = 
-    0b01110000 | 
-    0b00100000 << 8| 
-    0b00100100 << 16| 
-    0b00111100 << 24;
-const static uint32_t LIST_TAG = 'L' + ('I' << 8) + ('S' << 16) + ('T' << 24);
+const static uint32_t LIST_TAG = 'D' + ('L' << 8) + ('S' << 16) + ('T' << 24);
 
 int list_save2file(DList* list, char* fn) {
 	FILE *fd = fopen(fn, "w");
@@ -253,6 +250,11 @@ DList *list_loadfile(char* fn) {
     }
 
     return list;
+}
+
+void *list_free_data(void *data) {
+    free(data);
+    return 0;
 }
 
 // save(func to save one elem(fd))
@@ -462,6 +464,23 @@ void test_leaks() {
     list_remove(l);
     list_delete(l);
 }
+void test_save() {
+    int a = 1; int b = 2;
+    DList* l = list_new();
+    list_push(l, &a);
+    list_add(l, &b);
+    list_save2file(l, "testsavelist");
+    list_delete(l);
+}
+
+void test_load() {
+    DList *l = list_loadfile("testsavelist");
+    printf("loaded %d items\n", l->length);
+    list_p(l);
+    list_map(l, list_free_data);
+    list_delete(l);
+}
+
 
 void test() {
     test_create();
@@ -472,26 +491,10 @@ void test() {
     test_backs();
     test_pop();
     test_all();
-    //test_save();
-    //test_load();
     test_leaks();
+    test_save();
+    test_load();
     return;
-}
-
-void test_save() {
-    int a = 1; int b = 2;
-    DList* l = list_new();
-    list_push(l, &a);
-    list_add(l, &b);
-    list_save2file(l, "testsavelist");
-    list_remove(l);
-}
-
-void test_load() {
-    DList *l = list_loadfile("testsavelist");
-    printf("loaded %d items\n", l->length);
-    list_p(l);
-    list_remove(l);
 }
 
 int main() {
