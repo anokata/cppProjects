@@ -1,4 +1,14 @@
 #include "dlist.h"
+void free_node_stumb(void* ptr) {
+    printf("* Free at %p\n", ptr);
+    //free(ptr);
+}
+
+char* data_to_str_stumb(void* data) { // ALLOC
+    char* str = malloc(sizeof(uint32_t) + 1);
+    sprintf(str, "%d", *((uint32_t*)data));
+    return str;
+}
 
 DList* list_new() {
     DList* list = malloc(sizeof(*list));

@@ -5,6 +5,6 @@ sdl:
 one: 
 	gcc bf.c -lcurses && ./a.out
 two:
-	gcc hashmap.c && ./a.out
+	gcc hashmap.c dlist.c && ./a.out
 debug: 
 	gcc sdltest.c -g -lSDL -lSDL_ttf -lSDL_gfx `pkg-config --cflags --libs glib-2.0` -o sdltest && ./sdltest

@@ -9,17 +9,6 @@ typedef void (*free_node_fnc)(void*);
 typedef void* (*List_map_func)(void*);
 typedef char* (*data_to_str_fnc)(void*);
 
-void free_node_stumb(void* ptr) {
-    printf("* Free at %p\n", ptr);
-    //free(ptr);
-}
-
-char* data_to_str_stumb(void* data) { // ALLOC
-    char* str = malloc(sizeof(uint32_t) + 1);
-    sprintf(str, "%d", *((uint32_t*)data));
-    return str;
-}
-
 typedef struct DListNode { 
     struct DListNode* next;
     struct DListNode* back;
@@ -46,4 +35,6 @@ int list_push(DList* list, void* data);
 int list_add(DList* list, void* data);
 int list_remove(DList* list);
 void list_delete(DList* list);
+// TODO
+// find
 
