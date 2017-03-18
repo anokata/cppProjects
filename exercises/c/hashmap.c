@@ -15,9 +15,9 @@ typedef struct HashNode {
 typedef uint32_t index_t;
 void hash_delete(Hash *h);
 Hash *hash_new();
-index_t hash_addi(Hash *h, uint32_t x);
-index_t hash_adds(Hash *h, char *s);
-index_t hash_add(Hash *h, void *data);
+index_t hash_addi(Hash *h, uint32_t key, uint32_t x);
+index_t hash_adds(Hash *h, uint32_t key, char *s);
+index_t hash_add(Hash *h, uint32_t key, void *data);
 void* hash_get(Hash *h, index_t key);
 void *hash_list_find(DList *list, index_t key);
 
@@ -57,29 +57,30 @@ index_t hashstr(Hash *h, char* s) {
     return '0';
 }
 
-index_t hash_addi(Hash *h, uint32_t x) {
-    index_t idx = hashi(h, x);
+index_t hash_addi(Hash *h, uint32_t key, uint32_t x) {
+    index_t idx = hashi(h, key);
     HashNode *node = malloc(sizeof(x));
     node->data = (void*)(uint64_t)x;
-    node->key = idx;
+    node->key = key;
     list_push(&h->table[idx], node);
     return idx;
 }
 
 void* hash_get(Hash *h, index_t key) {
-    if (h->table[key].length == 0) {
+    index_t idx = hashi(h, key);
+    if (h->table[idx].length == 0) {
         printf("Not\n");
         return 0;
     }
-    list_print(&h->table[key]);
-
-    return hash_list_find(&h->table[key], key);
+    list_print(&h->table[idx]);
+    return hash_list_find(&h->table[idx], key);
 }
 
 #define DEBUG
 #ifdef DEBUG
 #include <stdio.h>
 #include <math.h>
+#include <time.h>
 void test_create() {
     Hash *h = hash_new();
     hash_delete(h);
@@ -93,32 +94,30 @@ void test_hashs() {
 }
 void test_add() {
     Hash *h = hash_new();
-    index_t k = hash_addi(h, 123);
+    index_t k = hash_addi(h, 1, 123);
     printf("key %d\n", k);
-    void *d =hash_get(h, k);
-    hash_get(h, 121);
+    void *d = hash_get(h, 1);
     printf("%ld\n", (long)d);
     hash_delete(h);
 }
 void test_collisions() {
     Hash *h = hash_new();
     for (int i = 0; i < 10; i++) {
-        index_t k = hash_addi(h, i);
-        void *d =hash_get(h, k);
-        printf("add %d key %d get val %ld", i, k, (long)d);
-        if (i == (long)d)
+        hash_addi(h, i, 3215);
+        void *d = hash_get(h, i);
+        printf("add %d get val %ld", i, (long)d);
+        if (3215 == (long)d)
             printf(" OK\n");
         else
             printf(" NOT!!\n");
     }
 
-    index_t k = hash_addi(h, 241);
-    void *d =hash_get(h, k);
-    printf("add %d key %d get val %ld", 241, k, (long)d);
-    k = hash_addi(h, 741);
-    d =hash_get(h, k);
-    printf("add %d key %d get val %ld", 741, k, (long)d);
-    // TODO KEY:VALUE !! need key in nodelist. add with hash?(key):val
+    hash_addi(h, 241, 999);
+    void *d = hash_get(h, 241);
+    printf("add %d get val %ld\n", 241, (long)d);
+    hash_addi(h, 741, 888);
+    d = hash_get(h, 741);
+    printf("add %d get val %ld\n", 741, (long)d);
     hash_delete(h);
 }
 uint32_t test_find_collision() {
@@ -126,13 +125,13 @@ uint32_t test_find_collision() {
     srand(time(0));
     index_t x = rand() % 1000;
     index_t y = rand() % 1000;
-    index_t k1 = hash_addi(h, x);
-    index_t k2 = hash_addi(h, y);
+    index_t k1 = hash_addi(h, x, 1);
+    index_t k2 = hash_addi(h, y, 2);
     while (k1 != k2) {
         x = rand() % 1000;
         y = rand() % 1000;
-        k1 = hash_addi(h, x);
-        k2 = hash_addi(h, y);
+        k1 = hash_addi(h, x, 1);
+        k2 = hash_addi(h, y, 2);
     }
     printf("\n%d %d %d\n", x, y, k1);
     hash_delete(h);
