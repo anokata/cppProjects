@@ -224,6 +224,7 @@ void *list_free_data(void *data) {
 // delete delete_map
 // get erase insert
 // save/load serialization
+// make text format with sep
 //#define DEBUG
 #ifdef DEBUG
 #include "dlist_test.c"

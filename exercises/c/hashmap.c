@@ -5,6 +5,7 @@
 typedef struct Hash {
     size_t size;
     DList *table;
+    size_t count;
 } Hash;
 
 typedef struct HashNode {
@@ -13,13 +14,18 @@ typedef struct HashNode {
 } HashNode;
 
 typedef uint32_t index_t;
+typedef void* (*Hash_map_func)(index_t key, void* value);
 void hash_delete(Hash *h);
 Hash *hash_new();
 index_t hash_addi(Hash *h, uint32_t key, uint32_t x);
 index_t hash_adds(Hash *h, uint32_t key, char *s);
 index_t hash_add(Hash *h, uint32_t key, void *data);
-void* hash_get(Hash *h, index_t key);
+void *hash_get(Hash *h, index_t key);
 void *hash_list_find(DList *list, index_t key);
+void hash_mapv(Hash *h, List_map_func);
+void hash_map(Hash *h, Hash_map_func);
+void hash_remove(Hash *h, index_t key);
+
 
 void *hash_list_find(DList *list, index_t key) {
     DListNode *cur = list->head;
@@ -39,6 +45,7 @@ Hash *hash_new() {
     h->size = HASH_START_SIZE;
     DList *t = calloc(sizeof(DList), h->size);
     h->table = t;
+    h->count = 0;
     return h;
 }
 
@@ -63,6 +70,7 @@ index_t hash_addi(Hash *h, uint32_t key, uint32_t x) {
     node->data = (void*)(uint64_t)x;
     node->key = key;
     list_push(&h->table[idx], node);
+    h->count += 1;
     return idx;
 }
 
@@ -76,6 +84,48 @@ void* hash_get(Hash *h, index_t key) {
     return hash_list_find(&h->table[idx], key);
 }
 
+void hash_remove(Hash *h, index_t key) {
+    index_t idx = hashi(h, key);
+//
+}
+
+void hash_mapv(Hash *h, List_map_func fun) {
+    // maybe store save keys in list?
+    for (size_t i = 0; i < h->size; i++) {
+        list_map(&h->table[i], fun);
+    }
+}
+
+void hash_map(Hash *h, Hash_map_func fun) {
+    for (size_t i = 0; i < h->size; i++) {
+        DListNode *cur = h->table[i].head;
+        while (cur) {
+            HashNode *hnode = cur->data;
+            void *result = fun(hnode->key, hnode->data);
+            hnode->data = result;
+            cur = cur->next;
+        }
+    }
+}
+
+void* hash_print_func(void* data) {
+    HashNode *hnode = data;
+    printf("key %d : val %ld\n", hnode->key, (long)hnode->data);
+    return data;
+}
+
+void hash_print_values(Hash *h) {
+    hash_mapv(h, hash_print_func);
+}
+
+// TODO: delete at key
+// count items
+// rehash(calc fullness (count/size))
+// string keys
+// map over keys/vals. for free too
+// non typed values
+// Cli. Lib
+// save/load separator data, text format
 #define DEBUG
 #ifdef DEBUG
 #include <stdio.h>
@@ -137,12 +187,22 @@ uint32_t test_find_collision() {
     hash_delete(h);
     // 241 741
 }
+void test_print() {
+    Hash *h = hash_new();
+    hash_addi(h, 1, 113);
+    hash_addi(h, 1, 114);
+    hash_addi(h, 2, 212);
+    hash_addi(h, 3, 34);
+    hash_print_values(h);
+    hash_delete(h);
+}
 
 void test() {
     test_create();
     test_add();
     test_collisions();
     test_find_collision();
+    test_print();
     //test_hashs();
     getc(stdin);
 }
