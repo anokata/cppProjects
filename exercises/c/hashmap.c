@@ -25,6 +25,9 @@ void *hash_list_find(DList *list, index_t key);
 void hash_mapv(Hash *h, List_map_func);
 void hash_map(Hash *h, Hash_map_func);
 void hash_remove(Hash *h, index_t key);
+index_t hashi(Hash *h, uint32_t x);
+index_t hashs(Hash *h, char* x);
+index_t hashstr(Hash *h, char* s);
 
 
 void *hash_list_find(DList *list, index_t key) {
@@ -61,7 +64,12 @@ index_t hashi(Hash *h, uint32_t x) {
     return (x*0xABCD) % h->size;
 }
 index_t hashstr(Hash *h, char* s) {
-    return '0';
+    index_t idx = 0;
+    for (int i = 0; i < strlen(s); i++) {
+        idx += s[i];
+    }
+    idx %= h->size;
+    return idx; 
 }
 
 index_t hash_addi(Hash *h, uint32_t key, uint32_t x) {
@@ -140,6 +148,7 @@ void test_hashs() {
     for (int i = 0; i < 100; i++) {
         printf("hashi: %d \n", hashi(h, i));
     }
+    printf("str hash %d \n", hashstr(h, "a"));
     hash_delete(h);
 }
 void test_add() {
@@ -203,7 +212,7 @@ void test() {
     test_collisions();
     test_find_collision();
     test_print();
-    //test_hashs();
+    test_hashs();
     getc(stdin);
 }
 //#include "_test.c"
