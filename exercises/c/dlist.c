@@ -1,6 +1,6 @@
 #include "dlist.h"
 void free_node_stumb(void* ptr) {
-    printf("* Free at %p\n", ptr);
+    //printf("* Free at %p\n", ptr);
     //free(ptr);
 }
 
@@ -10,14 +10,18 @@ char* data_to_str_stumb(void* data) { // ALLOC
     return str;
 }
 
-DList* list_new() {
-    DList* list = malloc(sizeof(*list));
+void list_init(DList *list) {
     list->length = 0;
     list->head = 0;
     list->tail = 0;
     list->free_fnc = free_node_stumb;
     list->tostr_fnc = data_to_str_stumb;
     list->data_size = sizeof(uint32_t);
+}
+
+DList* list_new() {
+    DList* list = malloc(sizeof(*list));
+    list_init(list);
     return list;
 }
 
@@ -142,6 +146,16 @@ DListNode* list_delete_node(DList* list, DListNode* ln) {
     list->free_fnc(ln->data);
     free(ln);
     return next;
+}
+
+void list_delete_onlynodes(DList* list) {
+    DListNode* cur = list->head;
+    while(cur) {
+        DListNode* next = cur->next;
+        list->free_fnc(cur->data);
+        free(cur);
+        cur = next;
+    }
 }
 
 void list_delete(DList* list) {

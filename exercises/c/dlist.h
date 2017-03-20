@@ -35,6 +35,8 @@ int list_push(DList* list, void* data);
 int list_add(DList* list, void* data);
 int list_remove(DList* list);
 void list_delete(DList* list);
+void list_delete_onlynodes(DList* list);
+void list_init(DList *list);
 // TODO
 // find
 
