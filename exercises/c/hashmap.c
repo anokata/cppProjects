@@ -29,9 +29,8 @@ typedef uint32_t index_t;
 typedef void* (*Hash_map_func)(key_s key, void* value);
 void hash_delete(Hash *h);
 Hash *hash_new();
-index_t hash_addi(Hash *h, uint32_t key, uint32_t x);
-index_t hash_adds(Hash *h, char* key, void *s);
-index_t hash_add(Hash *h, uint32_t key, void *data);
+index_t hash_addi(Hash *h, uint32_t key, void* x);
+index_t hash_add(Hash *h, key_s key, void *data);
 void *hash_get(Hash *h, key_s key);
 void *hash_list_find(DList *list, key_s key);
 void hash_mapv(Hash *h, List_map_func);
@@ -141,29 +140,20 @@ index_t hash(Hash *h, key_s k) {
     };
 }
 
-index_t hash_addi(Hash *h, uint32_t key, uint32_t x) {
-    index_t idx = hashi(h, key);
-    HashNode *node = malloc(sizeof(x));
-    node->data = (void*)(uint64_t)x;
-    node->key.val.ikey = key;
-    node->key.key_type = KEY_UINT32;
+index_t hash_addi(Hash *h, uint32_t key, void* x) {
+    return hash_add(h, keyint(key), x);
+}
+
+index_t hash_add(Hash *h, key_s key, void *data) {
+    HashNode *node = malloc(sizeof(*node));
+    node->data = data;
+    index_t idx = hash(h, key);
+    node->key = key;
     list_push(&h->table[idx], node);
     h->count += 1;
     return idx;
-}
 
-index_t hash_adds(Hash *h, char* key, void* x) { // ^^^ 
-    index_t idx = hashstr(h, key);
-    HashNode *node = malloc(sizeof(x));
-    node->data = x;
-    node->key.val.skey = key;
-    node->key.key_type = KEY_STR;
-    list_push(&h->table[idx], node);
-    h->count += 1;
-    return idx;
 }
-
-//index_t hash_add(Hash *h, key_s key, void* x) { // ^^^ 
 
 void* hash_get(Hash *h, key_s key) {
     index_t idx = hash(h, key);
@@ -177,7 +167,7 @@ void* hash_get(Hash *h, key_s key) {
 
 void hash_remove(Hash *h, index_t key) {
     index_t idx = hashi(h, key);
-//
+//TODO
 }
 
 void hash_mapv(Hash *h, List_map_func fun) {
@@ -201,7 +191,15 @@ void hash_map(Hash *h, Hash_map_func fun) {
 
 void* hash_print_func(void* data) {
     HashNode *hnode = data;
-    printf("key %d : val %ld\n", hnode->key.val.ikey, (long)hnode->data);
+    key_s k = hnode->key;
+    switch (k.key_type) {
+        case KEY_UINT32:
+            printf("key %d : val %ld\n", hnode->key.val.ikey, (long)hnode->data);
+            break;
+        case KEY_STR:
+            printf("key [%s] : val %ld\n", hnode->key.val.skey, (long)hnode->data);
+            break;
+    }
     return data;
 }
 
@@ -216,7 +214,7 @@ void hash_print_values(Hash *h) {
 // map over keys/vals. for free too
 // non typed values
 // Cli. Lib
-// save/load separator data, text format
+// save/load separator data, text format DSV with | delimeter
 #define DEBUG
 #ifdef DEBUG
 #include <stdio.h>
@@ -236,7 +234,7 @@ void test_hashs() {
 }
 void test_add() {
     Hash *h = hash_new();
-    index_t k = hash_addi(h, 1, 123);
+    index_t k = hash_addi(h, 1, (void*)123);
     printf("key %d\n", k);
     void *d = hash_get(h, keyint(1));
     printf("get %ld\n", (long)d);
@@ -245,7 +243,7 @@ void test_add() {
 void test_collisions() {
     Hash *h = hash_new();
     for (int i = 0; i < 10; i++) {
-        hash_addi(h, i, 3215);
+        hash_addi(h, i, (void*)3215);
         void *d = hash_get(h, keyint(i));
         printf("add %d get val %ld", i, (long)d);
         if (3215 == (long)d)
@@ -254,10 +252,10 @@ void test_collisions() {
             printf(" NOT!!\n");
     }
 
-    hash_addi(h, 241, 999);
+    hash_addi(h, 241, (void*)999);
     void *d = hash_get(h, keyint(241));
     printf("add %d get val %ld\n", 241, (long)d);
-    hash_addi(h, 741, 888);
+    hash_addi(h, 741, (void*)888);
     d = hash_get(h, keyint(741));
     printf("add %d get val %ld\n", 741, (long)d);
     hash_delete(h);
@@ -267,13 +265,13 @@ uint32_t test_find_collision() {
     srand(time(0));
     index_t x = rand() % 1000;
     index_t y = rand() % 1000;
-    index_t k1 = hash_addi(h, x, 1);
-    index_t k2 = hash_addi(h, y, 2);
+    index_t k1 = hash_addi(h, x, (void*)1);
+    index_t k2 = hash_addi(h, y, (void*)2);
     while (k1 != k2) {
         x = rand() % 1000;
         y = rand() % 1000;
-        k1 = hash_addi(h, x, 1);
-        k2 = hash_addi(h, y, 2);
+        k1 = hash_addi(h, x, (void*)1);
+        k2 = hash_addi(h, y, (void*)2);
     }
     printf("\n%d %d %d\n", x, y, k1);
     hash_delete(h);
@@ -281,10 +279,16 @@ uint32_t test_find_collision() {
 }
 void test_print() {
     Hash *h = hash_new();
-    hash_addi(h, 1, 113);
-    hash_addi(h, 1, 114);
-    hash_addi(h, 2, 212);
-    hash_addi(h, 3, 34);
+    hash_addi(h, 1, (void*)113);
+    hash_addi(h, 1, (void*)114);
+    hash_addi(h, 2, (void*)212);
+    hash_addi(h, 3, (void*)34);
+    hash_print_values(h);
+    hash_delete(h);
+}
+void test_stringkey() {
+    Hash *h = hash_new();
+    hash_add(h, keystr("key1"), (void*)12);
     hash_print_values(h);
     hash_delete(h);
 }
@@ -295,6 +299,7 @@ void test() {
     test_collisions();
     test_find_collision();
     test_print();
+    test_stringkey();
     //test_hashs();
     getc(stdin);
 }
