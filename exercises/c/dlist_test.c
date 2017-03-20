@@ -213,7 +213,33 @@ void test_load() {
     list_map(l, list_free_data);
     list_delete(l);
 }
+void test_erase_at() {
+    printf("* TEST ERASE AT\n");
+    DList *l = list_new();
+    int a = 8;
+    int b = 7;
+    int c = 9;
+    list_push(l, &a);
+    list_push(l, &b);
+    list_push(l, &c);
+    list_p(l);
 
+    printf("* ERASE AT\n");
+    list_erase_at(l, 1);
+    list_p(l);
+    list_push(l, &b);
+
+    printf("* ERASE AT\n");
+    list_erase_at(l, 2);
+    list_p(l);
+    list_push(l, &b);
+
+    printf("* ERASE AT\n");
+    list_erase_at(l, 0);
+    list_p(l);
+
+    list_delete(l);
+}
 void test() {
     test_create();
     test_create_and_delete();
@@ -226,6 +252,7 @@ void test() {
     test_leaks();
     test_save();
     test_load();
+    test_erase_at();
     return;
 }
 

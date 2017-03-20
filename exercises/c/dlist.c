@@ -141,8 +141,14 @@ void list_p(DList* list) {
 DListNode* list_delete_node(DList* list, DListNode* ln) {
     DListNode* next = ln->next;
     DListNode* back = ln->back;
-    next->back = back;
-    back->next = next;
+    if (next)
+        next->back = back;
+    if (back)
+        back->next = next;
+    if (ln == list->head)
+        list->head = ln->next;
+    if (ln == list->tail)
+        list->tail = ln->back;
     list->free_fnc(ln->data);
     free(ln);
     return next;
@@ -233,13 +239,23 @@ void *list_free_data(void *data) {
     return 0;
 }
 
+int list_erase_at(DList *list, uint32_t index) {
+    if (list->length < index || index < 0) return -1;
+    DListNode *cur = list->head;
+    while(index--) {
+        cur = cur->next;
+    }
+    list_delete_node(list, cur);
+    return 0;
+}
+
 // save(func to save one elem(fd))
 // push pop append remove take head tail slice reduce
 // delete delete_map
 // get erase insert
 // save/load serialization
 // make text format with sep
-//#define DEBUG
+#define DEBUG
 #ifdef DEBUG
 #include "dlist_test.c"
 #endif
