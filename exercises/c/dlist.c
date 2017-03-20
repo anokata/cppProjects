@@ -255,7 +255,7 @@ int list_erase_at(DList *list, uint32_t index) {
 // get erase insert
 // save/load serialization
 // make text format with sep
-#define DEBUG
+//#define DEBUG
 #ifdef DEBUG
 #include "dlist_test.c"
 #endif

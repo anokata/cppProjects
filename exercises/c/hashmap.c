@@ -28,12 +28,18 @@ typedef struct HashNode {
 typedef uint32_t index_t;
 typedef void* (*Hash_map_func)(key_s key, void* value);
 
+typedef struct Hash_find_result {
+    HashNode *hnode;
+    uint32_t pos;
+} Hash_find_result;
+
+
 void hash_delete(Hash *h);
 Hash *hash_new();
 index_t hash_addi(Hash *h, uint32_t key, void* x); // ?
 index_t hash_add(Hash *h, key_s key, void *data);
 void *hash_get(Hash *h, key_s key);
-HashNode *hash_list_find(DList *list, key_s key);
+Hash_find_result hash_list_find(DList *list, key_s key);
 void hash_mapv(Hash *h, List_map_func);
 void hash_map(Hash *h, Hash_map_func);
 void hash_remove(Hash *h, key_s key);
@@ -83,20 +89,27 @@ int keycmp(key_s k, key_s m) {
     }
 }
 
-HashNode *hash_list_find(DList *list, key_s key) {
+Hash_find_result hash_list_find(DList *list, key_s key) {
     DListNode *cur = list->head;
-    if (list->head == 0) return 0;
+    Hash_find_result res;
+    res.hnode = 0;
+    res.pos = 0;
+    if (list->head == 0) return res;
     HashNode *hnode = (HashNode*)cur->data;
+    res.hnode = hnode;
     while (cur && !keycmp(key, hnode->key)) {
         //printf("find %p next: %p \n", hnode, cur->next);
         cur = cur->next;
-        if (cur) 
+        if (cur) {
             hnode = (HashNode*)cur->data;
+            res.hnode = hnode;
+            res.pos++;
+        }
     }
     if (!cur) {
-        return 0;
+        return res;
     }
-    return hnode;
+    return res;
 }
 
 Hash *hash_new() {
@@ -166,7 +179,7 @@ void* hash_get(Hash *h, key_s key) {
         return 0;
     }
     list_print(&h->table[idx]);
-    return hash_list_find(&h->table[idx], key)->data;
+    return hash_list_find(&h->table[idx], key).hnode->data;
 }
 
 void hash_remove(Hash *h, key_s key) {
@@ -174,8 +187,8 @@ void hash_remove(Hash *h, key_s key) {
     printf("search! remove idx %d keys %s\n", idx, key.val.skey);
     if (h->table[idx].length > 0) {
         printf("find! remove idx %d \n", idx);
-        HashNode *hnode = hash_list_find(&h->table[idx], key);
-        printf("finded %p\n", hnode);
+        uint32_t pos = hash_list_find(&h->table[idx], key).pos;
+        printf("finded pos %d\n", pos);
         // Erase in list
     }
 //TODO
