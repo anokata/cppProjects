@@ -305,17 +305,43 @@ int list_erase_at(DList *list, uint32_t index) {
    f|3.1
 
  */
+
 #define DELIMITER '|'
 #define ENDLINE '\n'
+static const char DATA_UINT32_TAG[] = "I32";
+static const char DATA_STR_TAG[] = "STR";
+
+char *data_to_str(char *buf, size_t maxs, data_t data) {
+    switch (data.data_type) {
+        case DATA_UINT32: 
+            sprintf(buf, "%s%c%d\n", DATA_UINT32_TAG, DELIMITER, data.val.idata);
+            break;
+        case DATA_STR:
+            snprintf(buf, maxs, "%s%c%s\n", DATA_STR_TAG, DELIMITER, data.val.sdata);
+            break;
+    };
+    return buf;
+}
+//static const char DELIMITER_STR[2] = "|";
+#define BUF_DSV_SIZE 128
 char *list_get_dsvstr(DList *list) {
-    char buf[100];
-    snprintf(buf, 100, "%s%c%d\n", DLIST_TAG, DELIMITER, list->length);
-    char *res = malloc(strlen(buf) + 1);
+    char buf[BUF_DSV_SIZE];
+    snprintf(buf, BUF_DSV_SIZE, "%s%c%d\n", DLIST_TAG, DELIMITER, list->length);
+    char *res = calloc(strlen(buf) + 1, 1);
+    char *d;
     strcpy(res, buf);
 
     DListNode *cur = list->head;
+    size_t len = strlen(res) + 1;
     while (cur) {
-        //TODO Data type tag!
+        //TODO 
+        data_to_str(buf, BUF_DSV_SIZE, cur->data);
+        d = strdup(res);
+        len += strlen(buf) + 1;
+        free(res);
+        res = calloc(len, 1);
+        strcat(res, d);
+        strcat(res, buf);
         cur = cur->next;
     }
 

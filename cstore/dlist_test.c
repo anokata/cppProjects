@@ -255,8 +255,13 @@ void test_dsvget() {
     printf("* TEST DSV\n");
     DList *l = list_new();
     list_push(l, datai(1));
+    list_push(l, datai(4442));
+    list_push(l, datai(8884442));
+    list_add(l, datai(7773));
+    list_add(l, datas("s7s773s"));
+    list_push(l, datas("eNDs7s773s"));
     char *s = list_get_dsvstr(l);
-    printf("DSV:%s:\n", s);
+    printf("DSV:---\n%s\n---\n", s);
     free(s);
     list_delete(l);
     printf("* OK DSV\n");
