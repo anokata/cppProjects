@@ -1,6 +1,8 @@
 #include "dlist.h"
 
 #define HASH_START_SIZE 100
+#define HASH_REHASH_PRC 50
+#define HASH_REHASH_MUL 2
 //threshold for rehash
 typedef struct Hash {
     size_t size;
@@ -36,6 +38,7 @@ typedef struct Hash_find_result {
 
 void hash_delete(Hash *h);
 Hash *hash_new();
+Hash *hash_create(size_t size);
 index_t hash_addi(Hash *h, uint32_t key, void* x); // ?
 index_t hash_add(Hash *h, key_s key, void *data);
 void *hash_get(Hash *h, key_s key);
@@ -46,6 +49,7 @@ void hash_remove(Hash *h, key_s key);
 index_t hash(Hash *h, key_s k);
 index_t hashi(Hash *h, uint32_t x);
 index_t hashstr(Hash *h, char* s);
+void hash_fullness_check(Hash *h);
 
 key_s keystr(char *str);
 key_s keyint(uint32_t x);
@@ -112,16 +116,24 @@ Hash_find_result hash_list_find(DList *list, key_s key) {
     return res;
 }
 
-Hash *hash_new() {
-    Hash *h = malloc(sizeof(*h));
-    h->size = HASH_START_SIZE;
+void hash_create_table(Hash *h) {
     DList *t = calloc(sizeof(DList), h->size);
     h->table = t;
     for (size_t i = 0; i < h->size; i++) {
         list_init(&h->table[i]);
     }
+}
+
+Hash *hash_create(size_t size) {
+    Hash *h = malloc(sizeof(*h));
+    h->size = size;
+    hash_create_table(h);
     h->count = 0;
     return h;
+}
+
+Hash *hash_new() {
+    return hash_create(HASH_START_SIZE);
 }
 
 void hash_delete(Hash *h) {
@@ -162,6 +174,7 @@ index_t hash_addi(Hash *h, uint32_t key, void* x) {
 }
 
 index_t hash_add(Hash *h, key_s key, void *data) {
+    hash_fullness_check(h);
     HashNode *node = malloc(sizeof(*node));
     node->data = data;
     index_t idx = hash(h, key);
@@ -193,9 +206,9 @@ void hash_remove(Hash *h, key_s key) {
         // Erase in list
         if (r.hnode) {
             list_erase_at(&h->table[idx], pos);
+            h->count--;
         }
     }
-//TODO
 }
 
 void hash_mapv(Hash *h, List_map_func fun) {
@@ -235,7 +248,38 @@ void hash_print_values(Hash *h) {
     hash_mapv(h, hash_print_func);
 }
 
-// TODO: delete at key
+void hash_rehash(Hash *h) {
+    DList *old_table = h->table;
+    size_t old_size = h->size;
+    h->count = 0;
+    // create new table with larger size
+    h->size *= HASH_REHASH_MUL;
+    hash_create_table(h);
+    // map old and add same data in new
+    for (size_t i = 0; i < old_size; i++) {
+        DListNode *cur = old_table[i].head;
+        while (cur) {
+            HashNode *hnode = cur->data;
+            hash_add(h, hnode->key, hnode->data);
+            cur = cur->next;
+        }
+    }
+    // delete old
+    free(old_table);
+    //hash_delete(h);
+    //return new;
+}
+
+void hash_fullness_check(Hash *h) {
+    size_t fullness = (h->count * 100) / h->size;
+    if (fullness > HASH_REHASH_PRC) {
+        printf("Need rehash!\n");
+        hash_rehash(h);
+        printf("New hash size %ld!\n", h->size);
+    }
+}
+
+// TODO: 
 // rehash(calc fullness (count/size))
 // save/load separator data, text format DSV with | delimeter
 // Cli. Lib
@@ -243,16 +287,25 @@ void hash_print_values(Hash *h) {
 // map over keys/vals. for free too
 // count items
 // non typed values
+// delete at val
 #define DEBUG
 #ifdef DEBUG
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
+#include <assert.h>
 void test_create() {
+    printf("* Test create\n");
     Hash *h = hash_new();
+    assert(h->size == HASH_START_SIZE);
+    printf("Hash created size %ld\n", h->size);
+    assert(h->count == 0);
+    assert(h->table != 0);
     hash_delete(h);
+    printf("* OK\n");
 }
 void test_hashs() {
+    printf("* Test hashs\n");
     Hash *h = hash_new();
     for (int i = 0; i < 100; i++) {
         printf("hashi: %d \n", hashi(h, i));
@@ -261,14 +314,21 @@ void test_hashs() {
     hash_delete(h);
 }
 void test_add() {
+    printf("* Test add\n");
     Hash *h = hash_new();
-    index_t k = hash_addi(h, 1, (void*)123);
+    assert(h->count == 0);
+    long x = 123;
+    index_t k = hash_addi(h, 1, (void*)x);
+    assert(h->count == 1);
     printf("key %d\n", k);
     void *d = hash_get(h, keyint(1));
+    assert((long)d == x);
     printf("get %ld\n", (long)d);
     hash_delete(h);
+    printf("* OK add\n");
 }
 void test_collisions() {
+    printf("* Test collations\n");
     Hash *h = hash_new();
     for (int i = 0; i < 10; i++) {
         hash_addi(h, i, (void*)3215);
@@ -288,8 +348,10 @@ void test_collisions() {
     d = hash_get(h, keyint(741));
     printf("add %d get val %ld\n", 741, (long)d);
     hash_delete(h);
+    printf("* OK coll\n");
 }
 uint32_t test_find_collision() {
+    printf("* Test find collations\n");
     Hash *h = hash_new();
     srand(time(0));
     index_t x = rand() % 1000;
@@ -305,6 +367,7 @@ uint32_t test_find_collision() {
     printf("\n%d %d %d\n", x, y, k1);
     hash_delete(h);
     // 241 741
+    printf("* OK find col\n");
 }
 void test_print() {
     printf("* TEST PRINT \n");
@@ -315,6 +378,7 @@ void test_print() {
     hash_addi(h, 3, (void*)34);
     hash_print_values(h);
     hash_delete(h);
+    printf("* OK print\n");
 }
 void test_stringkey() {
     printf("* TEST STR KEY\n");
@@ -322,6 +386,7 @@ void test_stringkey() {
     hash_add(h, keystr("key1"), (void*)12);
     hash_print_values(h);
     hash_delete(h);
+    printf("* OK string\n");
 }
 void test_remove() {
     printf("* TEST REMOVE\n");
@@ -329,19 +394,25 @@ void test_remove() {
     hash_add(h, keystr("key1"), (void*)13);
     hash_add(h, keystr("key3"), (void*)33);
     hash_add(h, keystr("key2"), (void*)43);
+    assert(h->count == 3);
     hash_print_values(h);
     hash_remove(h, keystr("key0"));
     hash_remove(h, keystr("key1"));
+    assert(h->count == 2);
     hash_remove(h, keystr("key1"));
+    assert(h->count == 2);
     printf("after remove:\n");
     hash_print_values(h);
     hash_remove(h, keystr("key2"));
+    assert(h->count == 1);
     printf("after remove:\n");
     hash_print_values(h);
     hash_remove(h, keystr("key3"));
+    assert(h->count == 0);
     printf("after remove:\n");
     hash_print_values(h);
     hash_add(h, keystr("key1"), (void*)13);
+    assert(h->count == 1);
     hash_add(h, keystr("key3"), (void*)33);
     hash_add(h, keystr("key2"), (void*)43);
     hash_remove(h, keystr("key2"));
@@ -355,8 +426,73 @@ void test_remove() {
     printf("Aafter remove:\n");
     hash_print_values(h);
     hash_delete(h);
+    printf("* OK\n");
 }
+void test_rehash() {
+    printf("* TEST REHASH\n");
+    Hash *h = hash_new();
+    hash_add(h, keystr("key1"), (void*)62);
+    hash_add(h, keystr("kdey1"), (void*)16);
+    hash_add(h, keystr("sdf1"), (void*)66);
+    hash_add(h, keystr("yyyy"), (void*)88);
+    assert(h->count == 4);
+    assert(h->size == HASH_START_SIZE);
+    printf("before rehash:\n");
+    hash_print_values(h);
+    hash_rehash(h);
+    assert(h->count == 4);
+    assert(h->size == HASH_START_SIZE * HASH_REHASH_MUL);
+    printf("After rehash %ld:\n", h->size);
+    hash_print_values(h);
 
+    hash_remove(h, keystr("key1"));
+    hash_rehash(h);
+    assert(h->count == 3);
+    assert(h->size == HASH_START_SIZE * HASH_REHASH_MUL * HASH_REHASH_MUL);
+    printf("After rehash %ld:\n", h->size);
+    hash_print_values(h);
+    hash_delete(h);
+    printf("* OK\n");
+}
+/*
+void test_() {
+    Hash *h = hash_new();
+    printf("* TEST  \n");
+    printf("* OK \n");
+    hash_delete(h);
+}
+*/
+void test_add_rehash() {
+    int s = 2;
+    Hash *h = hash_create(s);
+    printf("* TEST add rehash \n");
+    assert(h->size == s);
+    hash_add(h, keystr("test key"), (void*)1);
+    printf("count %ld size %ld\n", h->count, h->size);
+    hash_add(h, keystr("testzkey"), (void*)1);
+    printf("count %ld size %ld\n", h->count, h->size);
+    hash_add(h, keystr("testdkey"), (void*)1);
+    assert(h->size == s * HASH_REHASH_MUL);
+    printf("count %ld size %ld\n", h->count, h->size);
+    hash_add(h, keystr("test key"), (void*)1);
+    printf("count %ld size %ld\n", h->count, h->size);
+    assert(h->size == s * HASH_REHASH_MUL * HASH_REHASH_MUL);
+    hash_add(h, keystr("test key"), (void*)1);
+    printf("count %ld size %ld\n", h->count, h->size);
+    hash_add(h, keystr("test key"), (void*)1);
+    printf("count %ld size %ld\n", h->count, h->size);
+    hash_add(h, keystr("test key"), (void*)1);
+    printf("count %ld size %ld\n", h->count, h->size);
+    hash_add(h, keystr("test key"), (void*)1);
+    printf("count %ld size %ld\n", h->count, h->size);
+    hash_add(h, keystr("test key"), (void*)1);
+    printf("count %ld size %ld\n", h->count, h->size);
+    hash_add(h, keystr("test key"), (void*)1);
+    printf("count %ld size %ld\n", h->count, h->size);
+    hash_print_values(h);
+    printf("* OK add rehash\n");
+    hash_delete(h);
+}
 
 void test() {
     test_create();
@@ -366,6 +502,8 @@ void test() {
     test_print();
     test_stringkey();
     test_remove();
+    test_rehash();
+    test_add_rehash();
     //test_hashs();
     getc(stdin);
 }
