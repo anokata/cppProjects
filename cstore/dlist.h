@@ -56,6 +56,7 @@ data_t datas(char* s);
 data_t datai(uint32_t x);
 int list_addi(DList* list, uint32_t x);
 int list_adds(DList* list, char *s);
+char *list_get_dsvstr(DList *list);
 // TODO
 // find
 

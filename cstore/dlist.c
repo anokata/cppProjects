@@ -322,7 +322,6 @@ char *data_to_str(char *buf, size_t maxs, data_t data) {
     };
     return buf;
 }
-//static const char DELIMITER_STR[2] = "|";
 #define BUF_DSV_SIZE 128
 char *list_get_dsvstr(DList *list) {
     char buf[BUF_DSV_SIZE];
@@ -334,7 +333,7 @@ char *list_get_dsvstr(DList *list) {
     DListNode *cur = list->head;
     size_t len = strlen(res) + 1;
     while (cur) {
-        //TODO 
+        // TODO refactor to realloc
         data_to_str(buf, BUF_DSV_SIZE, cur->data);
         d = strdup(res);
         len += strlen(buf) + 1;
@@ -344,8 +343,27 @@ char *list_get_dsvstr(DList *list) {
         strcat(res, buf);
         cur = cur->next;
     }
-
     return res;
+}
+//TODO map, print on List contained other list
+
+DList *list_from_dsvstr(char *s) {
+    // TODO
+    if (strncmp(s, DLIST_TAG, strlen(DLIST_TAG)) == 0) {
+        DList *list = list_new();
+        char buf[BUF_DSV_SIZE];
+        char *lenstr;
+        int dpos = strchr(s, DELIMITER) + 1;
+        int npos = strchr(dpos, ENDLINE);
+        strncpy(buf, dpos, npos - dpos);
+        size_t len = atoi(buf);
+        dpos++;
+        printf("len=%ld %s", len, dpos);
+        // for (size_t i = 0; i < len; i++) {
+        // 
+        return list;
+    }
+    return 0;
 }
 
 int list_saveDSVfd(DList* list, FILE* fd) {

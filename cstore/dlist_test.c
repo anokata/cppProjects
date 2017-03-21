@@ -264,6 +264,10 @@ void test_dsvget() {
     printf("DSV:---\n%s\n---\n", s);
     free(s);
     list_delete(l);
+
+    l = list_from_dsvstr("DLST|1\nI32|81\nabracadabra");
+    list_delete(l);
+
     printf("* OK DSV\n");
 }
 
