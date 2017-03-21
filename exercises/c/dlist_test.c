@@ -240,6 +240,14 @@ void test_erase_at() {
 
     list_delete(l);
 }
+void test_dsvget() {
+    printf("* TEST DSV\n");
+    DList *l = list_new();
+    list_push(l, (void*)1);
+    list_delete(l);
+    printf("* OK DSV\n");
+}
+
 void test() {
     test_create();
     test_create_and_delete();
@@ -253,6 +261,7 @@ void test() {
     test_save();
     test_load();
     test_erase_at();
+    test_dsvget();
     return;
 }
 

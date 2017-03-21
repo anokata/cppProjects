@@ -280,10 +280,10 @@ void hash_fullness_check(Hash *h) {
 }
 
 // TODO: 
-// rehash(calc fullness (count/size))
 // save/load separator data, text format DSV with | delimeter
 // Cli. Lib
 //
+// rehash(calc fullness (count/size))
 // map over keys/vals. for free too
 // count items
 // non typed values

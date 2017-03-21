@@ -250,6 +250,16 @@ int list_erase_at(DList *list, uint32_t index) {
     return 0;
 }
 
+#define DELIMITER |
+char *list_get_dsvstr(DList *list) {
+
+}
+
+int list_saveDSVfile(DList* list, char* fn) {
+
+}
+
+// save/load separator data, text format DSV with | delimeter
 // save(func to save one elem(fd))
 // push pop append remove take head tail slice reduce
 // delete delete_map
