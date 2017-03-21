@@ -270,17 +270,9 @@ int list_erase_at(DList *list, uint32_t index) {
 #define ENDLINE '\n'
 char *list_get_dsvstr(DList *list) {
     char buf[100];
-    char *res = malloc(strlen(DLIST_TAG) + 1);
-    sprintf(res, "%s%c", DLIST_TAG, DELIMITER);
-    snprintf(buf, 100, "%d\n", list->length);
-    size_t newsize = 0;
-    char *forfree = res;
-    newsize = strlen(res) + strlen(buf);
-    printf("newsize %ld\n", newsize);
-    res = malloc(newsize);
-    strcpy(res, forfree);
-    strcat(res, buf);
-    free(forfree);
+    snprintf(buf, 100, "%s%c%d\n", DLIST_TAG, DELIMITER, list->length);
+    char *res = malloc(strlen(buf) + 1);
+    strcpy(res, buf);
 
     DListNode *cur = list->head;
     while (cur) {
