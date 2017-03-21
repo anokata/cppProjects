@@ -1,12 +1,12 @@
 #include "dlist.h"
-void free_node_stumb(void* ptr) {
+void free_node_stumb(data_t ptr) {
     //printf("* Free at %p\n", ptr);
     //free(ptr);
 }
 
-char* data_to_str_stumb(void* data) { // ALLOC
+char* data_to_str_stumb(data_t data) { // ALLOC
     char* str = malloc(sizeof(uint32_t) + 1);
-    sprintf(str, "%d", *((uint32_t*)data));
+    //sprintf(str, "%d", *((uint32_t*)data));
     return str;
 }
 
@@ -16,7 +16,7 @@ void list_init(DList *list) {
     list->tail = 0;
     list->free_fnc = free_node_stumb;
     list->tostr_fnc = data_to_str_stumb;
-    list->data_size = sizeof(uint32_t);
+    list->data_size = sizeof(data_t);
 }
 
 DList* list_new() {
@@ -25,7 +25,29 @@ DList* list_new() {
     return list;
 }
 
-DListNode* list_newnode(void* data) {
+data_t datai(uint32_t x) {
+    data_t d;
+    d.data_type = DATA_UINT32;
+    d.val.idata = x;
+    return d;
+}
+
+data_t datas(char* s) {
+    data_t d;
+    d.data_type = DATA_STR;
+    d.val.sdata = s;
+    return d;
+}
+
+DListNode* list_newnodei(uint32_t x) {
+    return list_newnode(datai(x));
+}
+
+DListNode* list_newnodes(char *s) {
+    return list_newnode(datas(s));
+}
+
+DListNode* list_newnode(data_t data) {
     DListNode* new_elem; 
     new_elem = malloc(sizeof(*new_elem));
     new_elem->data = data;
@@ -34,7 +56,7 @@ DListNode* list_newnode(void* data) {
     return new_elem;
 }
 
-int list_push(DList* list, void* data) {
+int list_push(DList* list, data_t data) {
     DListNode* ln = list->head;
     DListNode* new_elem = list_newnode(data);
     list->length++;
@@ -66,32 +88,40 @@ int list_remove(DList* list) {
     return 0;
 }
 
-void* list_pop(DList* list) {
+int list_pop(DList* list) {
     DListNode* lst = list->head;
     if (list->length == 0) {
         return 0;
     }
     if (list->length == 1) {
-        void* data = list->head->data;
+        data_t data = list->head->data;
         list->free_fnc(list->head->data);
         free(list->head);
         list->head = 0;
         list->tail = 0;
         list->length--;
-        return data;
+        return 0;
     } else {
         list->length--;
         lst = list->tail->back;
-        void* data = lst->next->data;
+        data_t data = lst->next->data;
         list->free_fnc(lst->next->data);
         free(lst->next);
         lst->next = 0;
         list->tail = lst;
-        return data;
+        return 0;
     }
 }
 
-int list_add(DList* list, void* data) {
+int list_addi(DList* list, uint32_t x) {
+    return list_add(list, datai(x));
+}
+
+int list_adds(DList* list, char *s) {
+    return list_add(list, datas(s));
+}
+
+int list_add(DList* list, data_t data) {
     DListNode* new_elem = list_newnode(data);
     list->length++;
 
@@ -115,9 +145,14 @@ void list_map(DList* list, List_map_func f) {
     }
 }
 
-void* list_print_func(void* data) {
-    printf("data: %p int(%d) long(%ld) ", data, *(int*)data, *(long*)data);
-    printf("str(%s) \n", (char*)data);
+data_t list_print_func(data_t data) {
+    //switch(data.data_type) {
+    if (data.data_type == DATA_UINT32) {
+        printf("int(%d)", data.val.idata);
+    }
+    if (data.data_type == DATA_STR) {
+        printf("str(%s)", data.val.sdata);
+    }
     return data;
 }
 
@@ -125,11 +160,12 @@ void list_print(DList *list) {
     int i = 1;
     DListNode *ln = list->head;
     while (ln) {
+        list_print_func(ln->data);
+        printf("\t");
         printf("Item[%d] ", i++);
-        printf("next: %p  ", ln->next);
-        printf("data: %p int(%d) long(%ld) ", ln->data, *(int*)ln->data, *(long*)ln->data);
-        printf("str(%s) \n", (char*)ln->data);
+        printf("next: %p back: %p \t", ln->next, ln->back);
         ln = ln->next;
+        printf("\n");
     }
     printf("\n");
 }
@@ -182,7 +218,7 @@ const static uint32_t LIST_TAG = 'D' + ('L' << 8) + ('S' << 16) + ('T' << 24);
 const static char DLIST_TAG[] = "DLST";
 
 int list_save2file(DList* list, char* fn) {
-	FILE *fd = fopen(fn, "w");
+	/*FILE *fd = fopen(fn, "w");
 	if (!fd) {
 		perror("open");
 		return -1;
@@ -199,10 +235,12 @@ int list_save2file(DList* list, char* fn) {
     }
 	printf("* writed %ld items\n", bytes);
 	fclose(fd);
+    */
 	return 0;
 }
 
 DList *list_loadfile(char* fn) {
+    /*
     FILE *fd = fopen(fn, "r");
     if (!fd) {
         perror("open for load");
@@ -233,6 +271,7 @@ DList *list_loadfile(char* fn) {
     }
 
     return list;
+    */
 }
 
 void *list_free_data(void *data) {

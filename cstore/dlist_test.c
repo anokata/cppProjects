@@ -1,4 +1,5 @@
 #include <string.h>
+#include <assert.h>
 void test_create() {
     printf("* TEST create \n");
     DList *l; 
@@ -22,122 +23,107 @@ void test_create_and_delete() {
 void test_add() {
     printf("* TEST ADD\n");
     DList *l = list_new();
-    int a = 5;
-    int b = 6;
-    list_add(l, &a);
-    list_add(l, &b);
+    list_add(l, datai(1));
+    list_add(l, datai(2));
     printf("Len:%d\tH:%p\tT:%p\n", l->length, l->head, l->tail);
-    printf("Head next %p\t back %p\t data %p(%d)\n", l->head->next, l->head->back, l->head->data, *(int*)l->head->data);
+    //printf("Head next %p\t back %p\t data %p(%d)\n", l->head->next, l->head->back, l->head->data, *(int*)l->head->data);
     list_print(l);
     list_remove(l);
     list_print(l);
-    list_add(l, &b);
+    list_add(l, datai(3));
     list_print(l);
     list_delete(l);
 }
 void test_push() {
     printf("* TEST PUSH\n");
     DList *l = list_new();
-    int a = 5;
-    int b = 6;
-    list_push(l, &a);
-    list_push(l, &b);
+    list_push(l, datai(1));
+    list_push(l, datai(1));
     printf("Len:%d\tH:%p\tT:%p\n", l->length, l->head, l->tail);
-    printf("Head next %p\t back %p\t data %p(%d)\n", l->head->next, l->head->back, l->head->data, *(int*)l->head->data);
+    //printf("Head next %p\t back %p\t data %p(%d)\n", l->head->next, l->head->back, l->head->data, *(int*)l->head->data);
     list_print(l);
     list_remove(l);
     list_print(l);
-    list_push(l, &b);
+    list_push(l, datai(1));
     list_print(l);
     list_delete(l);
 }
 void test_pop() {
     printf("* TEST POP\n");
     DList *l = list_new();
-    int a = 5;
-    int b = 6;
-    list_push(l, &a);
-    list_push(l, &b);
+    list_push(l, datai(2));
+    list_push(l, datai(2));
     printf("Len:%d\tH:%p\tT:%p\n", l->length, l->head, l->tail);
-    printf("Head next %p\t back %p\t data %p(%d)\n", l->head->next, l->head->back, l->head->data, *(int*)l->head->data);
+    //printf("Head next %p\t back %p\t data %p(%d)\n", l->head->next, l->head->back, l->head->data, *(int*)l->head->data);
     list_print(l);
-    int x = *(int*)list_pop(l);
+    int x = list_pop(l);
     printf("poped: %d\n", x);
     list_print(l);
-    list_push(l, &b);
+    list_push(l, datai(2));
     list_print(l);
-    x = *(int*)list_pop(l);
+    x = list_pop(l);
     printf("poped: %d\n", x);
-    x = *(int*)list_pop(l);
+    x = list_pop(l);
     printf("poped: %d\n", x);
     list_print(l);
-    list_push(l, &b);
-    list_add(l, &a);
+    list_push(l, datai(2));
+    list_add(l, datai(2));
     list_print(l);
     list_delete(l);
 }
 void test_backs() {
     printf("* TEST BACKS\n");
     DList *l = list_new();
-    int a = 5;
-    int b = 6;
-    list_push(l, &a);
-    list_push(l, &b);
+    list_push(l, datai(8));
+    list_push(l, datai(8));
     DListNode* c = l->tail;
     while (c) {
-        printf("self %p\tnext %p\t back %p\t data %p(%d)\n", c, c->next, c->back, c->data, *(int*)c->data);
+        //printf("self %p\tnext %p\t back %p\t data %p(%d)\n", c, c->next, c->back, c->data, *(int*)c->data);
         c = c->back;
     }
     list_print(l);
     list_remove(l);
     list_print(l);
-    a = 8;
-    list_push(l, &a);
+    list_push(l, datai(1));
     list_print(l);
     c = l->tail;
     while (c) {
-        printf("self %p\tnext %p\t back %p\t data %p(%d)\n", c, c->next, c->back, c->data, *(int*)c->data);
+        //printf("self %p\tnext %p\t back %p\t data %p(%d)\n", c, c->next, c->back, c->data, *(int*)c->data);
         c = c->back;
     }
     list_pop(l);
-    list_push(l, &a);
+    list_push(l, datai(2));
     c = l->tail;
     while (c) {
-        printf("self %p\tnext %p\t back %p\t data %p(%d)\n", c, c->next, c->back, c->data, *(int*)c->data);
+        //printf("self %p\tnext %p\t back %p\t data %p(%d)\n", c, c->next, c->back, c->data, *(int*)c->data);
         c = c->back;
     }
     list_delete(l);
 }
 void test_all() {
     DList *l; 
-    int a = 812;
-    char s[] = "Linked List.";
     l = list_new();
-    list_add(l, &a);
-    list_add(l, &s);
-    printf("%d\n", *(int*)l->head->next->data);
-    list_add(l, &s);
-    printf("%s\n", (char*)l->head->data);
+    list_add(l, datai(2));
+    list_add(l, datas("sdf"));
+    //printf("%d\n", *(int*)l->head->next->data);
+    list_add(l, datas("str"));
+    //printf("%s\n", (char*)l->head->data);
     list_print(l);
     list_p(l);
-    int b = 3; int c = 4;
     list_delete(l);
     l = list_new();
-    list_push(l, &a);
-    list_push(l, &b);
-    list_push(l, &c);
+    list_push(l, datai(1));
+    list_push(l, datai(2));
+    list_push(l, datai(2));
     list_p(l);
-    int x1 = 1;
-    int x2 = 2;
-    int x3 = 3;
-    int d = 5;
     list_delete(l);
     l = list_new();
-    list_push(l, &x1);
-    list_push(l, &x2);
-    list_push(l, &x3);
-    list_add(l, &c);
-    list_add(l, &d);
+    list_push(l, datai(1));
+    list_push(l, datai(2));
+    list_push(l, datai(3));
+    list_add(l, datai(3));
+    list_add(l, datai(3));
+    /*
     printf("pop = %d len(%d)\n", *(int*)list_pop(l), l->length);
     printf("pop = %d len(%d)\n", *(int*)list_pop(l), l->length);
     printf("pop = %d len(%d)\n", *(int*)list_pop(l), l->length);
@@ -149,59 +135,67 @@ void test_all() {
     printf("h = %p\n", (int*)l->head);
     printf("t = %p\n", (int*)l->tail);
     printf("\n");
+    */
     list_p(l);
     list_delete(l);
     l = list_new();
-    list_push(l, &x1);
-    list_push(l, &x2);
-    list_push(l, &x3);
-    list_add(l, &c);
-    list_add(l, &d);
+    list_push(l, datai(3));
+    list_push(l, datai(3));
+    list_push(l, datai(3));
+    list_add(l, datai(3));
+    list_add(l, datai(3));
     list_remove(l);
-    printf("pop = %d len(%d)\n", *(int*)list_pop(l), l->length);
+    //printf("pop = %d len(%d)\n", *(int*)list_pop(l), l->length);
     list_remove(l);
     list_p(l);
     list_delete(l);
-    list_p(l);
+}
+void test_p_empty() {
+    printf("* TEST empty\n");
+    DList *l; 
+    l = list_new();
+    list_add(l, datai(2));
+    list_delete(l);
+    list_p(l); // Will read free'd mem
+    printf("* empty END\n");
 }
 void test_leaks() {
     DList* l = list_new();
     int a = 1;
     int b = 2;
-    list_push(l, &a);
-    list_push(l, &a);
-    list_push(l, &a);
+    list_push(l, datai(3));
+    list_push(l, datai(3));
+    list_push(l, datai(3));
     list_pop(l);
     list_pop(l);
     list_pop(l);
-    list_add(l, &a);
-    list_add(l, &a);
-    list_add(l, &a);
+    list_add(l, datai(3));
+    list_add(l, datai(3));
+    list_add(l, datai(3));
     list_pop(l);
     list_pop(l);
     list_pop(l);
     list_delete(l);
     l = list_new();
-    list_add(l, &a);
-    list_add(l, &b);
-    list_add(l, &a);
+    list_add(l, datai(3));
+    list_add(l, datai(3));
+    list_add(l, datai(3));
     printf("3 rem\n");
     list_remove(l);
     list_remove(l);
     list_remove(l);
-    list_push(l, &a);
-    list_push(l, &a);
-    list_push(l, &a);
+    list_push(l, datai(3));
+    list_push(l, datai(3));
+    list_push(l, datai(3));
     list_remove(l);
     list_remove(l);
     list_remove(l);
     list_delete(l);
 }
 void test_save() {
-    int a = 1; int b = 2;
     DList* l = list_new();
-    list_push(l, &a);
-    list_add(l, &b);
+    list_push(l, datai(3));
+    list_add(l, datai(3));
     list_save2file(l, "testsavelist");
     list_delete(l);
 }
@@ -210,29 +204,26 @@ void test_load() {
     DList *l = list_loadfile("testsavelist");
     printf("loaded %d items\n", l->length);
     list_p(l);
-    list_map(l, list_free_data);
+    //list_map(l, list_free_data);
     list_delete(l);
 }
 void test_erase_at() {
     printf("* TEST ERASE AT\n");
     DList *l = list_new();
-    int a = 8;
-    int b = 7;
-    int c = 9;
-    list_push(l, &a);
-    list_push(l, &b);
-    list_push(l, &c);
+    list_push(l, datai(3));
+    list_push(l, datai(3));
+    list_push(l, datai(3));
     list_p(l);
 
     printf("* ERASE AT\n");
     list_erase_at(l, 1);
     list_p(l);
-    list_push(l, &b);
+    list_push(l, datai(3));
 
     printf("* ERASE AT\n");
     list_erase_at(l, 2);
     list_p(l);
-    list_push(l, &b);
+    list_push(l, datai(3));
 
     printf("* ERASE AT\n");
     list_erase_at(l, 0);
@@ -240,11 +231,33 @@ void test_erase_at() {
 
     list_delete(l);
 }
+void test_data() {
+    printf("* TEST data\n");
+    DList *l = list_new();
+
+    printf("* only int\n");
+    list_add(l, datai(1));
+    list_add(l, datai(2));
+    list_add(l, datai(8));
+    list_print(l);
+    list_add(l, datas("test string -----"));
+    list_push(l, datas("test string2 -----"));
+    list_erase_at(l, 3);
+    list_add(l, datas("test string3 -----"));
+    list_print(l);
+    assert(l->length == 5);
+
+    list_delete(l);
+    printf("* data OK\n");
+}
+
 void test_dsvget() {
     printf("* TEST DSV\n");
     DList *l = list_new();
-    list_push(l, (void*)1);
-    printf("DSV:%s:\n", list_get_dsvstr(l));
+    list_push(l, datai(1));
+    char *s = list_get_dsvstr(l);
+    printf("DSV:%s:\n", s);
+    free(s);
     list_delete(l);
     printf("* OK DSV\n");
 }
@@ -258,10 +271,12 @@ void test() {
     test_backs();
     test_pop();
     test_all();
+    //test_p_empty();
     test_leaks();
-    test_save();
-    test_load();
+    //test_save();
+    //test_load();
     test_erase_at();
+    test_data();
     test_dsvget();
     return;
 }
