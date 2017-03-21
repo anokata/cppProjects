@@ -187,9 +187,13 @@ void hash_remove(Hash *h, key_s key) {
     printf("search! remove idx %d keys %s\n", idx, key.val.skey);
     if (h->table[idx].length > 0) {
         printf("find! remove idx %d \n", idx);
-        uint32_t pos = hash_list_find(&h->table[idx], key).pos;
+        Hash_find_result r = hash_list_find(&h->table[idx], key);
+        uint32_t pos = r.pos;
         printf("finded pos %d\n", pos);
         // Erase in list
+        if (r.hnode) {
+            list_erase_at(&h->table[idx], pos);
+        }
     }
 //TODO
 }
@@ -328,7 +332,27 @@ void test_remove() {
     hash_print_values(h);
     hash_remove(h, keystr("key0"));
     hash_remove(h, keystr("key1"));
+    hash_remove(h, keystr("key1"));
     printf("after remove:\n");
+    hash_print_values(h);
+    hash_remove(h, keystr("key2"));
+    printf("after remove:\n");
+    hash_print_values(h);
+    hash_remove(h, keystr("key3"));
+    printf("after remove:\n");
+    hash_print_values(h);
+    hash_add(h, keystr("key1"), (void*)13);
+    hash_add(h, keystr("key3"), (void*)33);
+    hash_add(h, keystr("key2"), (void*)43);
+    hash_remove(h, keystr("key2"));
+    printf("\nafter remove:\n");
+    hash_print_values(h);
+    hash_add(h, keystr("key2"), (void*)43);
+    hash_remove(h, keystr("key3"));
+    printf("@after remove:\n");
+    hash_print_values(h);
+    hash_remove(h, keystr("key3"));
+    printf("Aafter remove:\n");
     hash_print_values(h);
     hash_delete(h);
 }

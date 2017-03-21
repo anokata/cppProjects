@@ -37,6 +37,7 @@ int list_remove(DList* list);
 void list_delete(DList* list);
 void list_delete_onlynodes(DList* list);
 void list_init(DList *list);
+int list_erase_at(DList *list, uint32_t index);
 // TODO
 // find
 

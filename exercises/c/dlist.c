@@ -246,6 +246,7 @@ int list_erase_at(DList *list, uint32_t index) {
         cur = cur->next;
     }
     list_delete_node(list, cur);
+    list->length--;
     return 0;
 }
 
