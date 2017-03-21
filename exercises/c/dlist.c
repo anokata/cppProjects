@@ -179,6 +179,7 @@ void list_delete(DList* list) {
 }
 
 const static uint32_t LIST_TAG = 'D' + ('L' << 8) + ('S' << 16) + ('T' << 24);
+const static char DLIST_TAG[] = "DLST";
 
 int list_save2file(DList* list, char* fn) {
 	FILE *fd = fopen(fn, "w");
@@ -250,9 +251,47 @@ int list_erase_at(DList *list, uint32_t index) {
     return 0;
 }
 
-#define DELIMITER |
-char *list_get_dsvstr(DList *list) {
+/*
+   #LISTTAG|COUNT
+   #TYPETAG|VALUE
 
+   DLST|3
+   STRN|some stirng
+   I32|7892
+   DBL|3.14
+
+   or
+   s|str
+   I|12
+   f|3.1
+
+ */
+#define DELIMITER '|'
+#define ENDLINE '\n'
+char *list_get_dsvstr(DList *list) {
+    char buf[100];
+    char *res = malloc(strlen(DLIST_TAG) + 1);
+    sprintf(res, "%s%c", DLIST_TAG, DELIMITER);
+    snprintf(buf, 100, "%d\n", list->length);
+    size_t newsize = 0;
+    char *forfree = res;
+    newsize = strlen(res) + strlen(buf);
+    printf("newsize %ld\n", newsize);
+    res = malloc(newsize);
+    strcpy(res, forfree);
+    strcat(res, buf);
+    free(forfree);
+
+    DListNode *cur = list->head;
+    while (cur) {
+        //TODO Data type tag!
+        cur = cur->next;
+    }
+
+    return res;
+}
+
+int list_saveDSVfd(DList* list, FILE* fd) {
 }
 
 int list_saveDSVfile(DList* list, char* fn) {

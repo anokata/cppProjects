@@ -41,3 +41,15 @@ int list_erase_at(DList *list, uint32_t index);
 // TODO
 // find
 
+typedef union data_u {
+    char *sdata;
+    uint32_t idata;
+} data_u;
+
+typedef enum edata_type {DATA_UINT32, DATA_STR} edata_type;
+
+typedef struct data_t {
+    edata_type data_type;
+    data_u data;
+} data_t;
+

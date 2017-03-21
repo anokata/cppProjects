@@ -244,6 +244,7 @@ void test_dsvget() {
     printf("* TEST DSV\n");
     DList *l = list_new();
     list_push(l, (void*)1);
+    printf("DSV:%s:\n", list_get_dsvstr(l));
     list_delete(l);
     printf("* OK DSV\n");
 }
