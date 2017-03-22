@@ -346,6 +346,11 @@ char *list_get_dsvstr(DList *list) {
     return res;
 }
 //TODO map, print on List contained other list
+//
+char *substr(char *s, uint32_t start, uint32_t end) {
+//TODO
+    //char *result = malloc(
+}
 
 DList *list_from_dsvstr(char *s) {
     // TODO
@@ -353,14 +358,25 @@ DList *list_from_dsvstr(char *s) {
         DList *list = list_new();
         char buf[BUF_DSV_SIZE];
         char *lenstr;
-        int dpos = strchr(s, DELIMITER) + 1;
-        int npos = strchr(dpos, ENDLINE);
+        char* dpos = strchr(s, DELIMITER) + 1;
+        char* npos = strchr(dpos, ENDLINE);
         strncpy(buf, dpos, npos - dpos);
         size_t len = atoi(buf);
         dpos++;
-        printf("len=%ld %s", len, dpos);
+        printf("len=%ld %s\n", len, dpos);
         // for (size_t i = 0; i < len; i++) {
         // 
+        dpos = strchr(npos, DELIMITER) + 1;
+        printf("type(%s)\n", npos + 1);
+        if (strncmp(npos + 1, DATA_UINT32_TAG, strlen(DATA_UINT32_TAG)) == 0) {
+            npos = strchr(dpos, ENDLINE);
+            strncpy(buf, dpos, npos - dpos);
+            buf[npos - dpos] = 0;
+            printf("NUMBER val(%s)\n", buf);
+        }
+        if (strncmp(npos + 1, DATA_STR_TAG, strlen(DATA_STR_TAG)) == 0) {
+            printf("STRing\n");
+        }
         return list;
     }
     return 0;
