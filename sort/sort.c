@@ -65,6 +65,35 @@ int main()
     c = insert_sort(a);
     printf("insert sort count: %d\n", c);
 
-    print_arr(a);
+    int rl[N] = {1,3,7,2,4,9};
+    int s[N] = {0};
+    int n = 3;
+    int left = 0;
+    int right = 3;
+    int i = 0;
+    
+    for (i = 0; i < 6 && left < n; i++) {
+        print_arr(s);
+        if (rl[left] > rl[right]) {
+            s[i] = rl[right];
+            right++;
+        } else {
+            s[i] = rl[left];
+            left++;
+        }
+    }
+    if (left < n) {
+        i--;
+        for (; left < n; left++, i++)
+            s[i] = rl[left];
+    }
+    if (right < 6) {
+        i--;
+        for (; right < n; right++, i++)
+            s[i] = rl[right];
+    }
+
+    print_arr(s);
+    //print_arr(a);
     return 0;
 }
