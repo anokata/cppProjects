@@ -10,6 +10,9 @@ int main () {
     for (int i = 0; i < size; i++) {
         printf("%d ", arr[i]);
     }
+    double d = 2.2;
+    printf("%f\n", d/0.0);
+    printf("%f\n", 0.0/0.0);
     // alloca
     return 0;
 }
