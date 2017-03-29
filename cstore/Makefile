@@ -15,3 +15,4 @@ dlist:
 
 dlistdebug:
 	gcc -DDEBUG dlist.c && ./a.out
+# TODO write 1 and 2 stderr to out file and open it in vim
