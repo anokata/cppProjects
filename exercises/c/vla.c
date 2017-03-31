@@ -13,7 +13,9 @@ int main () {
     double d = 2.2;
     printf("%f\n", d/0.0);
     printf("%f\n", 0.0/0.0);
+    printf("%d\n", 0/0);
     // alloca
+    //
     return 0;
 }
 
