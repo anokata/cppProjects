@@ -10,7 +10,7 @@ void App::key_handler(int key) {
 
 void App::update() {
     move(0, 0);
-    printw("abc");
+    printw(sf.c_str());
 
     move(2, 1);
     attron(COLOR_PAIR(1));
@@ -24,7 +24,8 @@ App::App() {
         for (int y=0; y < 10; y++) {
             Key key (x, y);
             field.insert(std::make_pair(key, cfield));
-
+            sf += cfield;
         }
+        sf += '\n';
     }
 }

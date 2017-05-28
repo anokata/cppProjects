@@ -10,6 +10,7 @@ class App : public CursesApp {
     virtual void key_handler(int key);
 
     std::map<Key, char> field; 
+    std::string sf = "";
     public:
     App();
 };
