@@ -15,3 +15,5 @@ dlist:
 
 dlistdebug:
 	gcc -DDEBUG dlist.c && ./a.out
+curwin: 
+	gcc curwin.c -lncurses && ./a.out
