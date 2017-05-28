@@ -10,6 +10,11 @@ void CursesWrapper::load(CursesApp *app) {
 
 void CursesWrapper::start() {
     WINDOW *win = CursesWrapper::init();
+    // create window
+    int width;
+    int height;
+    getmaxyx(win, width, height);
+
     CursesWrapper::main_loop(win);
     CursesWrapper::end();
 }
