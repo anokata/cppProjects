@@ -1,21 +1,23 @@
 #include <ncurses.h>
 #include "curses_wrapper.h"
+#include "window.h"
 
+// Vars
 int CursesWrapper::QUIT_KEY = 'q';
 CursesApp *CursesWrapper::app;
+Window *CursesWrapper::window;
 
 void CursesWrapper::load(CursesApp *app) {
     CursesWrapper::app = app;
+    WINDOW *win = CursesWrapper::init();
+    window = new Window(win);
+    app->window = window;
+    app->init();
 }
 
 void CursesWrapper::start() {
-    WINDOW *win = CursesWrapper::init();
-    // create window
-    int width;
-    int height;
-    getmaxyx(win, width, height);
 
-    CursesWrapper::main_loop(win);
+    CursesWrapper::main_loop();
     CursesWrapper::end();
 }
 
@@ -25,7 +27,7 @@ void CursesWrapper::update() {
     refresh();
 }
 
-int CursesWrapper::main_loop(WINDOW *win) {
+int CursesWrapper::main_loop() {
 	int key = 0;
     bool is_end = false;
     while (!is_end) {
@@ -48,5 +50,6 @@ init_pair (2, COLOR_BLUE, COLOR_BLACK);
 }
 
 void CursesWrapper::end() {
+    delete window;
 	endwin();
 }

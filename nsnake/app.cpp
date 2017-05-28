@@ -9,23 +9,31 @@ void App::key_handler(int key) {
 }
 
 void App::update() {
-    move(0, 0);
+    //move(window->height / 2, window->width / 2);
+    move (0, 0);
     printw(sf.c_str());
+    printw(std::to_string(window->width).c_str());
+    addch('\n');
+    printw(std::to_string(window->height).c_str());
+    printw(std::to_string(window->height / 2).c_str());
 
-    move(2, 1);
+    move(29, 99);
     attron(COLOR_PAIR(1));
     addch('c' | A_BOLD);
     addch('.');
     attroff(COLOR_PAIR(1));
 }
 
-App::App() {
-    for (int x=0; x < 10; x++) {
-        for (int y=0; y < 10; y++) {
+void App::init() {
+    for (int x=0; x < (window->height - 1) / 2 ; x++) {
+        for (int y=0; y < (window->width) / 2; y++) {
             Key key (x, y);
             field.insert(std::make_pair(key, cfield));
             sf += cfield;
         }
         sf += '\n';
     }
+}
+
+App::App() {
 }
