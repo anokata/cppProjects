@@ -3,6 +3,12 @@
 #include <utility>
 //TODO  curses easy interface class: color manager? win, drawer
 //window class
+//
+
+void print_by_line(std::string) {
+
+    //printw(.c_str());
+}
 
 void App::key_handler(int key) {
 
