@@ -1,13 +1,38 @@
 #include <ncurses.h>
 #include "app.h"
 #include <utility>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <iterator>
 //TODO  curses easy interface class: color manager? win, drawer
 //window class
 //
 
-void print_by_line(std::string) {
+template<typename Out>
+void split(const std::string &s, char delim, Out result) {
+    std::stringstream ss;
+    ss.str(s);
+    std::string item;
+    while (std::getline(ss, item, delim)) {
+        *(result++) = item;
+    }
+}
 
-    //printw(.c_str());
+std::vector<std::string> split(const std::string &s, char delim) {
+    std::vector<std::string> elems;
+    split(s, delim, std::back_inserter(elems));
+    return elems;
+}
+
+void print_by_line(std::string str, int x, int y) {
+    auto lines = split(str, '\n');
+    move(y, x);
+    for (auto line : lines) {
+        printw(line.c_str());
+        y++;
+        move(y, x);
+    }
 }
 
 void App::key_handler(int key) {
@@ -15,9 +40,9 @@ void App::key_handler(int key) {
 }
 
 void App::update() {
-    //move(window->height / 2, window->width / 2);
-    move (0, 0);
-    printw(sf.c_str());
+    //printw(sf.c_str());
+    print_by_line(sf, window->width / 4, window->height / 4);
+    /*
     printw(std::to_string(window->width).c_str());
     addch('\n');
     printw(std::to_string(window->height).c_str());
@@ -28,6 +53,7 @@ void App::update() {
     addch('c' | A_BOLD);
     addch('.');
     attroff(COLOR_PAIR(1));
+    */
 }
 
 void App::init() {

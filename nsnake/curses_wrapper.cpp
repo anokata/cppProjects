@@ -43,6 +43,7 @@ WINDOW *CursesWrapper::init() {
 	WINDOW *win = initscr();
     keypad(win, TRUE);
     noecho();
+    curs_set(0);
 	start_color();
 init_pair (1, COLOR_RED, COLOR_BLACK);
 init_pair (2, COLOR_BLUE, COLOR_BLACK);
