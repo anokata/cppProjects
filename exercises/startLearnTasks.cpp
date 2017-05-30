@@ -1,5 +1,7 @@
 #include <cassert>
 #include <iostream>
+#include <sstream>
+
 using namespace std;
 /* *** 
  * когда на мелкие функции разбиваю только ради удобства - вызываю раз - можно их инлайнить!
@@ -74,5 +76,15 @@ void test_all() {
 int main() {
     cout << "start\n";
     test_all();
+    std::stringstream ss;
+    ss << 123;
+    ss << " x .x dD.";
+    std::cout << ss.str();
     return 0;
 }
+
+//https://stackoverflow.com/a/236803
+//stringstream
+//std::getline
+//std::back_inserter
+
