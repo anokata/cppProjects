@@ -6,6 +6,7 @@
 #include <vector>
 #include <iterator>
 #include "util.h"
+#include "snake.h"
 //TODO  curses easy interface class: color manager? win, drawer
 //window class
 //
@@ -27,6 +28,7 @@ void App::key_handler(int key) {
 void App::update() {
     //printw(sf.c_str());
     print_by_line(sf, window->width / 4, window->height / 4);
+    // TODO window->print()
     /*
     printw(std::to_string(window->width).c_str());
     addch('\n');

@@ -2,6 +2,7 @@
 #include "curses_app.h"
 #include <map>
 #include <utility>
+#include "snake.h"
 
 typedef std::pair<int, int> Key;
 
@@ -12,6 +13,8 @@ class App : public CursesApp {
 
     std::map<Key, char> field; 
     std::string sf = "";
+    Snake snake;
+
     public:
     App();
 };
