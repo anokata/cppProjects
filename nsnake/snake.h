@@ -12,7 +12,8 @@ public:
     Snake() {
         segments.push_back(Point(1, 1));
     }
-    //color
+    
+    int color = Window::cl_red;
     char head_char = 'o';
     //body_char
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <ncurses.h>
+#include <string>
 
 class Window {
     public:
@@ -10,4 +11,7 @@ class Window {
     int top;
 
     Window(WINDOW *win);
+    void print(std::string str, int color);
+    void putc(char c, int color);
+    static int cl_red;
 };
