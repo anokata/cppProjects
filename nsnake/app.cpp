@@ -28,7 +28,7 @@ void App::key_handler(int key) {
 void App::update() {
     //printw(sf.c_str());
     print_by_line(sf, window->width / 4, window->height / 4);
-    // TODO window->print()
+    // TODO window->print() and with colors
     /*
     printw(std::to_string(window->width).c_str());
     addch('\n');
@@ -41,6 +41,7 @@ void App::update() {
     addch('.');
     attroff(COLOR_PAIR(1));
     */
+    snake.draw(window);
 }
 
 void App::init() {

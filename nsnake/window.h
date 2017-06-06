@@ -6,6 +6,8 @@ class Window {
     int width;
     int height;
     WINDOW *win;
+    int left;
+    int top;
 
     Window(WINDOW *win);
 };
