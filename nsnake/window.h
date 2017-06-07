@@ -13,5 +13,6 @@ class Window {
     Window(WINDOW *win);
     void print(std::string str, int color);
     void putc(char c, int color);
+    void putcxy(char c, int color, int x, int y);
     static int cl_red;
 };

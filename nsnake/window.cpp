@@ -20,3 +20,9 @@ void Window::putc(char c, int color) {
     attron(COLOR_PAIR(color));
     addch(c);
 }
+
+void Window::putcxy(char c, int color, int x, int y) {
+    move(y, x);
+    attron(COLOR_PAIR(color));
+    addch(c);
+}
