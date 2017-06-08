@@ -1,6 +1,7 @@
 #pragma once
 #include "curses_app.h"
 #include "window.h"
+#include <unistd.h>
 
 class CursesWrapper {
     public:

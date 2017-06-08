@@ -30,11 +30,14 @@ void CursesWrapper::update() {
 int CursesWrapper::main_loop() {
 	int key = 0;
     bool is_end = false;
+     halfdelay(1);
     while (!is_end) {
         CursesWrapper::update();
         key = getch();
+        // TODO non bloking and sleep
         is_end = key == QUIT_KEY;
         app->key_handler(key);
+        usleep(50);
     }
     return 0;
 }
