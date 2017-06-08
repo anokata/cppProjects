@@ -10,6 +10,10 @@
 //TODO  curses easy interface class: color manager? win, drawer
 //window class
 //
+//snake move+
+//  update
+//  timer update
+//control
 
 void print_by_line(std::string str, int x, int y) {
     auto lines = split(str, '\n');
@@ -41,6 +45,7 @@ void App::update() {
     addch('.');
     attroff(COLOR_PAIR(1));
     */
+    snake.move();
     snake.draw(window);
 }
 

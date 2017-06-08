@@ -19,10 +19,12 @@ void Window::print(std::string str, int color) {
 void Window::putc(char c, int color) {
     attron(COLOR_PAIR(color));
     addch(c);
+    attroff(COLOR_PAIR(color));
 }
 
 void Window::putcxy(char c, int color, int x, int y) {
     move(y, x);
     attron(COLOR_PAIR(color));
     addch(c);
+    attroff(COLOR_PAIR(color));
 }
