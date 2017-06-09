@@ -16,6 +16,14 @@ public:
         segments.push_back(Point(1, 3));
         segments.push_back(Point(2, 3));
     }
+
+    int getx() {
+        return segments[0].first;
+    }
+
+    int gety() {
+        return segments[0].second;
+    }
     
     int color = Window::cl_red;
     char head_char = 'o';

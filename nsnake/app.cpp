@@ -38,8 +38,28 @@ void App::key_handler(int key) {
 
 void App::update() {
     print_by_line(sf, window->width / 4, window->height / 4); // TODO?
+    collide();
     snake.move();
     snake.draw(window);
+    for (auto i : objects) {
+        PObject obj = i.second;
+        obj->draw(window);
+    }
+}
+void App::collide() {
+    for (auto i : objects) {
+        Point p = i.first;
+        if (p.first == snake.getx() && p.second == snake.gety()) {
+            PObject obj = i.second;
+            if (obj == NULL) continue;
+            switch (obj->effect) {
+                case Effect::GROW:
+                    //snake.growth();
+                    //delete obj;
+                    break;
+            }
+        }
+    }
 }
 
 void App::init() {
@@ -51,7 +71,15 @@ void App::init() {
         }
         sf += '\n';
     }
+    // random
+    objects[Point(3, 3)] = new Object(3, 3); // Destroy!! FIXME TODO deinit
 }
 
 App::App() {
+}
+
+void App::finalize() {
+    for (auto obj : objects) {
+        //delete obj; // TODO
+    }
 }

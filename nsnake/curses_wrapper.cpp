@@ -53,6 +53,7 @@ init_pair (2, COLOR_BLUE, COLOR_BLACK);
 }
 
 void CursesWrapper::end() {
+    app->finalize();
     delete window;
 	endwin();
 }
