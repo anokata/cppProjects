@@ -10,10 +10,7 @@
 //TODO  curses easy interface class: color manager? win, drawer
 //window class
 //
-//snake move+
-//  update
-//  timer update
-//control
+//bonuses
 
 void print_by_line(std::string str, int x, int y) {
     auto lines = split(str, '\n');
@@ -26,25 +23,21 @@ void print_by_line(std::string str, int x, int y) {
 }
 
 void App::key_handler(int key) {
-
+    char k = key;
+    switch (key) {
+        case 'j': snake.direction = Direction::Down;
+        break;
+        case 'k': snake.direction = Direction::Up;
+        break;
+        case 'h': snake.direction = Direction::Left;
+        break;
+        case 'l': snake.direction = Direction::Right;
+        break;
+    }
 }
 
 void App::update() {
-    //printw(sf.c_str());
-    print_by_line(sf, window->width / 4, window->height / 4);
-    // TODO window->print() and with colors
-    /*
-    printw(std::to_string(window->width).c_str());
-    addch('\n');
-    printw(std::to_string(window->height).c_str());
-    printw(std::to_string(window->height / 2).c_str());
-
-    move(29, 99);
-    attron(COLOR_PAIR(1));
-    addch('c' | A_BOLD);
-    addch('.');
-    attroff(COLOR_PAIR(1));
-    */
+    print_by_line(sf, window->width / 4, window->height / 4); // TODO?
     snake.move();
     snake.draw(window);
 }
