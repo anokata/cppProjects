@@ -26,10 +26,12 @@ public:
     }
     
     int color = Window::cl_red;
+    bool is_growth = false;
     char head_char = 'o';
     char body_char = 's';
     Direction direction = Direction::Right;
 
     void draw(Window *window);
     void move();
+    void growth();
 };

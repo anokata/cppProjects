@@ -5,6 +5,8 @@
 #include <sstream>
 #include <vector>
 #include <iterator>
+#include <cstdlib>
+#include <ctime>
 #include "util.h"
 #include "snake.h"
 //TODO  curses easy interface class: color manager? win, drawer
@@ -54,7 +56,7 @@ void App::collide() {
             if (obj == NULL) continue;
             switch (obj->effect) {
                 case Effect::GROW:
-                    //snake.growth();
+                    snake.growth();
                     //delete obj;
                     break;
             }
@@ -72,7 +74,13 @@ void App::init() {
         sf += '\n';
     }
     // random
-    objects[Point(3, 3)] = new Object(3, 3); // Destroy!! FIXME TODO deinit
+    std::srand(unsigned(std::time(0)));
+    for (int i = 0; i < 10; i++) {
+        int rx = std::rand() % 20;
+        int ry = std::rand() % 20;
+        objects[Point(rx, ry)] = new Object(rx, ry); // Destroy!! FIXME TODO deinit
+    }
+    objects[Point(1, 1)] = new Object(1, 1); // Destroy!! FIXME TODO deinit
 }
 
 App::App() {

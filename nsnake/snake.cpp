@@ -19,19 +19,29 @@ void Snake::move() {
     int lx, ly;
     lx = segments[0].first;
     ly = segments[0].second;
+    int nx = lx;
+    int ny = ly;
+
     switch (direction) {
         case Direction::Up:
-            segments[0].second--;
+            ny--;
             break;
         case Direction::Down:
-            segments[0].second++;
+            ny++;
             break;
         case Direction::Left:
-            segments[0].first--;
+            nx--;
             break;
         case Direction::Right:
-            segments[0].first++;
+            nx++;
             break;
+    }
+    if (is_growth) {
+        segments.insert(segments.begin(), Point(nx, ny));
+        is_growth = false;
+    } else {
+        segments[0].first = nx;
+        segments[0].second = ny;
     }
     
     for (auto it = ++segments.begin(); it != segments.end(); ++it) {
@@ -42,4 +52,8 @@ void Snake::move() {
         lx = tx;
         ly = ty;
     }
+}
+
+void Snake::growth() {
+    is_growth = true;
 }
