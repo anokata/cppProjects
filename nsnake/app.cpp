@@ -13,6 +13,9 @@
 //window class
 //
 //bonuses
+//scores top
+//menu
+//quest, step move, labirint
 
 void print_by_line(std::string str, int x, int y) {
     auto lines = split(str, '\n');
