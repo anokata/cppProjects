@@ -18,6 +18,8 @@
 //quest, step move, labirint
 //1. wall teleport
 //2. not self sect
+//x. animated objects, flowers
+//x. lighting
 
 void print_by_line(std::string str, int x, int y) {
     auto lines = split(str, '\n');
@@ -71,8 +73,8 @@ void App::collide() {
 }
 
 void App::init() {
-    for (int x=0; x < (window->height - 1) / 2 ; x++) {
-        for (int y=0; y < (window->width) / 2; y++) {
+    for (int x=0; x < DIM_Y; x++) {
+        for (int y=0; y < DIM_X; y++) {
             Key key (x, y);
             field.insert(std::make_pair(key, cfield));
             sf += cfield;

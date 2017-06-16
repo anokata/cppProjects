@@ -1,6 +1,7 @@
 #include "snake.h"
 #include "window.h"
 #include <ncurses.h>
+#include <cmath>
 
 
 void Snake::draw(Window *window) {
@@ -37,6 +38,15 @@ void Snake::move() {
             break;
     }
     // nx = nx % window->width... TODO
+    nx = nx % max_x;
+    if (nx < 0) {
+        nx = max_x - 1;
+    }
+    ny = ny % max_y;
+    if (ny < 0) {
+        ny = max_y - 1;
+    }
+
     if (is_growth) {
         segments.insert(segments.begin(), Point(nx, ny));
         is_growth = false;

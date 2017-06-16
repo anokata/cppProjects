@@ -14,10 +14,12 @@ class App : public CursesApp {
     virtual void finalize();
     virtual void key_handler(int key);
     virtual void collide();
+    static const int DIM_X = 20;
+    static const int DIM_Y = 10;
 
     std::map<Key, char> field; 
     std::string sf = "";
-    Snake snake;
+    Snake snake = Snake(DIM_X, DIM_Y);
     std::map<Key, PObject> objects;
 
     public:

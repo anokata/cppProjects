@@ -8,13 +8,17 @@ typedef enum Direction {Up, Down, Right, Left} Direction;
 
 class Snake {
     std::vector<Point> segments;
+    int max_x;
+    int max_y;
 
 public:
-    Snake() {
+    Snake(int max_x, int max_y) {
         segments.push_back(Point(1, 1));
         segments.push_back(Point(1, 2));
         segments.push_back(Point(1, 3));
         segments.push_back(Point(2, 3));
+        this->max_x = max_x;
+        this->max_y = max_y;
     }
 
     int getx() {
