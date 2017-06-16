@@ -81,11 +81,11 @@ void App::init() {
         }
         sf += '\n';
     }
-    // random
+    /* Random bonuses */
     std::srand(unsigned(std::time(0)));
-    for (int i = 0; i < 10; i++) {
-        int rx = std::rand() % 20;
-        int ry = std::rand() % 20;
+    for (int i = 0; i < 20; i++) {
+        int rx = std::rand() % DIM_X;
+        int ry = std::rand() % DIM_Y;
         objects[Point(rx, ry)] = new Object(rx, ry); // Destroy!! FIXME TODO deinit
     }
     objects[Point(1, 1)] = new Object(1, 1); // Destroy!! FIXME TODO deinit

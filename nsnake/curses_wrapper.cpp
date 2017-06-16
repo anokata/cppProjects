@@ -30,7 +30,7 @@ void CursesWrapper::update() {
 int CursesWrapper::main_loop() {
 	int key = 0;
     bool is_end = false;
-    halfdelay(0);
+    halfdelay(2);
     while (!is_end) {
         CursesWrapper::update();
         key = getch();
