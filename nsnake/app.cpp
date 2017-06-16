@@ -16,6 +16,8 @@
 //scores top
 //menu
 //quest, step move, labirint
+//1. wall teleport
+//2. not self sect
 
 void print_by_line(std::string str, int x, int y) {
     auto lines = split(str, '\n');
@@ -43,8 +45,8 @@ void App::key_handler(int key) {
 
 void App::update() {
     print_by_line(sf, window->width / 4, window->height / 4); // TODO?
-    collide();
     snake.move();
+    collide();
     snake.draw(window);
     for (auto i : objects) {
         PObject obj = i.second;
@@ -60,7 +62,8 @@ void App::collide() {
             switch (obj->effect) {
                 case Effect::GROW:
                     snake.growth();
-                    //delete obj;
+                    objects.erase(i.first);
+                    delete obj;
                     break;
             }
         }
