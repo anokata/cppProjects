@@ -36,6 +36,7 @@ void Snake::move() {
             nx++;
             break;
     }
+    // nx = nx % window->width... TODO
     if (is_growth) {
         segments.insert(segments.begin(), Point(nx, ny));
         is_growth = false;
