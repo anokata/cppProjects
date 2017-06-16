@@ -10,6 +10,8 @@ class Snake {
     std::vector<Point> segments;
     int max_x;
     int max_y;
+    int get_next_x();
+    int get_next_y();
 
 public:
     Snake(int max_x, int max_y) {
@@ -38,4 +40,5 @@ public:
     void draw(Window *window);
     void move();
     void growth();
+    void self_bounce();
 };

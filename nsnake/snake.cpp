@@ -15,21 +15,9 @@ void Snake::draw(Window *window) {
     }
 }
 
-
-void Snake::move() {
-    int lx, ly;
-    lx = segments[0].first;
-    ly = segments[0].second;
-    int nx = lx;
-    int ny = ly;
-
+int Snake::get_next_x() {
+    int nx = segments[0].first;
     switch (direction) {
-        case Direction::Up:
-            ny--;
-            break;
-        case Direction::Down:
-            ny++;
-            break;
         case Direction::Left:
             nx--;
             break;
@@ -37,6 +25,29 @@ void Snake::move() {
             nx++;
             break;
     }
+    return nx;
+}
+
+int Snake::get_next_y() {
+    int ny = segments[0].second;
+    switch (direction) {
+        case Direction::Up:
+            ny--;
+            break;
+        case Direction::Down:
+            ny++;
+            break;
+    }
+    return ny;
+}
+
+
+void Snake::move() {
+    int lx = segments[0].first;
+    int ly = segments[0].second;
+    int nx = get_next_x();
+    int ny = get_next_y();
+
     // nx = nx % window->width... TODO
     nx = nx % max_x;
     if (nx < 0) {
@@ -67,4 +78,17 @@ void Snake::move() {
 
 void Snake::growth() {
     is_growth = true;
+}
+
+void Snake::self_bounce() {
+    int lx = segments[0].first;
+    int ly = segments[0].second;
+    // TODO
+    // How handle this situation?
+    // First when? When head is moved on body or before.
+    // If after then need back move and what next? head on body?
+    // If before then need first know when head will be - duplicate moving logic?
+    for (int i = 1; i < segments.size(); i++) {
+
+    }
 }

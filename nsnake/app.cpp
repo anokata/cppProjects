@@ -16,8 +16,7 @@
 //scores top
 //menu
 //quest, step move, labirint
-//1. wall teleport
-//2. not self sect
+//1. not self sect
 //x. animated objects, flowers
 //x. lighting
 
@@ -70,6 +69,7 @@ void App::collide() {
             }
         }
     }
+    snake.self_bounce();
 }
 
 void App::init() {
