@@ -12,6 +12,7 @@ class Snake {
     int max_y;
     int get_next_x();
     int get_next_y();
+    Direction opposite(Direction direction);
 
 public:
     Snake(int max_x, int max_y) {

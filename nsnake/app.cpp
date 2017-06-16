@@ -46,8 +46,8 @@ void App::key_handler(int key) {
 
 void App::update() {
     print_by_line(sf, window->width / 4, window->height / 4); // TODO?
-    snake.move();
     collide();
+    snake.move();
     snake.draw(window);
     for (auto i : objects) {
         PObject obj = i.second;

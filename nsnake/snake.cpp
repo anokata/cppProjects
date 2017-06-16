@@ -81,14 +81,26 @@ void Snake::growth() {
 }
 
 void Snake::self_bounce() {
-    int lx = segments[0].first;
-    int ly = segments[0].second;
+    int nx = get_next_x();
+    int ny = get_next_y();
     // TODO
     // How handle this situation?
     // First when? When head is moved on body or before.
     // If after then need back move and what next? head on body?
     // If before then need first know when head will be - duplicate moving logic?
     for (int i = 1; i < segments.size(); i++) {
-
+        int x = segments[i].first;
+        int y = segments[i].second;
+        if ((x == nx) && (y == ny)) {
+            direction = opposite(direction);
+            break;
+        }
     }
+}
+
+Direction Snake::opposite(Direction direction) {
+    if (direction == Direction::Left) return Direction::Right;
+    if (direction == Direction::Right) return Direction::Left;
+    if (direction == Direction::Up) return Direction::Down;
+    if (direction == Direction::Down) return Direction::Up;
 }
