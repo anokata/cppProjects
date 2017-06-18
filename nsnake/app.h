@@ -2,7 +2,6 @@
 #include "curses_app.h"
 #include <map>
 #include <utility>
-#include <map>
 #include "snake.h"
 #include "object.h"
 
