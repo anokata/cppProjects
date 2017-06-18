@@ -14,7 +14,7 @@ class Object {
         int x;
         int y;
         char chr = 'G';
-        int color = Window::cl_red;
+        Color color = color::bgreen;
         void draw(Window *window);
 };
 

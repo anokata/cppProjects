@@ -1,6 +1,7 @@
 #pragma once
 #include <ncurses.h>
 #include <string>
+#include "color.h"
 
 class Window {
     public:
@@ -15,7 +16,8 @@ class Window {
     void putc(char c, int color);
     void putc(char c, int color, int attr);
     void putcxy(char c, int color, int x, int y);
-    static int cl_red;
-    static int cl_blue;
-    static int cl_yellow;
+    /* colors */
+    void print(std::string str, Color color);
+    void putc(char c, Color color);
+    void putcxy(char c, Color color, int x, int y);
 };
