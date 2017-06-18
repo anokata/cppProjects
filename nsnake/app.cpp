@@ -13,11 +13,11 @@
 //window class
 //
 //bonuses
+//state machine
 //scores top
 //menu
 //quest, step move, labirint
-//1. not self sect
-//x. animated objects, flowers
+//x. flowers
 //x. lighting
 
 void print_by_line(std::string str, int x, int y) {
@@ -86,9 +86,9 @@ void App::init() {
     for (int i = 0; i < 20; i++) {
         int rx = std::rand() % DIM_X;
         int ry = std::rand() % DIM_Y;
-        objects[Point(rx, ry)] = new Object(rx, ry); // Destroy!! FIXME TODO deinit
+        objects[Point(rx, ry)] = new Object(rx, ry); // CHECK mem leack
     }
-    objects[Point(1, 1)] = new Object(1, 1); // Destroy!! FIXME TODO deinit
+    objects[Point(1, 1)] = new Object(1, 1);
 }
 
 App::App() {
@@ -96,6 +96,6 @@ App::App() {
 
 void App::finalize() {
     for (auto obj : objects) {
-        //delete obj; // TODO
+        delete obj.second;
     }
 }
