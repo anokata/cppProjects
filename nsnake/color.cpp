@@ -8,6 +8,7 @@ int color::white = 5;
 Color color::bgreen = {color::green, A_BOLD};
 Color color::ngreen = {color::green, A_NORMAL};
 Color color::nred = {color::red, A_NORMAL};
+Color color::bred = {color::red, A_BOLD};
 
 void colors_init() {
     init_pair (color::red, COLOR_RED, COLOR_BLACK);

@@ -32,7 +32,7 @@ public:
         return segments[0].second;
     }
     
-    Color color = color::nred;
+    Color color = color::bred;
     bool is_growth = false;
     char head_char = 'o';
     char body_char = 's';
