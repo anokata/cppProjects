@@ -19,6 +19,7 @@
 //quest, step move, labirint
 //x. flowers
 //x. lighting
+// - score, eathed, length, level, total
 
 void print_by_line(std::string str, int x, int y) {
     auto lines = split(str, '\n');
