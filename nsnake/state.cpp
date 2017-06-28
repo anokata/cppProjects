@@ -9,9 +9,10 @@ void State::change(std::string state) {
     this->state = state;
 }
 
-void State::handle(std::string event) {
+int State::handle(std::string event) {
     auto f = state_table[state][event];
     if (f != NULL) {
-        f();
+        return f();
     }
+    return 0;
 }

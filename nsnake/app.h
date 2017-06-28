@@ -10,10 +10,10 @@
 typedef std::pair<int, int> Key;
 
 class App : public CursesApp { 
-    virtual void update();
+    virtual int update();
     virtual void init();
     virtual void finalize();
-    virtual void key_handler(int key);
+    virtual int key_handler(int key);
     virtual void collide();
     static const int DIM_X = 20;
     static const int DIM_Y = 10;
@@ -27,12 +27,12 @@ class App : public CursesApp {
     int key;
 
     /* snake app specific */
-    void add_bonus();
+    int add_bonus();
     void step();
-    void play_update();
-    void play_key();
-    void menu_update();
-    void menu_key();
+    int play_update();
+    int play_key();
+    int menu_update();
+    int menu_key();
 
     public:
     App();

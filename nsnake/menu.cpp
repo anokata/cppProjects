@@ -5,8 +5,8 @@ void Menu::add(std::string item, Runner fun) {
     items.push_back(MenuItem(item, fun));
 }
 
-void Menu::select() {
-    items[index].second();
+int Menu::select() {
+    return items[index].second();
 }
 
 void Menu::next() {

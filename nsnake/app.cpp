@@ -19,7 +19,6 @@
 //x. lighting
 // - score, eathed, length, level, total
 /* State: one instance - state, global for app
- *
  * */
 // debug log window!
 
@@ -33,24 +32,25 @@ void print_by_line(std::string str, int x, int y) {
     }
 }
 
-void App::key_handler(int key) { //TODO state depended
+int App::key_handler(int key) { //TODO state depended
     this->key = key;
-    state.handle("key");
+    return state.handle("key");
 }
 
-void App::menu_key() {
+int App::menu_key() {
     char k = key;
     switch (key) {
         case 'j': menu.next();
         break;
         case 'k': menu.back();
         break;
-        case '\n': menu.select();
+        case '\n': return menu.select();
         break;
     }
+    return 0;
 }
 
-void App::play_key() {
+int App::play_key() {
     char k = key;
     switch (key) {
         case 'j': snake.direction = Direction::Down;
@@ -62,9 +62,10 @@ void App::play_key() {
         case 'l': snake.direction = Direction::Right;
         break;
     }
+    return 0;
 }
 
-void App::play_update() {
+int App::play_update() {
     print_by_line(sf, window->width / 4, window->height / 4); // TODO?
     collide();
     snake.move();
@@ -73,14 +74,16 @@ void App::play_update() {
         PObject obj = i.second;
         obj->draw(window);
     }
+    return 0;
 }
 
-void App::menu_update() {
+int App::menu_update() {
     menu.draw(window);
+    return 0;
 }
 
-void App::update() {
-    state.handle("step"); // TODO const or enum
+int App::update() {
+    return state.handle("step"); // TODO const or enum
 }
 
 void App::step() {
@@ -105,10 +108,11 @@ void App::collide() {
     snake.self_bounce();
 }
 
-void App::add_bonus() {
+int App::add_bonus() {
     int rx = std::rand() % DIM_X;
     int ry = std::rand() % DIM_Y;
     objects[Point(rx, ry)] = new Object(rx, ry);
+    return 0;
 }
 
 void App::init() {
@@ -117,12 +121,13 @@ void App::init() {
     state.bind_event("menu", "step", std::bind(&App::menu_update, this));
     state.bind_event("menu", "key", std::bind(&App::menu_key, this));
     state.bind_event("play", "key", std::bind(&App::play_key, this));
+    state.bind_event("exit", "key", [](){ return 1; });
     state.change("play");
     state.change("menu");
 
-    menu.add("start", [this](){ this->state.change("play"); });
-    menu.add("setup", [this](){ this->state.change("play"); });
-    menu.add("exit", [this](){ this->state.change("play"); });
+    menu.add("start", [this](){ this->state.change("play"); return 0; });
+    menu.add("setup", [this](){ this->state.change("exit"); return 0; });
+    menu.add("exit", [this](){ this->state.change("exit"); return 1; });
 
     for (int x=0; x < DIM_Y; x++) {
         for (int y=0; y < DIM_X; y++) {

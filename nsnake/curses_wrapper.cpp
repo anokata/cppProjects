@@ -24,7 +24,7 @@ void CursesWrapper::start() {
     CursesWrapper::end();
 }
 
-void CursesWrapper::update() {
+int CursesWrapper::update() {
     erase();
     app->update();
     refresh();
@@ -35,10 +35,10 @@ int CursesWrapper::main_loop() {
     bool is_end = false;
     halfdelay(DELAY_H);
     while (!is_end) {
-        CursesWrapper::update();
+        is_end = CursesWrapper::update() != 0;
         key = getch();
-        is_end = key == QUIT_KEY;
-        app->key_handler(key);
+        is_end = is_end || key == QUIT_KEY;
+        is_end = is_end || app->key_handler(key);
         usleep(DELAY);
     }
     return 0;

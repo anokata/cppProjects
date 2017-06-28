@@ -7,7 +7,7 @@
 #include <ncurses.h>
 #include "window.h"
 
-typedef std::function<void(void)> Runner;
+typedef std::function<int(void)> Runner;
 typedef std::pair<std::string, Runner> MenuItem;
 
 class Menu {
@@ -18,7 +18,7 @@ class Menu {
     public:
         Menu() {}
         void add(std::string item, Runner fun);
-        void select();
+        int select();
         void next();
         void back();
         void draw(Window *window);

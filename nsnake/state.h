@@ -4,7 +4,7 @@
 #include <map>
 #include <functional>
 
-typedef std::function<void(void)> Handler;
+typedef std::function<int(void)> Handler;
 /* Event = {'name': func, ...} */
 typedef std::map<std::string, Handler> Event;
 /* State_table = { 'statename': event } */
@@ -23,7 +23,7 @@ public:
     /* state:(event: handler) */
     State_table state_table;
     void change(std::string state);
-    void handle(std::string event);
+    int handle(std::string event);
     std::string state;
 };
 

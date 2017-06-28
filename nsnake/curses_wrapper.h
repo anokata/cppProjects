@@ -12,7 +12,7 @@ class CursesWrapper {
     static WINDOW *init();
     static void end();
     static int main_loop();
-    static void update();
+    static int update();
     static void load(CursesApp *app);
     static void start();
 };
