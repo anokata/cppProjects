@@ -49,6 +49,7 @@ WINDOW *CursesWrapper::init() {
     keypad(win, TRUE);
     noecho();
     curs_set(0);
+    use_default_colors(); /* fror transparend -1 as back*/
 	start_color();
 init_pair (1, COLOR_RED, COLOR_BLACK);
 init_pair (2, COLOR_BLUE, COLOR_BLACK);

@@ -1,5 +1,4 @@
 #include <ncurses.h>
-#include "app.h"
 #include <utility>
 #include <string>
 #include <sstream>
@@ -7,6 +6,7 @@
 #include <iterator>
 #include <cstdlib>
 #include <ctime>
+#include "app.h"
 #include "util.h"
 #include "snake.h"
 //TODO  curses easy interface class, extract core
@@ -21,6 +21,7 @@
 /* State: one instance - state, global for app
  *
  * */
+// debug log window!
 
 void print_by_line(std::string str, int x, int y) {
     auto lines = split(str, '\n');
@@ -33,6 +34,23 @@ void print_by_line(std::string str, int x, int y) {
 }
 
 void App::key_handler(int key) { //TODO state depended
+    this->key = key;
+    state.handle("key");
+}
+
+void App::menu_key() {
+    char k = key;
+    switch (key) {
+        case 'j': menu.next();
+        break;
+        case 'k': menu.back();
+        break;
+        case '\n': menu.select();
+        break;
+    }
+}
+
+void App::play_key() {
     char k = key;
     switch (key) {
         case 'j': snake.direction = Direction::Down;
@@ -58,7 +76,7 @@ void App::play_update() {
 }
 
 void App::menu_update() {
-
+    menu.draw(window);
 }
 
 void App::update() {
@@ -97,7 +115,14 @@ void App::init() {
     state.bind_event("play", "step", std::bind(&App::play_update, this));
     state.bind_event("play", "eat", std::bind(&App::add_bonus, this));
     state.bind_event("menu", "step", std::bind(&App::menu_update, this));
+    state.bind_event("menu", "key", std::bind(&App::menu_key, this));
+    state.bind_event("play", "key", std::bind(&App::play_key, this));
+    state.change("play");
     state.change("menu");
+
+    menu.add("start", [this](){ this->state.change("play"); });
+    menu.add("setup", [this](){ this->state.change("play"); });
+    menu.add("exit", [this](){ this->state.change("play"); });
 
     for (int x=0; x < DIM_Y; x++) {
         for (int y=0; y < DIM_X; y++) {

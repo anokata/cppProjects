@@ -9,6 +9,15 @@ Window::Window(WINDOW *win) {
     colors_init();
 }
 
+void Window::print(std::string str, Color color, int x, int y) {
+    move(y, x);
+    attron(COLOR_PAIR(color.color));
+    attron(color.attr);
+    printw(str.c_str());
+    attroff(COLOR_PAIR(color.color));
+    attroff(color.attr);
+}
+
 void Window::print(std::string str, Color color) {
     attron(COLOR_PAIR(color.color));
     attron(color.attr);

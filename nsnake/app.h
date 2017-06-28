@@ -5,6 +5,7 @@
 #include "snake.h"
 #include "object.h"
 #include "state.h"
+#include "menu.h"
 
 typedef std::pair<int, int> Key;
 
@@ -22,12 +23,16 @@ class App : public CursesApp {
     Snake snake = Snake(DIM_X, DIM_Y);
     std::map<Key, PObject> objects;
     State state;
+    Menu menu;
+    int key;
 
     /* snake app specific */
     void add_bonus();
     void step();
     void play_update();
+    void play_key();
     void menu_update();
+    void menu_key();
 
     public:
     App();

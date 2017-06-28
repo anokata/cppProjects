@@ -18,6 +18,8 @@ namespace color {
     extern Color ngreen;
     extern Color nred;
     extern Color bred;
+    extern Color nwhite;
+    extern Color bwhite;
 }
 
 void colors_init();

@@ -4,6 +4,8 @@
 #include <functional>
 #include <vector>
 #include <cstdint>
+#include <ncurses.h>
+#include "window.h"
 
 typedef std::function<void(void)> Runner;
 typedef std::pair<std::string, Runner> MenuItem;
@@ -19,6 +21,7 @@ class Menu {
         void select();
         void next();
         void back();
+        void draw(Window *window);
 
 };
 
