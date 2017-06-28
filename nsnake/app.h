@@ -23,9 +23,10 @@ class App : public CursesApp {
     std::map<Key, PObject> objects;
     State state;
 
-    /* */
+    /* snake app specific */
     void add_bonus();
     void step();
+    void play_update();
 
     public:
     App();

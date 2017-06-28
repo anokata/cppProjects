@@ -46,10 +46,10 @@ void App::key_handler(int key) {
     }
 }
 
-void App::update() {
+void App::play_update() {
     print_by_line(sf, window->width / 4, window->height / 4); // TODO?
     collide();
-    state.handle("step"); // TODO const or enum
+    snake.move();
     snake.draw(window);
     for (auto i : objects) {
         PObject obj = i.second;
@@ -57,8 +57,11 @@ void App::update() {
     }
 }
 
+void App::update() {
+    state.handle("step"); // TODO const or enum
+}
+
 void App::step() {
-    snake.move();
 }
 
 void App::collide() {
@@ -87,13 +90,9 @@ void App::add_bonus() {
 }
 
 void App::init() {
-    auto fun = std::bind(&App::step, this);
-    state.bind_event("main", "step", fun);
-
-    auto fun2 = std::bind(&App::add_bonus, this);
-    state.bind_event("main", "eat", fun2);
-
-    state.change("main");
+    state.bind_event("play", "step", std::bind(&App::play_update, this));
+    state.bind_event("play", "eat", std::bind(&App::add_bonus, this));
+    state.change("play");
 
     for (int x=0; x < DIM_Y; x++) {
         for (int y=0; y < DIM_X; y++) {
