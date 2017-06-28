@@ -2,6 +2,9 @@
 #include "curses_wrapper.h"
 #include "window.h"
 
+#define DELAY_H 8
+#define DELAY 50
+
 // Vars
 int CursesWrapper::QUIT_KEY = 'q';
 CursesApp *CursesWrapper::app;
@@ -30,13 +33,13 @@ void CursesWrapper::update() {
 int CursesWrapper::main_loop() {
 	int key = 0;
     bool is_end = false;
-    halfdelay(2);
+    halfdelay(DELAY_H);
     while (!is_end) {
         CursesWrapper::update();
         key = getch();
         is_end = key == QUIT_KEY;
         app->key_handler(key);
-        usleep(50);
+        usleep(DELAY);
     }
     return 0;
 }

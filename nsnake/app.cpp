@@ -9,9 +9,7 @@
 #include <ctime>
 #include "util.h"
 #include "snake.h"
-//TODO  curses easy interface class: color manager? win, drawer
-//window class
-//
+//TODO  curses easy interface class, extract core
 //bonuses
 //state machine
 //scores top
@@ -20,6 +18,9 @@
 //x. flowers
 //x. lighting
 // - score, eathed, length, level, total
+/* State: one instance - state, global for app
+ *
+ * */
 
 void print_by_line(std::string str, int x, int y) {
     auto lines = split(str, '\n');
@@ -48,13 +49,18 @@ void App::key_handler(int key) {
 void App::update() {
     print_by_line(sf, window->width / 4, window->height / 4); // TODO?
     collide();
-    snake.move();
+    state.handle("step"); // TODO const or enum
     snake.draw(window);
     for (auto i : objects) {
         PObject obj = i.second;
         obj->draw(window);
     }
 }
+
+void App::step() {
+    snake.move();
+}
+
 void App::collide() {
     for (auto i : objects) {
         Point p = i.first;
@@ -63,6 +69,7 @@ void App::collide() {
             if (obj == NULL) continue;
             switch (obj->effect) {
                 case Effect::GROW:
+                    state.handle("eat");
                     snake.growth();
                     objects.erase(i.first);
                     delete obj;
@@ -73,7 +80,21 @@ void App::collide() {
     snake.self_bounce();
 }
 
+void App::add_bonus() {
+    int rx = std::rand() % DIM_X;
+    int ry = std::rand() % DIM_Y;
+    objects[Point(rx, ry)] = new Object(rx, ry);
+}
+
 void App::init() {
+    auto fun = std::bind(&App::step, this);
+    state.bind_event("main", "step", fun);
+
+    auto fun2 = std::bind(&App::add_bonus, this);
+    state.bind_event("main", "eat", fun2);
+
+    state.change("main");
+
     for (int x=0; x < DIM_Y; x++) {
         for (int y=0; y < DIM_X; y++) {
             Key key (x, y);
@@ -84,10 +105,8 @@ void App::init() {
     }
     /* Random bonuses */
     std::srand(unsigned(std::time(0)));
-    for (int i = 0; i < 20; i++) {
-        int rx = std::rand() % DIM_X;
-        int ry = std::rand() % DIM_Y;
-        objects[Point(rx, ry)] = new Object(rx, ry); // CHECK mem leack
+    for (int i = 0; i < 2; i++) {
+        add_bonus();
     }
     objects[Point(1, 1)] = new Object(1, 1);
 }
