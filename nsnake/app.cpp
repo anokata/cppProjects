@@ -32,7 +32,7 @@ void print_by_line(std::string str, int x, int y) {
     }
 }
 
-void App::key_handler(int key) {
+void App::key_handler(int key) { //TODO state depended
     char k = key;
     switch (key) {
         case 'j': snake.direction = Direction::Down;
@@ -55,6 +55,10 @@ void App::play_update() {
         PObject obj = i.second;
         obj->draw(window);
     }
+}
+
+void App::menu_update() {
+
 }
 
 void App::update() {
@@ -92,7 +96,8 @@ void App::add_bonus() {
 void App::init() {
     state.bind_event("play", "step", std::bind(&App::play_update, this));
     state.bind_event("play", "eat", std::bind(&App::add_bonus, this));
-    state.change("play");
+    state.bind_event("menu", "step", std::bind(&App::menu_update, this));
+    state.change("menu");
 
     for (int x=0; x < DIM_Y; x++) {
         for (int y=0; y < DIM_X; y++) {

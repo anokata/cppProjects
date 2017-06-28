@@ -27,6 +27,7 @@ class App : public CursesApp {
     void add_bonus();
     void step();
     void play_update();
+    void menu_update();
 
     public:
     App();
