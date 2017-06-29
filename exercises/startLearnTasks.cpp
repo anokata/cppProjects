@@ -1,6 +1,7 @@
 #include <cassert>
 #include <iostream>
 #include <sstream>
+#include <vector>
 
 using namespace std;
 /* *** 
@@ -49,7 +50,40 @@ unsigned cstyle_string_len(const char *str) {
 //8.1  написать процедуру печатающую матрицу символов, поэлементно, без пробелов, каждую строку с новой строки.
 //8.2 Напиши функцию которая преобразует массив слов в массив чисел представляющих длинну каждого слова.
 //8.3 Напиши функцию find_longest_word которая принимает массив слов и возвращает длинну самого длинного.
+
 //8.4 Напиши функцию filter_long_words которая принимает массив слов и целое число N, и возвращает массив слов длинны больше N.
+typedef std::vector<std::string> WordVector;
+WordVector filter_long_words(WordVector words, int n) {
+    WordVector result;
+    for (std::string s : words) {
+        if (s.size() > n) {
+            result.push_back(s);
+        }
+    }
+    return result;
+}
+
+void test_filterlw_array(WordVector v, int n, int mustbe) {
+    WordVector r;
+    r = filter_long_words(v, n);
+    std::cout << "result:\n";
+    for (auto s : r) { 
+        std::cout << "\t-> " << s << "\n";
+    }
+    assert(r.size() == mustbe);
+}
+
+void test_filterlw() {
+    std::cout << "\033[0;36m" << "+++ Test Filter LW\n" << "\033[0;37m";
+
+    WordVector v = {"abc", "de", "zxcvb"};
+	test_filterlw_array(v, 3, 1);
+    test_filterlw_array(WordVector{"abc"}, 3, 0);
+	test_filterlw_array(WordVector{"a", "b", "cd", "de"}, 1, 2);
+
+    std::cout << "--- End Test\n";
+}
+/* ***** 8.4. end *** */
 
 void test_arrays() {
     int arr[] = {1,2,3};
@@ -71,6 +105,7 @@ void test_string_len() {
 void test_all() {
     test_arrays();
     test_string_len();
+    test_filterlw();
 }
 
 int main() {
@@ -83,7 +118,7 @@ int main() {
     return 0;
 }
 
-//https://stackoverflow.com/a/236803
+// https://stackoverflow.com/a/236803
 //stringstream
 //std::getline
 //std::back_inserter
