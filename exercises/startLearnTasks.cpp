@@ -114,7 +114,8 @@ int main() {
     std::stringstream ss;
     ss << 123;
     ss << " x .x dD.";
-    std::cout << ss.str();
+    std::cout << ss.str() << std::endl;
+    std::cout << std::showbase << std::hex << 123456 << std::endl;
     return 0;
 }
 
