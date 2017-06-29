@@ -21,6 +21,7 @@
 // end level
 // - score, eathed, length, level, total
 // debug log window!
+// extract curses lib
 
 void print_by_line(std::string str, int x, int y) {
     auto lines = split(str, '\n');
