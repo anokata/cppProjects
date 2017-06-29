@@ -11,15 +11,15 @@
 #include "snake.h"
 //TODO  curses easy interface class, extract core
 //bonuses
-//state machine
 //scores top
 //menu
 //quest, step move, labirint
 //x. flowers
 //x. lighting
+// barriers
+// levels
+// end level
 // - score, eathed, length, level, total
-/* State: one instance - state, global for app
- * */
 // debug log window!
 
 void print_by_line(std::string str, int x, int y) {
@@ -65,6 +65,14 @@ int App::play_key() {
     return 0;
 }
 
+void App::draw_ui() {
+    int cx = window->left;
+    int cy = window->top;
+    std::stringstream fmt;
+    fmt << "|--- " << "Score: (" << eated << ")" << " Level: " << 0 << " ---|";
+    window->print(fmt.str().c_str(), color::nwhite, cx, cy - 1);
+}
+
 int App::play_update() {
     print_by_line(sf, window->width / 4, window->height / 4); // TODO?
     collide();
@@ -74,11 +82,13 @@ int App::play_update() {
         PObject obj = i.second;
         obj->draw(window);
     }
+    draw_ui();
     return 0;
 }
 
 int App::menu_update() {
     menu.draw(window);
+    draw_ui();
     return 0;
 }
 
@@ -98,6 +108,7 @@ void App::collide() {
             switch (obj->effect) {
                 case Effect::GROW:
                     state.handle("eat");
+                    eated++;
                     snake.growth();
                     objects.erase(i.first);
                     delete obj;

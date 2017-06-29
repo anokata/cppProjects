@@ -33,6 +33,9 @@ class App : public CursesApp {
     int play_key();
     int menu_update();
     int menu_key();
+    void draw_ui();
+    /* stats */
+    int eated = 0;
 
     public:
     App();
