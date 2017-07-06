@@ -2,8 +2,8 @@
 #include "curses_wrapper.h"
 #include "window.h"
 
-#define DELAY_H 8
-#define DELAY 50
+#define DELAY_H 1
+#define DELAY 1
 
 // Vars
 int CursesWrapper::QUIT_KEY = 'q';
@@ -51,8 +51,6 @@ WINDOW *CursesWrapper::init() {
     curs_set(0);
     use_default_colors(); /* fror transparend -1 as back*/
 	start_color();
-init_pair (1, COLOR_RED, COLOR_BLACK);
-init_pair (2, COLOR_BLUE, COLOR_BLACK);
     return win;
 }
 

@@ -22,6 +22,9 @@
 // - score, eathed, length, level, total
 // debug log window!
 // extract curses lib
+// 'slow' typing messages
+// global timer, time intervals
+/* https://stackoverflow.com/questions/19022320/implementing-timer-with-timeout-handler-in-c */
 
 void print_by_line(std::string str, int x, int y) {
     auto lines = split(str, '\n');
@@ -72,6 +75,7 @@ void App::draw_ui() {
     std::stringstream fmt;
     fmt << "|--- " << "Score: (" << eated << ")" << " Level: " << 0 << " ---|";
     window->print(fmt.str().c_str(), color::nwhite, cx, cy - 1);
+    msg1.draw(window);
 }
 
 int App::play_update() {
@@ -140,6 +144,7 @@ void App::init() {
     menu.add("start", [this](){ this->state.change("play"); return 0; });
     menu.add("setup", [this](){ this->state.change("exit"); return 0; });
     menu.add("exit", [this](){ this->state.change("exit"); return 1; });
+    menu.add("stars", [this](){ this->state.change("stars"); return 1; });
 
     for (int x=0; x < DIM_Y; x++) {
         for (int y=0; y < DIM_X; y++) {

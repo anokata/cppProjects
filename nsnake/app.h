@@ -6,6 +6,7 @@
 #include "object.h"
 #include "state.h"
 #include "menu.h"
+#include "slow_msg.h"
 
 typedef std::pair<int, int> Key;
 
@@ -36,6 +37,8 @@ class App : public CursesApp {
     void draw_ui();
     /* stats */
     int eated = 0;
+
+    SlowMsg msg1 = SlowMsg("abc, def. Geh jkl!");
 
     public:
     App();
