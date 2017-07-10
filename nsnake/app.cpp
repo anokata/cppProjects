@@ -25,6 +25,7 @@
 // 'slow' typing messages
 // global timer, time intervals
 /* https://stackoverflow.com/questions/19022320/implementing-timer-with-timeout-handler-in-c */
+// border corners
 
 void print_by_line(std::string str, int x, int y) {
     auto lines = split(str, '\n');
@@ -75,6 +76,8 @@ void App::draw_ui() {
     std::stringstream fmt;
     fmt << "|--- " << "Score: (" << eated << ")" << " Level: " << 0 << " ---|";
     window->print(fmt.str().c_str(), color::nwhite, cx, cy - 1);
+    window->print("/", color::nwhite, cx + window->width, cy + 3);
+    window->print("+", color::nwhite, cx - 1, cy - 1);
     msg1.draw(window);
 }
 
