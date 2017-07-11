@@ -121,6 +121,10 @@ void App::collide() {
                     objects.erase(i.first);
                     delete obj;
                     break;
+                    
+                case Effect::STOP:
+                    snake.turn_back();
+                    break;
             }
         }
     }
@@ -131,6 +135,17 @@ int App::add_bonus() {
     int rx = std::rand() % DIM_X;
     int ry = std::rand() % DIM_Y;
     objects[Point(rx, ry)] = new Object(rx, ry);
+    return 0;
+}
+
+
+int App::add_wall() {
+    int rx = std::rand() % DIM_X;
+    int ry = std::rand() % DIM_Y;
+    objects[Point(rx, ry)] = new Object(rx, ry);
+    objects[Point(rx, ry)]->effect = Effect::STOP;
+    objects[Point(rx, ry)]->frames.clear();
+    objects[Point(rx, ry)]->frames.push_back('#');
     return 0;
 }
 
@@ -159,8 +174,9 @@ void App::init() {
     }
     /* Random bonuses */
     std::srand(unsigned(std::time(0)));
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 20; i++) {
         add_bonus();
+        add_wall();
     }
     objects[Point(1, 1)] = new Object(1, 1);
 }

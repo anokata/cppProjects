@@ -2,7 +2,7 @@
 #include "window.h"
 #include <vector>
 
-typedef enum Effect { GROW } Effect;
+typedef enum Effect { GROW, STOP } Effect;
 
 class Object {
 

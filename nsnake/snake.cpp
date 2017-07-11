@@ -80,6 +80,10 @@ void Snake::growth() {
     is_growth = true;
 }
 
+void Snake::turn_back() {
+    direction = opposite(direction);
+}
+
 void Snake::self_bounce() {
     int nx = get_next_x();
     int ny = get_next_y();
@@ -92,7 +96,7 @@ void Snake::self_bounce() {
         int x = segments[i].first;
         int y = segments[i].second;
         if ((x == nx) && (y == ny)) {
-            direction = opposite(direction);
+            turn_back();
             break;
         }
     }

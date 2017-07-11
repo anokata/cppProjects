@@ -29,6 +29,7 @@ class App : public CursesApp {
 
     /* snake app specific */
     int add_bonus();
+    int add_wall();
     void step();
     int play_update();
     int play_key();

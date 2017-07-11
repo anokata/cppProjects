@@ -42,4 +42,5 @@ public:
     void move();
     void growth();
     void self_bounce();
+    void turn_back();
 };
