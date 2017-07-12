@@ -4,7 +4,6 @@
 #include "window.h"
 
 typedef std::pair<int, int> Point;
-typedef enum Direction {Up, Down, Right, Left} Direction;
 
 class Snake {
     std::vector<Point> segments;

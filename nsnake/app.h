@@ -7,6 +7,7 @@
 #include "state.h"
 #include "menu.h"
 #include "slow_msg.h"
+#include "man.h"
 
 typedef std::pair<int, int> Key;
 
@@ -36,6 +37,12 @@ class App : public CursesApp {
     int menu_update();
     int menu_key();
     void draw_ui();
+    /* bm spec */
+    void bm_draw();
+    void bm_draw_border();
+    int bm_step();
+    int bm_key();
+    Man man = Man(2, 3);
     /* stats */
     int eated = 0;
 

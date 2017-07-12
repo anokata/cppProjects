@@ -11,6 +11,8 @@ Color color::nred = {color::red, A_NORMAL};
 Color color::bred = {color::red, A_BOLD};
 Color color::nwhite = {color::white, A_NORMAL};
 Color color::bwhite = {color::white, A_BOLD};
+Color color::nblue = {color::blue, A_NORMAL};
+Color color::bblue = {color::blue, A_BOLD};
 
 static const int BACKGROUND = -1; // COLOR_BLACK
 

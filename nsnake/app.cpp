@@ -26,6 +26,42 @@
 // global timer, time intervals
 /* https://stackoverflow.com/questions/19022320/implementing-timer-with-timeout-handler-in-c */
 // border corners
+// bomberman
+
+void App::bm_draw_border() {
+    window->print("+----------------------------------+", color::nblue, 0, 0);
+    window->print("+----------------------------------+", color::nblue, 0, 20);
+    for (int i = 1; i < 20; i++) {
+        window->print("|", color::nblue, 0, i);
+        window->print("|", color::nblue, 35, i);
+    }
+}
+
+void App::bm_draw() {
+    bm_draw_border();
+    man.draw(window);
+    man.draw_info(window);
+}
+
+int App::bm_step() {
+    bm_draw();
+    return 0;
+}
+
+int App::bm_key() {
+    char k = key;
+    switch (key) {
+        case 'j': man.move(Direction::Down);
+        break;
+        case 'k': man.move(Direction::Up);
+        break;
+        case 'h': man.move(Direction::Left);
+        break;
+        case 'l': man.move(Direction::Right);
+        break;
+    }
+    return 0;
+}
 
 void print_by_line(std::string str, int x, int y) {
     auto lines = split(str, '\n');
@@ -156,9 +192,11 @@ void App::init() {
     state.bind_event("menu", "key", std::bind(&App::menu_key, this));
     state.bind_event("play", "key", std::bind(&App::play_key, this));
     state.bind_event("exit", "key", [](){ return 1; });
-    state.change("play");
-    state.change("menu");
+    state.bind_event("bm", "step", std::bind(&App::bm_step, this));
+    state.bind_event("bm", "key", std::bind(&App::bm_key, this));
+    state.change("bm");
 
+    menu.add("bm", [this](){ this->state.change("bomberman"); return 0; });
     menu.add("start", [this](){ this->state.change("play"); return 0; });
     menu.add("setup", [this](){ this->state.change("exit"); return 0; });
     menu.add("exit", [this](){ this->state.change("exit"); return 1; });

@@ -3,6 +3,8 @@
 #include <string>
 #include "color.h"
 
+typedef enum Direction {Up, Down, Right, Left} Direction;
+
 class Window {
     public:
     int width;
