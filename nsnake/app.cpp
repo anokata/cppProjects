@@ -9,6 +9,7 @@
 #include "app.h"
 #include "util.h"
 #include "snake.h"
+#include "level_gen.h"
 //TODO  curses easy interface class, extract core
 //bonuses
 //scores top
@@ -27,6 +28,7 @@
 /* https://stackoverflow.com/questions/19022320/implementing-timer-with-timeout-handler-in-c */
 // border corners
 // bomberman
+// dynamic background color changing random text dropdown
 
 void App::bm_draw_border() {
     window->print("+----------------------------------+", color::nblue, 0, 0);
@@ -39,6 +41,9 @@ void App::bm_draw_border() {
 
 void App::bm_draw() {
     bm_draw_border();
+    for (auto cell : cm) {
+        window->putcxy(cell.second, color::nblue, cell.first.first, cell.first.second);
+    }
     man.draw(window);
     man.draw_info(window);
 }
@@ -201,6 +206,8 @@ void App::init() {
     menu.add("setup", [this](){ this->state.change("exit"); return 0; });
     menu.add("exit", [this](){ this->state.change("exit"); return 1; });
     menu.add("stars", [this](){ this->state.change("stars"); return 1; });
+
+    this->cm = generate();
 
     for (int x=0; x < DIM_Y; x++) {
         for (int y=0; y < DIM_X; y++) {

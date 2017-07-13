@@ -3,7 +3,6 @@
 #include <vector>
 #include "window.h"
 
-typedef std::pair<int, int> Point;
 
 class Snake {
     std::vector<Point> segments;

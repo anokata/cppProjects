@@ -47,6 +47,7 @@ class App : public CursesApp {
     int eated = 0;
 
     SlowMsg msg1 = SlowMsg("abc, def. Geh jkl!");
+    CharMap cm;
 
     public:
     App();
