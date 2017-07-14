@@ -9,7 +9,6 @@
 #include "app.h"
 #include "util.h"
 #include "snake.h"
-#include "level_gen.h"
 //TODO  curses easy interface class, extract core
 //bonuses
 //scores top
@@ -41,7 +40,7 @@ void App::bm_draw_border() {
 
 void App::bm_draw() {
     bm_draw_border();
-    for (auto cell : cm) {
+    for (auto cell : cm.dots) {
         window->putcxy(cell.second, color::nblue, cell.first.first, cell.first.second);
     }
     man.draw(window);

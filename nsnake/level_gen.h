@@ -4,7 +4,17 @@
 
 #include "window.h"
 
-CharMap generate();
+
+template <class T> class Map {
+    public:
+        int width;
+        int height;
+        T dots;
+};
+
+typedef Map<CharMap> CharsMap;
+
+CharsMap generate();
 
 #endif
 

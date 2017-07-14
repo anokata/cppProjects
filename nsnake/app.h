@@ -8,6 +8,7 @@
 #include "menu.h"
 #include "slow_msg.h"
 #include "man.h"
+#include "level_gen.h"
 
 typedef std::pair<int, int> Key;
 
@@ -47,7 +48,7 @@ class App : public CursesApp {
     int eated = 0;
 
     SlowMsg msg1 = SlowMsg("abc, def. Geh jkl!");
-    CharMap cm;
+    CharsMap cm;
 
     public:
     App();

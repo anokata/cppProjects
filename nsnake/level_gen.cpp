@@ -8,15 +8,27 @@ char random_char() {
     }
 }
 
-// cm step_generation(CharMap cm)
+int neighbours(CharMap cm, Point p) {
 
-CharMap generate() {
+}
+
+template <typename T> Map<T> step_generation(Map<T> cm) {
+    for (int i = 1; i < cm.width; i++) {
+        for (int k = 1; k < cm.height; k++) {
+            //cm.dots[Point(i, k)] = random_char();
+        }
+    }
+}
+
+CharsMap generate() {
     CharMap cm;
     for (int i = 1; i < 20; i++) {
         for (int k = 1; k < 20; k++) {
             cm[Point(i, k)] = random_char();
         }
     }
+    CharsMap map;
+    map.dots = cm;
 
-    return cm;
+    return map;
 }
