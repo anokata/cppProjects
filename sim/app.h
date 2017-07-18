@@ -16,6 +16,8 @@
 #include "furses/menu.h"
 #include "furses/util.h"
 
+#include "world.h"
+
 typedef std::pair<int, int> Key;
 
 class App : public CursesApp { 
@@ -29,6 +31,8 @@ class App : public CursesApp {
     int menu_update();
     int menu_key();
     int key;
+
+    World world;
 
     public:
         App();
