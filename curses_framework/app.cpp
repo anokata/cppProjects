@@ -7,7 +7,7 @@ int App::key_handler(int key) {
 
 int App::menu_key() {
     char k = key;
-    switch (key) {
+    switch (k) {
         case 'j': menu.next();
         break;
         case 'k': menu.back();

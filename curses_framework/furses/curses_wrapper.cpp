@@ -28,6 +28,7 @@ int CursesWrapper::update() {
     erase();
     app->update();
     refresh();
+    return 0;
 }
 
 int CursesWrapper::main_loop() {

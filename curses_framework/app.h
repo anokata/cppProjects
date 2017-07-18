@@ -1,8 +1,6 @@
 #pragma once
 #ifndef __APP__
 #define __APP__
-#include "furses/curses_app.h"
-#include <ncurses.h>
 #include <utility>
 #include <string>
 #include <sstream>
@@ -12,6 +10,8 @@
 #include <ctime>
 #include <map>
 #include <utility>
+#include "furses/curses_app.h"
+#include "furses/curses_wrapper.h"
 #include "furses/state.h"
 #include "furses/menu.h"
 #include "furses/util.h"
@@ -23,8 +23,6 @@ class App : public CursesApp {
     virtual void init();
     virtual void finalize();
     virtual int key_handler(int key);
-    static const int DIM_X = 20;
-    static const int DIM_Y = 10;
 
     State state;
     Menu menu;
