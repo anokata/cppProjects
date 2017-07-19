@@ -1,10 +1,13 @@
 #include "level_gen.h"
 
+/* Map chars definition */
+// ?
+
 char random_char() {
     switch (std::rand() % 3) {
         case 0: return '.';
         case 1: return '#';
-        case 2: return '-';
+        case 2: return ' ';
     }
     return ' ';
 }
@@ -24,8 +27,8 @@ template <typename T> Map<T> step_generation(Map<T> cm) {
 
 CharsMap generate() {
     CharMap cm;
-    for (int i = 1; i < 20; i++) {
-        for (int k = 1; k < 20; k++) {
+    for (int i = 1; i < 10; i++) {
+        for (int k = 1; k < 10; k++) {
             cm[Point(i, k)] = random_char();
         }
     }

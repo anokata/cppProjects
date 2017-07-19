@@ -26,13 +26,21 @@ int App::bm_step() {
 
 int App::bm_key() {
     switch (key) {
-        case 'j': man.move(Direction::Down);
+        case 'j': man.move(Direction::Down, cm.dots);
         break;
-        case 'k': man.move(Direction::Up);
+        case 'k': man.move(Direction::Up, cm.dots);
         break;
-        case 'h': man.move(Direction::Left);
+        case 'h': man.move(Direction::Left, cm.dots);
         break;
-        case 'l': man.move(Direction::Right);
+        case 'l': man.move(Direction::Right, cm.dots);
+        break;
+        case 'y': man.move(Direction::UpLeft, cm.dots);
+        break;
+        case 'u': man.move(Direction::UpRight, cm.dots);
+        break;
+        case 'b': man.move(Direction::DownLeft, cm.dots);
+        break;
+        case 'n': man.move(Direction::DownRight, cm.dots);
         break;
     }
     return 0;
