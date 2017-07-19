@@ -20,6 +20,11 @@ int App::menu_key() {
 
 int App::menu_update() {
     menu.draw(window);
+    for (int i = 0; i < 30; i++) {
+        int x = std::rand() % window->width;
+        int y = std::rand() % window->height;
+        window->putcxy('.', color::bwhite, x, y);
+    }
     return 0;
 }
 
