@@ -6,6 +6,7 @@
 
 typedef enum Direction {Up, Down, Right, Left} Direction;
 typedef std::pair<int, int> Point;
+/* map poing(x, y) -> char */
 typedef std::map<Point, char> CharMap;
 
 class Window {
