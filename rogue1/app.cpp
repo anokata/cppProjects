@@ -1,0 +1,87 @@
+#include "app.h"
+// debug log window!
+
+void App::bm_draw_border() {
+    window->print("+----------------------------------+", color::nblue, 0, 0);
+    window->print("+----------------------------------+", color::nblue, 0, 20);
+    for (int i = 1; i < 20; i++) {
+        window->print("|", color::nblue, 0, i);
+        window->print("|", color::nblue, 35, i);
+    }
+}
+
+void App::bm_draw() {
+    bm_draw_border();
+    for (auto cell : cm.dots) {
+        window->putcxy(cell.second, color::nblue, cell.first.first, cell.first.second);
+    }
+    man.draw(window);
+    man.draw_info(window);
+}
+
+int App::bm_step() {
+    bm_draw();
+    return 0;
+}
+
+int App::bm_key() {
+    switch (key) {
+        case 'j': man.move(Direction::Down);
+        break;
+        case 'k': man.move(Direction::Up);
+        break;
+        case 'h': man.move(Direction::Left);
+        break;
+        case 'l': man.move(Direction::Right);
+        break;
+    }
+    return 0;
+}
+
+int App::key_handler(int key) { 
+    this->key = key;
+    return state.handle("key");
+}
+
+int App::menu_key() {
+    switch (key) {
+        case 'j': menu.next();
+        break;
+        case 'k': menu.back();
+        break;
+        case '\n': return menu.select();
+        break;
+    }
+    return 0;
+}
+
+int App::menu_update() {
+    menu.draw(window);
+    return 0;
+}
+
+int App::update() {
+    return state.handle("step"); 
+}
+
+void App::init() {
+    state.bind_event("menu", "step", std::bind(&App::menu_update, this));
+    state.bind_event("menu", "key", std::bind(&App::menu_key, this));
+    state.bind_event("exit", "key", [](){ return 1; });
+    state.bind_event("bm", "step", std::bind(&App::bm_step, this));
+    state.bind_event("bm", "key", std::bind(&App::bm_key, this));
+    state.change("bm");
+
+    menu.add("bm", [this](){ this->state.change("bm"); return 0; });
+    menu.add("start", [this](){ this->state.change("play"); return 0; });
+    menu.add("setup", [this](){ this->state.change("exit"); return 0; });
+    menu.add("exit", [this](){ this->state.change("exit"); return 1; });
+
+    this->cm = generate();
+}
+
+App::App() {
+}
+
+void App::finalize() {
+}
