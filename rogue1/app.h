@@ -17,6 +17,7 @@
 #include "furses/util.h"
 
 #include "level_gen.h"
+#include "map.h"
 #include "man.h"
 
 
@@ -40,6 +41,7 @@ class App : public CursesApp {
     int bm_step();
     int bm_key();
     Man man = Man(2, 3);
+    std::vector<StaticObject> objects;
 
     CharsMap cm;
 

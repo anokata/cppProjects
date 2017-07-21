@@ -7,7 +7,7 @@ void Man::draw(Window *window) {
 void Man::draw_info(Window *window) {
     std::stringstream fmt;
     fmt << this->x << " " << this->y;
-    window->print(fmt.str().c_str(), color::nwhite, 1, 22);
+    window->print(fmt.str().c_str(), color::nwhite, 1, 32);
 }
 
 void Man::move(Direction direction, CharMap dots) {

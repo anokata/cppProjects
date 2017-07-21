@@ -2,9 +2,10 @@
 // debug log window!
 
 void App::bm_draw_border() {
+    int h = 30;
     window->print("+----------------------------------+", color::nblue, 0, 0);
-    window->print("+----------------------------------+", color::nblue, 0, 20);
-    for (int i = 1; i < 20; i++) {
+    window->print("+----------------------------------+", color::nblue, 0, h);
+    for (int i = 1; i < h; i++) {
         window->print("|", color::nblue, 0, i);
         window->print("|", color::nblue, 35, i);
     }
@@ -86,6 +87,7 @@ void App::init() {
     menu.add("exit", [this](){ this->state.change("exit"); return 1; });
 
     this->cm = generate();
+    objects.push_back(StaticObject(1, 2));
 }
 
 App::App() {

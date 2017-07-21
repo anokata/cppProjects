@@ -3,12 +3,11 @@
 #define __MAN__
 
 #include "furses/window.h"
+#include "map.h"
 #include <sstream>
 
-typedef int coord;
-
 class Man {
-    private:
+    protected:
         coord x;
         coord y;
 

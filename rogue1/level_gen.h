@@ -2,8 +2,8 @@
 #ifndef __LEVEL_GEN__
 #define __LEVEL_GEN__
 
+#include <ctime>
 #include "furses/window.h"
-
 
 template <class T> class Map {
     public:

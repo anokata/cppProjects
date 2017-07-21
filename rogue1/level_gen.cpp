@@ -45,8 +45,9 @@ template <typename T> Map<T> step_generation(Map<T> &cm) {
 }
 
 CharsMap generate() {
+    std::srand(unsigned(std::time(0)));
     CharMap cm;
-    int w = 20;
+    int w = 30;
     for (int i = 1; i < w; i++) {
         for (int k = 1; k < w; k++) {
             cm[Point(i, k)] = random_char();
