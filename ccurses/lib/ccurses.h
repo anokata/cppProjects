@@ -10,6 +10,7 @@
 #include <ncurses.h>
 
 #include "color.h"
+#include "state.h"
 
 int width;
 int heigth;
