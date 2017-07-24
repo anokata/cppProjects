@@ -11,8 +11,8 @@
 
 #include "color.h"
 
-static int width;
-static int heigth;
+int width;
+int heigth;
 
 void cc_print(char *str, struct Color color);
 void cc_printxy(char *str, struct Color color, int x, int y);

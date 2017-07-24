@@ -4,4 +4,6 @@
 
 #include "ccurses.h"
 
+#define MENU_STATE 1
+
 #endif
