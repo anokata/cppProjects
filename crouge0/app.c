@@ -5,9 +5,7 @@ enum Events {Event_draw, Event_key,  NUM_EVENTS};
 /* GLOBAL */
 State state;
 
-// draw func 
-// input func
-// menu, state
+// menu
 
 void processInput() {
 	int ch = getch();
@@ -40,8 +38,8 @@ void state_init() {
 
 void start() {
     curses_init();
-		cc_putxy('X', cd_yellow, 1, 2);
-		cc_print("\nW:H = ", cd_red);
+		cc_putxy('W', cd_yellow, 1, 2);
+		cc_print("\nWid:Hei = ", cd_blue);
         cc_printi(width, cd_white);
 		cc_print(" : ", cd_red);
         cc_printi(heigth, cd_white);
