@@ -3,7 +3,6 @@
 #define __APP__
 
 #include "ccurses.h"
-
-#define MENU_STATE 1
+#include "state.h"
 
 #endif
