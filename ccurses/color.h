@@ -30,6 +30,9 @@ static const struct Color cd_yellow = {_cn_yellow, A_DIM};
 static const struct Color cn_white = {_cn_white, A_NORMAL};
 static const struct Color cb_white = {_cn_white, A_BOLD};
 static const struct Color cd_white = {_cn_white, A_DIM};
+static const struct Color cn_green = {_cn_green, A_NORMAL};
+static const struct Color cb_green = {_cn_green, A_BOLD};
+static const struct Color cd_green = {_cn_green, A_DIM};
 
 void cc_init_colors();
 

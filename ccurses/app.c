@@ -12,21 +12,20 @@ State state;
 void processInput() {
 	int ch = getch();
 	while(ch != 'q') {
-		clear();
-        /* cmd_func f = find_char_func(ch); */
-        /* if (f) { */
-        /*     f(m); */
-        /* } */
-		/* putc(ch, 1); */
-		cc_print("hi some", cb_blue);
         ss_handle(state, Event_draw, 0);
-
-        /* curses_allwin_refresh(m); */
+        ss_handle(state, Event_key, (void*)(uint64_t)ch);
 		ch = getch();
 	}
 }
 
+int key_run(void* data) {
+    char key = (uint64_t)data;
+    cc_printi(key, cd_green);
+    return 0;
+}
+
 int draw(void* data) {
+    clear();
     cc_putxy('D', cb_yellow, 3, 2);
     return 0;
 }
@@ -35,6 +34,7 @@ int draw(void* data) {
 void state_init() {
     state = ss_make_state(NUM_STATES, NUM_EVENTS);
     ss_sethander(state, State_run, Event_draw, draw);
+    ss_sethander(state, State_run, Event_key, key_run);
     ss_setstate(state, State_run);
 }
 
