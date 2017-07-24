@@ -1,4 +1,10 @@
 #include "ccurses.h"
+#include "state.h"
+
+enum States {State_run, State_end,  NUM_STATES};
+enum Events {Event_draw, Event_key,  NUM_EVENTS};
+/* GLOBAL */
+State state;
 
 void cc_printi(uint32_t value, struct Color color) {
     char str[20];
@@ -62,6 +68,7 @@ void processInput() {
         /* } */
 		/* putc(ch, 1); */
 		cc_print("hi some", cb_blue);
+        ss_handle(state, Event_draw, 0);
 
         /* curses_allwin_refresh(m); */
 		ch = getch();
@@ -72,47 +79,18 @@ void curses_end() {
 	endwin();
 }
 
-typedef int (*StateFunction)(void*);
-typedef StateFunction *StateTable; // 2D array [state id] [event id]
-typedef struct State {
-    StateTable table;
-    uint32_t num_states;
-    uint32_t num_events;
-    int current_state;
-} *State;
 
-State ss_make_state(uint32_t states_count, uint32_t events_count) {
-    State state = malloc(sizeof(State));
-    state->table = calloc(states_count * events_count, sizeof(void*));
-    state->num_states = states_count;
-    state->num_events = events_count;
-    state->current_state = 0;
-    return state;
-}
-
-void ss_free_state(State s) {
-    free(s->table);
-    free(s);
-}
-
-void ss_sethander(State state, int state_id, int event, StateFunction fun) {
-    state->table[state_id + (event * state->num_events)] = fun;
-}
-
-StateFunction ss_gethandler(State state, int event) {
-    return state->table[state->current_state + (event * state->num_events)];
-}
-
-void ss_setstate(State state, int new_state) {
-    state->current_state = new_state;
-}
-
-enum States {State_run, State_end,  NUM_STATES};
-enum Events {Event_draw, Event_key,  NUM_EVENTS};
 
 int draw(void* data) {
     cc_putxy('D', cb_yellow, 3, 2);
     return 0;
+}
+
+
+void state_init() {
+    state = ss_make_state(NUM_STATES, NUM_EVENTS);
+    ss_sethander(state, State_run, Event_draw, draw);
+    ss_setstate(state, State_run);
 }
 
 void start() {
@@ -122,10 +100,7 @@ void start() {
         cc_printi(width, cd_white);
 		cc_print(" : ", cd_red);
         cc_printi(heigth, cd_white);
-    State state = ss_make_state(NUM_STATES, NUM_EVENTS);
-    ss_sethander(state, State_run, Event_draw, draw);
-    ss_setstate(state, State_run);
-    ss_gethandler(state, Event_draw)(0);
+    state_init();
 
     processInput();
     ss_free_state(state);
