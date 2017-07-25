@@ -1,8 +1,15 @@
+P=rouge0
+CFLAGS=-Wall -std=gnu11 -g 
+OBJECTS=
+LDLIBS=
 LIB=libfurses.a
 CC=gcc
 
 main:
-	$(CC) -Wall -std=c11 *.c -L../ccurses -lccurses -I../ccurses -lncurses -o /tmp/a.out && /tmp/a.out
+	$(CC) $(CFLAGS) *.c -L../ccurses -lccurses -I../ccurses -lncurses -o /tmp/$(P) && /tmp/$(P)
+
+compile:
+	$(CC) $(CFLAGS) *.c -L../ccurses -lccurses -I../ccurses -lncurses -o /tmp/$(P)
 
 makelib:
 	$(CC) -std=c11 lib/*.c -c
