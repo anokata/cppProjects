@@ -5,7 +5,8 @@ enum Events {Event_draw, Event_key,  NUM_EVENTS};
 /* GLOBAL */
 State state;
 
-// menu
+// menu (not up down - use vi like.)
+// ascii art pic editor mode, terminal again vi keys... + animation.
 
 void processInput() {
 	int ch = getch();

@@ -3,5 +3,6 @@
 #define __APP__
 
 #include "lib/ccurses.h"
+#include "menu.h"
 
 #endif
