@@ -6,7 +6,7 @@ LIB=libfurses.a
 CC=gcc
 
 main:
-	$(CC) $(CFLAGS) *.c -L../ccurses -lccurses -I../ccurses -lncurses -o /tmp/$(P) && /tmp/$(P)
+	$(CC) $(CFLAGS) *.c -L../ccurses -lccurses -I./include -I../ccurses -lncurses -o /tmp/$(P) && /tmp/$(P)
 
 compile:
 	$(CC) $(CFLAGS) *.c -L../ccurses -lccurses -I../ccurses -lncurses -o /tmp/$(P)
