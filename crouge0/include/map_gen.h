@@ -12,6 +12,6 @@ typedef struct Map {
     int heigth;
 } *Map;
 
-int make_map(char *filename, int width, int heigth);
+int out_map(char *filename, int width, int heigth);
 
 #endif
