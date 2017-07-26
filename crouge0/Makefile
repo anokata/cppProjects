@@ -24,4 +24,5 @@ make_with_lib:
 MAP_OBJECTS=map_gen.c
 
 map:
-	$(CC) $(CFLAGS) $(MAP_OBJECTS) -L../ccurses -lccurses -I./include -I../ccurses -lncurses -o /tmp/$(MAPGEN) && /tmp/$(MAPGEN)
+	$(CC) $(CFLAGS) $(MAP_OBJECTS) -L../ccurses -lccurses -I./include -I../ccurses -lncurses -o /tmp/$(MAPGEN) && valgrind /tmp/$(MAPGEN) && ls -l /tmp/*.map
+
