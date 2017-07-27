@@ -1,7 +1,6 @@
 #include "app.h"
 
-/* enum States {State_run=0, State_end, State_wmap,  NUM_STATES}; */
-enum States {State_run, State_end, NUM_STATES};
+enum States {State_run, State_end, State_wmap,  NUM_STATES};
 enum Events {Event_draw, Event_key,  NUM_EVENTS};
 /* GLOBAL */
 State state;
@@ -28,8 +27,8 @@ State state;
 void processInput(WorldMap wmap) {
 	int ch = getch();
 	while(ch != 'q') {
-        ss_handle(state, Event_draw, wmap);
         ss_handle(state, Event_key, (void*)(uint64_t)ch);
+        ss_handle(state, Event_draw, wmap);
 		ch = getch();
 	}
 }
@@ -37,28 +36,27 @@ void processInput(WorldMap wmap) {
 int key_run(void* data) {
     char key = (uint64_t)data;
     cc_printi(key, cd_green);
-    /* switch (key) { */
-    /*     case 'w': */
-    /*         ss_setstate(state, State_wmap); */
-    /*         break; */
-    /* } */
+    switch (key) {
+        case 'w':
+            ss_setstate(state, State_wmap);
+            break;
+    }
     return 0;
 }
 
 int draw(void* data) {
     clear();
     cc_putxy('D', cb_yellow, 3, 2);
-    /* print_wmap(data); */
     return 0;
 }
 
 int wmap_key(void* data) {
     char key = (uint64_t)data;
-    /* switch (key) { */
-    /*     case 'r': */
-    /*         ss_setstate(state, State_run); */
-    /*         break; */
-    /* } */
+    switch (key) {
+        case 'r':
+            ss_setstate(state, State_run);
+            break;
+    }
     return 0;
 }
 int wmap_draw(void* data) {
@@ -72,8 +70,8 @@ void state_init() {
     state = ss_make_state(NUM_STATES, NUM_EVENTS);
     ss_sethander(state, State_run, Event_draw, draw);
     ss_sethander(state, State_run, Event_key, key_run);
-    /* ss_sethander(state, State_wmap, Event_draw, wmap_draw); */
-    /* ss_sethander(state, State_wmap, Event_key, wmap_key); */
+    ss_sethander(state, State_wmap, Event_draw, wmap_draw);
+    ss_sethander(state, State_wmap, Event_key, wmap_key);
     ss_setstate(state, State_run);
 }
 
