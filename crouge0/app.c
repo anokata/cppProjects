@@ -7,6 +7,15 @@ State state;
 
 // menu (not up down - use vi like.)
 // ascii art pic editor mode, terminal again vi keys... + animation.
+// Idea and world First! get old records and generate mechanic
+// First - fun therefore slash like dia
+// but not clone dia.
+// 2. Magic and skill grows like morow
+// 3. World height? it difficult for first try, lets it be simple dung with wild
+// 4. Draw static map, weather zones, caves. Circle
+// 5. fun events, fast grow, new challanges, FF, skills/items (keys, levitate, lava, swim) for access areas, bosses
+// 6. end goal, meaning of all of this - survive and escape from planet. from black entitys.
+// 1. World map, how store, view it with self position. map blocks. view frame.
 
 void processInput() {
 	int ch = getch();
