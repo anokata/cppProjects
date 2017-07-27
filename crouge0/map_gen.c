@@ -6,9 +6,9 @@ Map make_map(int width, int heigth) {
     map->data = data;
     map->width = width;
     map->heigth = heigth;
-    for (int i=0; i < width; i++) {
+    for (int i=0; i < heigth; i++) {
         for (int j=0; j < width; j++) {
-            data[i*width + j] = '.';
+            data[i * width + j] = ' ';
         }
     }
     return map;
@@ -48,7 +48,7 @@ Map gen_map(int width, int heigth) {
 
     Map map = make_map(width, heigth);
 
-    for (int i=0; i < width; i++) {
+    for (int i=0; i < heigth; i++) {
         for (int j=0; j < width; j++) {
             map->data[i * width + j] = rand_char();
         }
@@ -61,7 +61,7 @@ int get_map_size(Map map) {
 }
 
 void print_map(Map map) {
-    for (int i=0; i < map->width; i++) {
+    for (int i=0; i < map->heigth; i++) {
         for (int j=0; j < map->width; j++) {
             putchar(map->data[i * map->width + j]);
         }
@@ -84,11 +84,22 @@ int out_map(char *filename, int width, int heigth) {
     fwrite(map->data, strlen(map->data), 1, file);
     fclose(file);
 
-    printf("Map:\n");
+    DEBUG_PRINT("Map:\n");
     print_map(map);
-    printf("Saved to %s\n", filename);
+    DEBUG_PRINT("Saved to %s\n", filename);
     free_map(map);
     return 0;
+}
+
+int fget_int_line(FILE *file) {
+    int value = 0;
+    char * line = NULL;
+    size_t len = 0;
+    getline(&line, &len, file);
+    sscanf(line, "%d", &value);
+    if (line)
+        free(line);
+    return value;
 }
 
 Map load_map(string filename) {
@@ -101,20 +112,17 @@ Map load_map(string filename) {
     size_t len = 0;
     ssize_t read;
 
-    getline(&line, &len, file);
-    sscanf(line, "%d", &width);
-    printf("w:%d\n", width);
-
-    getline(&line, &len, file);
-    sscanf(line, "%d", &heigth);
-    printf("h:%d\n", heigth);
+    width = fget_int_line(file);
+    heigth = fget_int_line(file);
+    DEBUG_PRINT("w:%d h:%d\n", width, heigth);
 
     map = make_map(width, heigth);
 
-    while ((read = getline(&line, &len, file)) != -1) {
-        /* printf("Retrieved line of length %zu :\n", read); */
-        /* printf("%s", line); */
+    for (int y = 0; y < heigth; y++) {
+        read = getline(&line, &len, file);
+        memcpy(map->data + y * width, line, read - 1); // -1 \n at end of line
     }
+    /* print_map(map); */
 
     if (line)
         free(line);

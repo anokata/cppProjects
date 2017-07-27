@@ -60,10 +60,11 @@ void start() {
 		cc_print(" : ", cd_red);
         cc_printi(heigth, cd_white);
     state_init();
+    Map world = load_map("world.map");
 
     processInput();
     ss_free_state(state);
     curses_end();
-    Map world = load_map("world.map");
-    /* free_map(world); */
+
+    free_map(world);
 }

@@ -11,6 +11,14 @@
 #include "lib/ccurses.h"
 #include "util.h"
 
+#define DEBUG
+
+#ifdef DEBUG
+#define DEBUG_PRINT(fmt, args...)    fprintf(stderr, fmt, ## args)
+#else
+#define DEBUG_PRINT(fmt, args...)
+#endif
+
 typedef struct Map {
     char *data;
     int width;
@@ -24,6 +32,8 @@ typedef struct Point {
 
 int out_map(char *filename, int width, int heigth);
 Map load_map(string filename);
+void free_map(Map map);
+void print_map(Map map);
 
 typedef struct WorldMapRegionDescriptor { //wmrd
     char c;
