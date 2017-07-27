@@ -1,5 +1,12 @@
 #include "map_gen.h"
 
+string world_map_filename = "world.map";
+
+WorldMap load_wmap() {
+
+}
+
+
 Map make_map(int width, int heigth) {
     Map map = malloc(sizeof(struct Map));
     char *data = calloc(width, heigth);

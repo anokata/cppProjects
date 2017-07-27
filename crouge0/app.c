@@ -16,8 +16,8 @@ State state;
 // 5. fun events, fast grow, new challanges, FF, skills/items (keys, levitate, lava, swim) for access areas, bosses
 // 6. end goal, meaning of all of this - survive and escape from planet. from black entitys.
 // 1. World map, how store, view it with self position. map blocks. view frame.
-// 1.1 Struct for wmap
-// 1.2 Load wmap.
+//+1.1 Struct for wmap
+//+1.2 Load wmap.
 // 1.3 View wmap. (color regions) wmap mode.
 // 1.4 show map region description.
 // 1.5 gettext _

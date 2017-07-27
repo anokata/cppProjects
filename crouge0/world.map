@@ -16,3 +16,9 @@
      ^^^^^....
        ^^^..
         ^^.
+' ', .description="space", cd_blue
+'%', .description="plains",
+'-', .description="swarm",
+'^', .description="mountains",
+'*', .description="forest",
+'.', .description="desert"

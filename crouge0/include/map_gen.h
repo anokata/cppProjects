@@ -30,25 +30,22 @@ typedef struct Point {
     int y;
 } Point;
 
-int out_map(char *filename, int width, int heigth);
-Map load_map(string filename);
-void free_map(Map map);
-void print_map(Map map);
-
 typedef struct WorldMapRegionDescriptor { //wmrd
     char c;
     Color color;
     string description;
 } WorldMapRegionDescriptor;
 
-/* WorldMapRegionDescriptor world_map_metadata[] = { */
-/*     {' ', .description="space"}, */
-/*     {'%', .description="plains"}, */
-/*     {'-', .description="swarm"}, */
-/*     {'^', .description="mountains"}, */
-/*     {'*', .description="forest"}, */
-/*     {'.', .description="desert"} */
-/* }; */
+typedef struct WorldMap {
+    Map map;
+    WorldMapRegionDescriptor *metadata;
+} *WorldMap;
 
+int out_map(char *filename, int width, int heigth);
+Map load_map(string filename);
+void free_map(Map map);
+void print_map(Map map);
+
+WorldMap load_wmap();
 
 #endif
