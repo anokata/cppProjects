@@ -6,5 +6,6 @@
 #include "lib/ccurses.h"
 #include "messages.h"
 #include "menu.h"
+#include "map_gen.h"
 
 #endif

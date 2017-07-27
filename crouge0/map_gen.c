@@ -77,7 +77,7 @@ int out_map(char *filename, int width, int heigth) {
     FILE *file = fopen(filename, "w");
 
     char *buf = malloc(100);
-    sprintf(buf, "%d %d\n", map->width, map->heigth);
+    sprintf(buf, "%d\n%d\n", map->width, map->heigth);
     fwrite(buf, strlen(buf), 1, file);
     free(buf);
 
@@ -91,6 +91,34 @@ int out_map(char *filename, int width, int heigth) {
     return 0;
 }
 
-int main() {
-    out_map("/tmp/test.map", 10, 15);
+Map load_map(string filename) {
+    Map map = 0;
+    FILE *file = fopen(filename, "r");
+    int width = 0;
+    int heigth = 0;
+
+    char * line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    getline(&line, &len, file);
+    sscanf(line, "%d", &width);
+    printf("w:%d\n", width);
+
+    getline(&line, &len, file);
+    sscanf(line, "%d", &heigth);
+    printf("h:%d\n", heigth);
+
+    map = make_map(width, heigth);
+
+    while ((read = getline(&line, &len, file)) != -1) {
+        /* printf("Retrieved line of length %zu :\n", read); */
+        /* printf("%s", line); */
+    }
+
+    if (line)
+        free(line);
+    fclose(file);
+    return map;
 }
+

@@ -3,8 +3,7 @@
 #define __MESSAGES__
 
 #include <string.h>
-
-typedef char* string;
+#include "util.h"
 
 string msg_unknown_error;
 

@@ -1,7 +1,8 @@
 P=rouge0
-MAPGEN=mapgen
+MAPGEN=mapgen_main
 CFLAGS=-Wall -std=gnu11 -g 
-OBJECTS=app.c main.c
+OBJECTS=app.c main.c map_gen.c
+MAP_OBJECTS=mapgen_main.c map_gen.c
 LDLIBS=
 LIB=libfurses.a
 CC=gcc
@@ -21,7 +22,6 @@ makelib:
 make_with_lib:
 	$(CC) -Wall -std=c11 *.c -L../ccurses -lccurses -I../ccurses -lncurses -o /tmp/a.out && /tmp/a.out
 
-MAP_OBJECTS=map_gen.c
 
 map:
 	$(CC) $(CFLAGS) $(MAP_OBJECTS) -L../ccurses -lccurses -I./include -I../ccurses -lncurses -o /tmp/$(MAPGEN) && valgrind /tmp/$(MAPGEN) && ls -l /tmp/*.map
