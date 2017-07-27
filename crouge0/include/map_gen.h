@@ -47,5 +47,7 @@ void free_map(Map map);
 void print_map(Map map);
 
 WorldMap load_wmap();
+void free_wmap(WorldMap wmap);
+void print_wmap(WorldMap wmap);
 
 #endif

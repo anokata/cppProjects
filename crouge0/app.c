@@ -18,15 +18,16 @@ State state;
 // 1. World map, how store, view it with self position. map blocks. view frame.
 //+1.1 Struct for wmap
 //+1.2 Load wmap.
-// 1.3 View wmap. (color regions) wmap mode.
+// 1.3 View wmap. (color regions) 
+//   wmap mode.
 // 1.4 show map region description.
 // 1.5 gettext _
 // 2. local map, coords to wmap, load regions, moving, store, load
 
-void processInput() {
+void processInput(WorldMap wmap) {
 	int ch = getch();
 	while(ch != 'q') {
-        ss_handle(state, Event_draw, 0);
+        ss_handle(state, Event_draw, wmap);
         ss_handle(state, Event_key, (void*)(uint64_t)ch);
 		ch = getch();
 	}
@@ -41,6 +42,7 @@ int key_run(void* data) {
 int draw(void* data) {
     clear();
     cc_putxy('D', cb_yellow, 3, 2);
+    print_wmap(data);
     return 0;
 }
 
@@ -60,11 +62,12 @@ void start() {
 		cc_print(" : ", cd_red);
         cc_printi(heigth, cd_white);
     state_init();
-    Map world = load_map("world.map");
+        Map world = load_map("world.map");
+        WorldMap wmap = load_wmap();
 
-    processInput();
+    processInput(wmap);
     ss_free_state(state);
     curses_end();
-
-    free_map(world);
+        free_wmap(wmap);
+        free_map(world);
 }
