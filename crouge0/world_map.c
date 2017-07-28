@@ -13,8 +13,34 @@ Color get_color_for_tile(WorldMap wmap, int x, int y) {
     return cd_blue;
 }
 
+// DUBLICATE
+Map load_wmap_file(string filename) {
+    Map map = 0;
+    FILE *file = fopen(filename, "r");
+    int width = 0;
+    int heigth = 0;
+
+    char * line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    width = fget_int_line(file);
+    heigth = fget_int_line(file);
+    map = make_map(width, heigth);
+
+    for (int y = 0; y < heigth; y++) {
+        read = getline(&line, &len, file);
+        memcpy(map->data + y * width, line, read - 1); // -1 \n at end of line
+    }
+
+    if (line)
+        free(line);
+    fclose(file);
+    return map;
+}
+
 WorldMap load_wmap() {
-    Map map = load_map(world_map_filename);
+    Map map = load_wmap_file(world_map_filename);
     WorldMap wmap = malloc(sizeof(struct WorldMap));
     wmap->map = map;
     wmap->metadata = calloc(sizeof(WorldMapRegionDescriptor), META);

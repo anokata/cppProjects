@@ -2,7 +2,7 @@
 
 Map make_map(int width, int heigth) {
     Map map = malloc(sizeof(struct Map));
-    char *data = calloc(width, heigth);
+    char *data = calloc(width * heigth, 1);
     map->data = data;
     map->width = width;
     map->heigth = heigth;
@@ -45,15 +45,29 @@ Map gen_map(int width, int heigth) {
     srand((unsigned) time(&t));
     map_chars_count = strlen(map_chars);
 
-    Map map = make_map(width + 1, heigth);
+    Map map = make_map(width, heigth);
 
     for (int i=0; i < heigth; i++) {
         for (int j=0; j < width; j++) {
-            map->data[i * (width + 1) + j] = rand_char();
+            map->data[i * width + j] = rand_char();
         }
-		map->data[i * (width + 1)] = '\n';
     }
     return map;
+}
+
+string map_to2d(Map map) {
+    int nwidth = map->width + 1;
+    string map2d = malloc(1 + map->heigth * nwidth);
+    memset(map2d, 0, map->heigth * nwidth);
+
+    for (int i=0; i < map->heigth; i++) {
+        for (int j=0; j < map->width; j++) {
+            map2d[i * nwidth + j] = map->data[i * map->width + j];
+        }
+        if (i < map->heigth - 1)
+            map2d[(i + 1) * nwidth - 1] = '\n';
+    }
+    return map2d;
 }
 
 int get_map_size(Map map) {
@@ -61,12 +75,10 @@ int get_map_size(Map map) {
 }
 
 void print_map(Map map) {
-    for (int i=0; i < map->heigth; i++) {
-        for (int j=0; j < map->width; j++) {
-            putchar(map->data[i * map->width + j]);
-        }
-        /* putchar('\n'); */
-    }
+    string m2;
+    m2 = map_to2d(map);
+    printf("%s\n", m2);
+    free(m2);
 }
 
 // to viewable with newlines, from viewable/editable in vi
@@ -81,8 +93,7 @@ int out_map(char *filename, int width, int heigth) {
     fwrite(buf, strlen(buf), 1, file);
     free(buf);
 
-	// TODO by lines
-    fwrite(map->data, strlen(map->data), 1, file);
+    fwrite(map->data, get_map_size(map), 1, file);
     fclose(file);
 
     DEBUG_PRINT("Map:\n");
@@ -119,10 +130,8 @@ Map load_map(string filename) {
 
     map = make_map(width, heigth);
 
-    for (int y = 0; y < heigth; y++) {
-        read = getline(&line, &len, file);
-        memcpy(map->data + y * width, line, read - 1); // -1 \n at end of line
-    }
+    read = getline(&line, &len, file);
+    memcpy(map->data, line, read);
     /* print_map(map); */
 
     if (line)
