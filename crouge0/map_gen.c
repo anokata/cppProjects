@@ -26,14 +26,18 @@ WorldMap load_wmap() {
         wmap->metadata[0].description = "space";
         wmap->metadata[1].c = '%';
         wmap->metadata[1].description = "plains";
+        wmap->metadata[1].color = cd_green;
         wmap->metadata[2].c = '^';
         wmap->metadata[2].description = "mountains";
+        wmap->metadata[2].color = cd_white;
         wmap->metadata[3].c = '-';
         wmap->metadata[3].description = "swamp";
+        wmap->metadata[3].color = cn_blue;
         wmap->metadata[4].c = '*';
         wmap->metadata[4].description = "forest";
         wmap->metadata[5].c = '.';
         wmap->metadata[5].description = "desert";
+        wmap->metadata[5].color = cn_yellow;
     return wmap;
 }
 

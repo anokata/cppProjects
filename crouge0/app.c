@@ -19,12 +19,13 @@ State state;
 //+1.1 Struct for wmap
 //+1.2 Load wmap.
 //+1.3 View wmap. (color regions) 
-//   wmap mode.
+//+1.3.1 wmap mode.
 // 1.4 show map region description.
 // 1.5 gettext _
 // 2. local map, coords to wmap, load regions, moving, store, load
 
 void processInput(WorldMap wmap) {
+    ss_handle(state, Event_draw, wmap);
 	int ch = getch();
 	while(ch != 'q') {
         ss_handle(state, Event_key, (void*)(uint64_t)ch);
@@ -46,14 +47,15 @@ int key_run(void* data) {
 
 int draw(void* data) {
     clear();
-    cc_putxy('D', cb_yellow, 3, 2);
+    /* cc_putxy('D', cb_yellow, 3, 2); */
+    cc_printxy("Key bindings:\nw world map\nh this help\n", cb_white, 0, 0);
     return 0;
 }
 
 int wmap_key(void* data) {
     char key = (uint64_t)data;
     switch (key) {
-        case 'r':
+        case 'h':
             ss_setstate(state, State_run);
             break;
     }
