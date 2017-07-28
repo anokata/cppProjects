@@ -30,6 +30,11 @@ typedef struct Point {
     int y;
 } Point;
 
+typedef struct GlobalMapTile {
+    char c;
+    Color color;
+} GlobalMapTile;
+
 typedef struct WorldMapRegionDescriptor { //wmrd
     char c;
     Color color;
@@ -40,6 +45,15 @@ typedef struct WorldMap {
     Map map;
     WorldMapRegionDescriptor *metadata;
 } *WorldMap;
+
+typedef struct G {
+    WorldMap wmap;
+    Point cursor;
+    char key;
+} *G;
+
+G new_g();
+void free_g(G g);
 
 int out_map(char *filename, int width, int heigth);
 Map load_map(string filename);

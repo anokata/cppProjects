@@ -32,10 +32,10 @@ void cc_put(char ch, struct Color color) {
 }
 
 void cc_putxy(char ch, struct Color color, int x, int y) {
-    move(y, x);
+    /* move(y, x); */
 	attron(color.attr);
     attron(COLOR_PAIR(color.color));
-	addch(ch);
+	mvaddch(y, x, ch);
 	attroff(color.attr);
     attroff(COLOR_PAIR(color.color));
 }
