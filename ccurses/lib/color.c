@@ -7,4 +7,5 @@ void cc_init_colors() {
 	init_pair(_cn_white, COLOR_WHITE, BACKGROUND);
 	init_pair(_cn_black, COLOR_BLACK, BACKGROUND);
 	init_pair(_cn_green, COLOR_GREEN, BACKGROUND);
+	init_pair(_cw_white, COLOR_WHITE, COLOR_WHITE);
 }
