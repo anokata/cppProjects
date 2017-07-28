@@ -64,4 +64,8 @@ WorldMap load_wmap();
 void free_wmap(WorldMap wmap);
 void print_wmap(WorldMap wmap);
 
+
+
+string load_global_map();
+
 #endif

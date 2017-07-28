@@ -95,7 +95,6 @@ int wmap_draw(void* data) {
 
 int cursor_key(void* data) {
     G g = data;
-    Point cursor = g->cursor;
     char key = g->key;
     switch (key) {
         case 'h':
@@ -114,12 +113,10 @@ int cursor_key(void* data) {
 
 int cursor_draw(void* data) {
     G g = data;
-    Point cursor = g->cursor;
 
     clear();
-    cc_putxy(g->key, cb_yellow, 3, 2);
-    cc_putxy(' ', cw_white, cursor.x, cursor.y);
-    /* cc_printxy(" ", cw_white, cursor.x, cursor.y); */
+    /* cc_putxy(g->key, cb_yellow, 3, 2); */
+    cc_putxy(' ', cw_white, g->cursor.x, g->cursor.y);
     return 0;
 }
 
@@ -135,6 +132,8 @@ void state_init() {
 }
 
 void start() {
+    printf("|%s|", load_global_map());
+    return;
     curses_init();
 		cc_putxy('W', cd_yellow, 1, 2);
 		cc_print("\nWid:Hei = ", cd_blue);

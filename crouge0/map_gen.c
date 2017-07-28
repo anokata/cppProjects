@@ -102,12 +102,13 @@ Map gen_map(int width, int heigth) {
     srand((unsigned) time(&t));
     map_chars_count = strlen(map_chars);
 
-    Map map = make_map(width, heigth);
+    Map map = make_map(width + 1, heigth);
 
     for (int i=0; i < heigth; i++) {
         for (int j=0; j < width; j++) {
-            map->data[i * width + j] = rand_char();
+            map->data[i * (width + 1) + j] = rand_char();
         }
+		map->data[i * (width + 1)] = '\n';
     }
     return map;
 }
@@ -121,7 +122,7 @@ void print_map(Map map) {
         for (int j=0; j < map->width; j++) {
             putchar(map->data[i * map->width + j]);
         }
-        putchar('\n');
+        /* putchar('\n'); */
     }
 }
 
@@ -137,6 +138,7 @@ int out_map(char *filename, int width, int heigth) {
     fwrite(buf, strlen(buf), 1, file);
     free(buf);
 
+	// TODO by lines
     fwrite(map->data, strlen(map->data), 1, file);
     fclose(file);
 
@@ -184,6 +186,34 @@ Map load_map(string filename) {
         free(line);
     fclose(file);
     return map;
+}
+
+string load_global_map() {
+    int local_width = 2;
+    int local_height = 1;
+    int local_map_width = 20;
+    int local_map_height = 20;
+    string gmap = malloc(local_width 
+            * local_map_width 
+            * local_height 
+            * local_map_height); // Free
+    string mapname_format = "maps/map_%i_%i";
+    char mapname[100];
+    int left = 0;
+
+    for (int i = 1; i <= local_height; i++) {
+        for (int j = 1; j <= local_width; j++) {
+            sprintf(mapname, mapname_format, i, j);
+            printf("name: %s\n", mapname);
+			Map lmap = load_map(mapname);
+            left = (j - 1) * local_map_width;
+            /* memcpy(gmap + left, line, read - 1); */
+            /* printf("->%s\n", lmap->data); */
+			free_map(lmap);
+        }
+    }
+
+    return gmap;
 }
 
 G new_g() {
