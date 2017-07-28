@@ -140,15 +140,25 @@ Map load_map(string filename) {
     return map;
 }
 
+// ToDo
+void _copy_loc2glob(string gmap, Map lmap, int offset) {
+    for (int i = 0; i < lmap->heigth; i++) {
+        memcpy(gmap + offset + i * lmap->width, 
+               lmap->data + i * lmap->width, lmap->width);
+    }
+}
+
 string load_global_map() {
+// make normal Map
+    Map global_map;
     int local_width = 2;
     int local_height = 1;
-    int local_map_width = 20;
-    int local_map_height = 20;
-    string gmap = malloc(local_width 
-            * local_map_width 
-            * local_height 
-            * local_map_height); // Free
+    int local_map_width = 6;
+    int local_map_height = 3;
+    int local_size = local_map_width * local_map_height;
+    int size = local_width * local_size * local_height;
+    string gmap = malloc(size);
+    memset(gmap, '-', size);
     string mapname_format = "maps/map_%i_%i";
     char mapname[100];
     int left = 0;
@@ -159,11 +169,15 @@ string load_global_map() {
             printf("name: %s\n", mapname);
 			Map lmap = load_map(mapname);
             left = (j - 1) * local_map_width;
-            /* memcpy(gmap + left, line, read - 1); */
-            /* printf("->%s\n", lmap->data); */
+            string m2 = map_to2d(lmap);
+            // COpy by line to glob
+            _copy_loc2glob(gmap, lmap, local_size * ( i + j - 2));
+            // string g2 = map_to2d(gmap); and print
+            printf("%s\n", m2);
+            free(m2);
 			free_map(lmap);
         }
     }
-
+    
     return gmap;
 }
