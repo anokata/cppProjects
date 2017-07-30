@@ -32,5 +32,6 @@ int fget_int_line(FILE *file);
 Map make_map(int width, int heigth);
 
 Map load_global_map();
+void draw_map(Map map);
 
 #endif

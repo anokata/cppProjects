@@ -82,6 +82,13 @@ void print_map(Map map) {
     free(m2);
 }
 
+void draw_map(Map map) {
+    string m2;
+    m2 = map_to2d(map); // store to g?
+    cc_print(m2, cd_yellow);
+    free(m2);
+}
+
 // to viewable with newlines, from viewable/editable in vi
 // mode for open view map in editor in tmp file, edit, save and convert to map.
 
@@ -132,7 +139,7 @@ Map load_map(string filename) {
     map = make_map(width, heigth);
 
     read = getline(&line, &len, file);
-    memcpy(map->data, line, read);
+    memcpy(map->data, line, read - 1);
     /* print_map(map); */
 
     if (line)

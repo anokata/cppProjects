@@ -5,6 +5,8 @@ G new_g() {
 
     g->wmap = load_wmap();
     g->gmap = load_global_map();
+    g->cursor.x = 0;
+    g->cursor.y = 0;
 
     return g;
 }

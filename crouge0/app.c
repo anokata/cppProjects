@@ -117,8 +117,8 @@ int cursor_draw(void* data) {
 
     clear();
     /* cc_putxy(g->key, cb_yellow, 3, 2); */
+    draw_map(g->gmap);
     cc_putxy(' ', cw_white, g->cursor.x, g->cursor.y);
-    print_map(g->gmap);
     return 0;
 }
 
@@ -134,26 +134,14 @@ void state_init() {
 }
 
 void start() {
-    /* Map gmap = load_global_map(); */
-    /* print_map(gmap); */
-    /* free_map(gmap); */
+    G g = new_g();
+    /* free_g(g); */
     /* return; */
     curses_init();
-		cc_putxy('W', cd_yellow, 1, 2);
-		cc_print("\nWid:Hei = ", cd_blue);
-        cc_printi(width, cd_white);
-		cc_print(" : ", cd_red);
-        cc_printi(heigth, cd_white);
     state_init();
-        /* Map world = load_map("world.map"); */
-        /* WorldMap wmap = load_wmap(); */
-        G g = new_g();
-        /* g->wmap = wmap; */
 
     processInput(g);
     ss_free_state(state);
     curses_end();
-        /* free_wmap(wmap); */
-        /* free_map(world); */
-        free_g(g);
+    free_g(g);
 }
