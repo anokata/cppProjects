@@ -98,15 +98,20 @@ int cursor_key(void* data) {
     G g = data;
     char key = g->key;
     switch (key) {
-        case 'h':
+        case 'r':
             ss_setstate(state, State_run);
             break;
         case 'j':
             g->cursor.y++;
-            g->cursor.y = 20;
             break;
         case 'k':
             g->cursor.y--;
+            break;
+        case 'h':
+            g->cursor.x--;
+            break;
+        case 'l':
+            g->cursor.x++;
             break;
     }
     return 0;
