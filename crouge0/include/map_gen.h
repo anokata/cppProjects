@@ -31,6 +31,6 @@ char map_char_at(Map map, int x, int y);
 int fget_int_line(FILE *file);
 Map make_map(int width, int heigth);
 
-string load_global_map();
+Map load_global_map();
 
 #endif

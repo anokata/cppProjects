@@ -132,10 +132,9 @@ void state_init() {
 }
 
 void start() {
-    string s = NULL;
-    s = load_global_map();
-    printf("|%s|\n", s);
-    free(s);
+    Map gmap = load_global_map();
+    print_map(gmap);
+    free_map(gmap);
     return;
     curses_init();
 		cc_putxy('W', cd_yellow, 1, 2);
