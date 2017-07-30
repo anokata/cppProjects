@@ -27,6 +27,7 @@ State state;
 // 2.2 how store/load local map? and view in edges. Viewport map. Load from pieces to global map array.
 // ... local map files naming
 // 2.3 load to global map
+// 2.3.1 gmap mode
 // 2.4 global to viewport at point
 // 2.5 moving and view map
 
@@ -117,6 +118,7 @@ int cursor_draw(void* data) {
     clear();
     /* cc_putxy(g->key, cb_yellow, 3, 2); */
     cc_putxy(' ', cw_white, g->cursor.x, g->cursor.y);
+    print_map(g->gmap);
     return 0;
 }
 
@@ -132,10 +134,10 @@ void state_init() {
 }
 
 void start() {
-    Map gmap = load_global_map();
-    print_map(gmap);
-    free_map(gmap);
-    return;
+    /* Map gmap = load_global_map(); */
+    /* print_map(gmap); */
+    /* free_map(gmap); */
+    /* return; */
     curses_init();
 		cc_putxy('W', cd_yellow, 1, 2);
 		cc_print("\nWid:Hei = ", cd_blue);
@@ -144,14 +146,14 @@ void start() {
         cc_printi(heigth, cd_white);
     state_init();
         /* Map world = load_map("world.map"); */
-        WorldMap wmap = load_wmap();
+        /* WorldMap wmap = load_wmap(); */
         G g = new_g();
-        g->wmap = wmap;
+        /* g->wmap = wmap; */
 
     processInput(g);
     ss_free_state(state);
     curses_end();
-        free_wmap(wmap);
+        /* free_wmap(wmap); */
         /* free_map(world); */
         free_g(g);
 }
