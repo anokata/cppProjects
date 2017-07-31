@@ -72,7 +72,7 @@ TileMap load_tile_map(string filename) {
 
     read = getline(&line, &len, file);
     copy_map2tiles(map, line, read - 1);
-    /* print_tile_map(map); */
+    print_tile_map(map);
 
     if (line)
         free(line);
@@ -80,27 +80,34 @@ TileMap load_tile_map(string filename) {
     return map;
 }
 
-/* TileMapload_global_tmap() { */
-/*     TileMap global_map; */
-/*     int local_width = 2; */
-/*     int local_height = 2; */
-/*     int local_map_width = 6; */
-/*     int local_map_height = 3; */
-/*     global_map = make_tile_map(local_width * local_map_width, local_height * local_map_height); */
-/*     string mapname_format = "maps/map_%i_%i"; */
-/*     char mapname[100]; */
-/*     int block_height = local_map_width * local_width * local_map_height; */
+void _copy_loc2glob(TileMap gmap, TileMap lmap, int offset) {
+    for (int i = 0; i < lmap->heigth; i++) {
+        memcpy(gmap->tiles + offset + i * gmap->width, 
+               lmap->tiles + i * lmap->width, lmap->width * sizeof(struct Tile));
+    }
+}
 
-/*     for (int i = 1; i <= local_height; i++) { */
-/*         for (int j = 1; j <= local_width; j++) { */
-/*             sprintf(mapname, mapname_format, i, j); */
-/*             printf("name: %s\n", mapname); */
-/* 			Map lmap = load_map(mapname); */
-/*             _copy_loc2glob(global_map, lmap, */ 
-/*                     local_map_width * (j - 1) + (i - 1) * block_height); */
-/* 			free_map(lmap); */
-/*         } */
-/*     } */
+TileMap load_global_tmap() {
+    TileMap global_map;
+    int local_width = 2;
+    int local_height = 2;
+    int local_map_width = 6;
+    int local_map_height = 3;
+    global_map = make_tile_map(local_width * local_map_width, local_height * local_map_height);
+    string mapname_format = "maps/map_%i_%i";
+    char mapname[100];
+    int block_height = local_map_width * local_width * local_map_height;
+
+    for (int i = 1; i <= local_height; i++) {
+        for (int j = 1; j <= local_width; j++) {
+            sprintf(mapname, mapname_format, i, j);
+            printf("name: %s\n", mapname);
+			TileMap lmap = load_tile_map(mapname);
+            _copy_loc2glob(global_map, lmap, 
+                    local_map_width * (j - 1) + (i - 1) * block_height);
+			free_tile_map(lmap);
+        }
+    }
     
-/*     return global_map; */
-/* } */
+    return global_map;
+}

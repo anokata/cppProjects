@@ -7,4 +7,8 @@ int main() {
     print_tile_map(l);
     free_tile_map(l);
     free_tile_map(m);
+
+    TileMap g = load_global_tmap();
+    print_tile_map(g);
+    free_tile_map(g);
 }

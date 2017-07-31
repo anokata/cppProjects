@@ -19,6 +19,7 @@ typedef struct TileMap {
 
 TileMap make_tile_map(int width, int heigth);
 TileMap load_tile_map(string filename);
+TileMap load_global_tmap();
 void free_tile_map(TileMap map);
 
 void print_tile_map(TileMap map);
