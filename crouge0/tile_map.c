@@ -47,3 +47,60 @@ void print_tile_map(TileMap map) {
     printf("%s\n", m2);
     free(m2);
 }
+
+void copy_map2tiles(TileMap map, char *line, int len) {
+    for (int i = 0; i < len; i++) {
+        map->tiles[i].c = line[i];
+    }
+}
+
+TileMap load_tile_map(string filename) {
+    TileMap map = 0;
+    FILE *file = fopen(filename, "r");
+    int width = 0;
+    int heigth = 0;
+
+    char * line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    width = fget_int_line(file);
+    heigth = fget_int_line(file);
+    DEBUG_PRINT("Loading tile map with w:%d h:%d\n", width, heigth);
+
+    map = make_tile_map(width, heigth);
+
+    read = getline(&line, &len, file);
+    copy_map2tiles(map, line, read - 1);
+    /* print_tile_map(map); */
+
+    if (line)
+        free(line);
+    fclose(file);
+    return map;
+}
+
+/* TileMapload_global_tmap() { */
+/*     TileMap global_map; */
+/*     int local_width = 2; */
+/*     int local_height = 2; */
+/*     int local_map_width = 6; */
+/*     int local_map_height = 3; */
+/*     global_map = make_tile_map(local_width * local_map_width, local_height * local_map_height); */
+/*     string mapname_format = "maps/map_%i_%i"; */
+/*     char mapname[100]; */
+/*     int block_height = local_map_width * local_width * local_map_height; */
+
+/*     for (int i = 1; i <= local_height; i++) { */
+/*         for (int j = 1; j <= local_width; j++) { */
+/*             sprintf(mapname, mapname_format, i, j); */
+/*             printf("name: %s\n", mapname); */
+/* 			Map lmap = load_map(mapname); */
+/*             _copy_loc2glob(global_map, lmap, */ 
+/*                     local_map_width * (j - 1) + (i - 1) * block_height); */
+/* 			free_map(lmap); */
+/*         } */
+/*     } */
+    
+/*     return global_map; */
+/* } */

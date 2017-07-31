@@ -1,6 +1,8 @@
 #pragma once
 #ifndef __UTIL__
 #define __UTIL__
+#include <stdio.h>
+#include <stdlib.h>
 typedef char* string;
 
 #ifdef DEBUG
@@ -8,5 +10,7 @@ typedef char* string;
 #else
 #define DEBUG_PRINT(fmt, args...)
 #endif
+
+int fget_int_line(FILE *file);
 
 #endif

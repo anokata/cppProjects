@@ -1,9 +1,9 @@
 P=rouge0
 MAPGEN=mapgen_main
 CFLAGS=-Wall -std=gnu11 -g 
-OBJECTS=app.c main.c map_gen.c world_map.c g.c tile_map.c
+OBJECTS=app.c main.c map_gen.c world_map.c g.c tile_map.c util.c
 MAP_OBJECTS=mapgen_main.c map_gen.c
-TMAP_OBJECTS=tile_map.c test_tile_map.c
+TMAP_OBJECTS=tile_map.c test_tile_map.c util.c
 LDLIBS=
 LIB=libfurses.a
 CC=gcc
