@@ -8,6 +8,7 @@
 #include "menu.h"
 #include "map.h"
 #include "map_gen.h"
+#include "tile_map.h"
 #include "world_map.h"
 #include "g.h"
 

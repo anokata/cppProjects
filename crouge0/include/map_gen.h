@@ -14,18 +14,17 @@
 #include "map.h"
 
 
-int out_map(char *filename, int width, int heigth);
+Map make_map(int width, int heigth);
 Map load_map(string filename);
+Map load_global_map();
 void free_map(Map map);
+
 void print_map(Map map);
-
-
-char map_char_at(Map map, int x, int y);
+void draw_map(Map map);
+int out_map(char *filename, int width, int heigth);
 
 int fget_int_line(FILE *file);
-Map make_map(int width, int heigth);
+char map_char_at(Map map, int x, int y);
 
-Map load_global_map();
-void draw_map(Map map);
 
 #endif
