@@ -3,7 +3,7 @@
 #include "util.h"
 
 typedef struct Map {
-    char *data; // TODO Tile
+    char *data;
     int width;
     int heigth;
 } *Map;
@@ -25,12 +25,8 @@ typedef struct WorldMap {
 } *WorldMap;
 
 
-typedef struct GlobalMapTile {
+typedef struct GlobalMapTile { //?
     char c;
     Color color;
 } GlobalMapTile;
 
-typedef struct Tile {
-    Color color;
-    char c;
-} Tile;

@@ -1,8 +1,9 @@
 P=rouge0
 MAPGEN=mapgen_main
 CFLAGS=-Wall -std=gnu11 -g 
-OBJECTS=app.c main.c map_gen.c world_map.c g.c
+OBJECTS=app.c main.c map_gen.c world_map.c g.c tile_map.c
 MAP_OBJECTS=mapgen_main.c map_gen.c
+TMAP_OBJECTS=tile_map.c test_tile_map.c
 LDLIBS=
 LIB=libfurses.a
 CC=gcc
@@ -25,4 +26,7 @@ make_with_lib:
 
 map:
 	$(CC) $(CFLAGS) $(MAP_OBJECTS) -L../ccurses -lccurses -I./include -I../ccurses -lncurses -o /tmp/$(MAPGEN) && valgrind /tmp/$(MAPGEN) && ls -l /tmp/*.map
+
+tmap:
+	$(CC) $(CFLAGS) $(TMAP_OBJECTS) -L../ccurses -lccurses -I./include -I../ccurses -lncurses -o /tmp/out && valgrind /tmp/out
 

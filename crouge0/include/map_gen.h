@@ -3,6 +3,7 @@
 #define __MAP_GEN__
 
 #define _GNU_SOURCE
+#define DEBUG
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -12,13 +13,6 @@
 #include "util.h"
 #include "map.h"
 
-#define DEBUG
-
-#ifdef DEBUG
-#define DEBUG_PRINT(fmt, args...)    fprintf(stderr, fmt, ## args)
-#else
-#define DEBUG_PRINT(fmt, args...)
-#endif
 
 int out_map(char *filename, int width, int heigth);
 Map load_map(string filename);

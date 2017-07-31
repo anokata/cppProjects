@@ -15,6 +15,8 @@ State state;
 // 4. Draw static map, weather zones, caves. Circle
 // 5. fun events, fast grow, new challanges, FF, skills/items (keys, levitate, lava, swim) for access areas, bosses
 // 6. end goal, meaning of all of this - survive and escape from planet. from black entitys.
+// day part status - sun/moon weather.
+// anim trees ...
 // 1. World map, how store, view it with self position. map blocks. view frame.
 //+1.1 Struct for wmap
 //+1.2 Load wmap.
@@ -26,8 +28,9 @@ State state;
 //.2.1 cursor move mode
 // 2.2 how store/load local map? and view in edges. Viewport map. Load from pieces to global map array.
 // ... local map files naming
-// 2.3 load to global map
-// 2.3.1 gmap mode
+//+2.3 load to global map
+//+2.3.1 gmap mode
+// 2.3.2 colors
 // 2.4 global to viewport at point
 // 2.5 moving and view map
 
