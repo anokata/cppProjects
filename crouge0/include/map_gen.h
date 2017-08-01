@@ -16,15 +16,13 @@
 
 Map make_map(int width, int heigth);
 Map load_map(string filename);
-Map load_global_map();
 void free_map(Map map);
 
 void print_map(Map map);
-void draw_map(Map map);
 int out_map(char *filename, int width, int heigth);
 
 int fget_int_line(FILE *file);
-char map_char_at(Map map, int x, int y);
+char map_char_at(TileMap map, int x, int y);
 
 
 #endif

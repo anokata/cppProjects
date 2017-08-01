@@ -1,6 +1,7 @@
 #pragma once
 #include "lib/ccurses.h"
 #include "util.h"
+#include "tile_map.h"
 
 typedef struct Map {
     char *data;
@@ -20,7 +21,7 @@ typedef struct WorldMapRegionDescriptor { //wmrd
 } WorldMapRegionDescriptor;
 
 typedef struct WorldMap {
-    Map map;
+    TileMap map;
     WorldMapRegionDescriptor *metadata;
 } *WorldMap;
 

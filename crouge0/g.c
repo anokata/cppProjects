@@ -4,8 +4,7 @@ G new_g() {
     G g = malloc(sizeof(struct G));
 
     g->wmap = load_wmap();
-    g->gmap = load_global_map();
-    /* g->tgmap = load_global_tmap(); */
+    g->gmap = load_global_tmap();
     g->cursor.x = 0;
     g->cursor.y = 0;
 
@@ -14,6 +13,6 @@ G new_g() {
 
 void free_g(G g) {
     free_wmap(g->wmap);
-    free_map(g->gmap);
+    free_tile_map(g->gmap);
     free(g);
 }

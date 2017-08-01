@@ -7,8 +7,7 @@
 
 typedef struct G {
     WorldMap wmap;
-    Map gmap;
-    TileMap tgmap;
+    TileMap gmap;
     Point cursor;
     char key;
 } *G;

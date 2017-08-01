@@ -1,6 +1,6 @@
 #include "map_gen.h"
 
-Map make_map(int width, int heigth) {
+Map make_map(int width, int heigth) { // OK
     Map map = malloc(sizeof(struct Map));
     char *data = calloc(width * heigth, 1);
     map->data = data;
@@ -14,7 +14,7 @@ Map make_map(int width, int heigth) {
     return map;
 }
 
-void free_map(Map map) {
+void free_map(Map map) { // OK
     free(map->data);
     free(map);
 }
@@ -26,8 +26,8 @@ char rand_char() {
     return map_chars[rand() % map_chars_count];
 }
 
-char map_char_at(Map map, int x, int y) {
-    return map->data[y * map->width + x];
+char map_char_at(TileMap map, int x, int y) {
+    return map->tiles[y * map->width + x].c;
 }
 
 int map_neighbours(Map map, Point p) {
@@ -55,7 +55,7 @@ Map gen_map(int width, int heigth) {
     return map;
 }
 
-string map_to2d(Map map) {
+string map_to2d(Map map) { // OK
     int nwidth = map->width + 1;
     string map2d = malloc(1 + map->heigth * nwidth);
     memset(map2d, 0, map->heigth * nwidth);
@@ -74,18 +74,11 @@ int get_map_size(Map map) {
     return map->width * map->heigth;
 }
 
-void print_map(Map map) {
+void print_map(Map map) { // OK
     string m2;
     m2 = map_to2d(map);
     DEBUG_PRINT("w:%d h:%d\n", map->width, map->heigth);
     printf("%s\n", m2);
-    free(m2);
-}
-
-void draw_map(Map map) {
-    string m2;
-    m2 = map_to2d(map); // store to g?
-    cc_print(m2, cd_yellow);
     free(m2);
 }
 
@@ -111,7 +104,7 @@ int out_map(char *filename, int width, int heigth) {
     return 0;
 }
 
-Map load_map(string filename) {
+Map load_map(string filename) { // OK
     Map map = 0;
     FILE *file = fopen(filename, "r");
     int width = 0;
@@ -137,34 +130,3 @@ Map load_map(string filename) {
     return map;
 }
 
-void _copy_loc2glob(Map gmap, Map lmap, int offset) {
-    for (int i = 0; i < lmap->heigth; i++) {
-        memcpy(gmap->data + offset + i * gmap->width, 
-               lmap->data + i * lmap->width, lmap->width);
-    }
-}
-
-Map load_global_map() {
-    Map global_map;
-    int local_width = 2;
-    int local_height = 2;
-    int local_map_width = 6;
-    int local_map_height = 3;
-    global_map = make_map(local_width * local_map_width, local_height * local_map_height);
-    string mapname_format = "maps/map_%i_%i";
-    char mapname[100];
-    int block_height = local_map_width * local_width * local_map_height;
-
-    for (int i = 1; i <= local_height; i++) {
-        for (int j = 1; j <= local_width; j++) {
-            sprintf(mapname, mapname_format, i, j);
-            printf("name: %s\n", mapname);
-			Map lmap = load_map(mapname);
-            _copy_loc2glob(global_map, lmap, 
-                    local_map_width * (j - 1) + (i - 1) * block_height);
-			free_map(lmap);
-        }
-    }
-    
-    return global_map;
-}

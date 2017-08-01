@@ -23,5 +23,6 @@ TileMap load_global_tmap();
 void free_tile_map(TileMap map);
 
 void print_tile_map(TileMap map);
-string map_to2d(TileMap map);
+string tilemap_to2d(TileMap map);
 Tile *tile_at(TileMap map, int x, int y);
+void draw_map(TileMap map);
