@@ -1,3 +1,4 @@
+# vim: filetype=make
 P=rouge0
 MAPGEN=mapgen_main
 CFLAGS=-Wall -std=gnu11 -g 
@@ -32,3 +33,6 @@ tmap:
 
 test: tmap map
 	echo ok
+
+lint:
+	splint main.c -I./include -I../ccurses/
