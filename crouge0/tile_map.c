@@ -127,6 +127,7 @@ TileMap load_global_tmap() {
     int local_map_width = 6;
     int local_map_height = 3;
     global_map = make_tile_map(local_width * local_map_width, local_height * local_map_height);
+    DEBUG_PRINT("Global tile map with w:%d h:%d\n", global_map->width, global_map->heigth);
     string mapname_format = "maps/map_%i_%i";
     char mapname[100];
     int block_height = local_map_width * local_width * local_map_height;
@@ -141,13 +142,14 @@ TileMap load_global_tmap() {
 			free_tile_map(lmap);
         }
     }
+    /* print_tile_map(global_map); */
     
     return global_map;
 }
 
 void foreach_tile(TileMap map, TileFunc f) {
     for (int y = 0; y < map->heigth; ++y) {
-        for (int x = 0; x < map->heigth; ++x) {
+        for (int x = 0; x < map->width; ++x) {
             f(tile_at(map, x, y), x, y);
         }
     }
