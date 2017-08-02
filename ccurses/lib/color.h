@@ -36,6 +36,26 @@ static const struct Color cb_green = {_cn_green, A_BOLD};
 static const struct Color cd_green = {_cn_green, A_DIM};
 static const struct Color cw_white = {_cw_white, A_NORMAL};
 
+static const Color cc_all_colors[] = {
+    {_cn_red, A_NORMAL},
+    {_cn_red, A_BOLD},
+    {_cn_red, A_DIM},
+    {_cn_blue, A_NORMAL},
+    {_cn_blue, A_BOLD},
+    {_cn_blue, A_DIM},
+    {_cn_yellow, A_NORMAL},
+    {_cn_yellow, A_BOLD},
+    {_cn_yellow, A_DIM},
+    {_cn_white, A_NORMAL},
+    {_cn_white, A_BOLD},
+    {_cn_white, A_DIM},
+    {_cn_green, A_NORMAL},
+    {_cn_green, A_BOLD},
+    {_cn_green, A_DIM}
+
+};
+
 void cc_init_colors();
+Color cc_get_color_by_id(int id);
 
 #endif
