@@ -54,6 +54,30 @@ void copy_map2tiles(TileMap map, char *line, int len, int offset) {
     }
 }
 
+void apply_color(TileMap map, char c, int color_index) {
+    for (int y = 0; y < map->heigth; ++y) {
+        for (int x = 0; x < map->heigth; ++x) {
+            if (tile_at(map, x, y)->c == c) {
+                tile_at(map, x, y)->color = cc_get_color_by_id(color_index);
+            }
+        }
+    }
+}
+
+void load_colors(TileMap map, FILE *file) {
+    char * line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    while ((read = getline(&line, &len, file)) != -1) {
+        char c = line[0];
+        int color_index = atoi(line + 1);
+        apply_color(map, c, color_index);
+        printf("%c:%d\n", c, color_index);
+    }  
+    if (line) free(line);
+}
+
 TileMap load_tile_map(string filename) {
     TileMap map = 0;
     FILE *file = fopen(filename, "r");
@@ -74,13 +98,14 @@ TileMap load_tile_map(string filename) {
     if (mode == 0) { // Local map
         read = getline(&line, &len, file);
         copy_map2tiles(map, line, read - 1, 0);
+        load_colors(map, file);
     } else if (mode == 1) { // Global map by line
         for (int y = 0; y < heigth; y++) {
             read = getline(&line, &len, file);
             copy_map2tiles(map, line, read - 1, y * width);
         }
     }
-    print_tile_map(map);
+    /* print_tile_map(map); */
 
     if (line)
         free(line);
@@ -120,9 +145,23 @@ TileMap load_global_tmap() {
     return global_map;
 }
 
+void foreach_tile(TileMap map, TileFunc f) {
+    for (int y = 0; y < map->heigth; ++y) {
+        for (int x = 0; x < map->heigth; ++x) {
+            f(tile_at(map, x, y), x, y);
+        }
+    }
+}
+
+void draw_tile(Tile *tile, int x, int y) {
+    cc_putxy(tile->c, tile->color, x, y);
+}
+
 void draw_map(TileMap map) {
-    string m2;
-    m2 = tilemap_to2d(map); // store to g?
-    cc_print(m2, cd_yellow);
-    free(m2);
+    // draw by tile
+    foreach_tile(map, draw_tile);
+    /* string m2; */
+    /* m2 = tilemap_to2d(map); // store to g? */
+    /* cc_print(m2, cd_yellow); */
+    /* free(m2); */
 }

@@ -30,7 +30,7 @@ State state;
 // ... local map files naming
 //+2.3 load to global map
 //+2.3.1 gmap mode
-// 2.3.2 colors
+// 2.3.2 colors (without attributes)
 // 2.4 global to viewport at point
 // 2.5 moving and view map
 
