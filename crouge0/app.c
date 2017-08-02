@@ -27,10 +27,10 @@ State state;
 // 2.  local map, coords to wmap, load regions, moving, store, load
 //.2.1 cursor move mode
 // 2.2 how store/load local map? and view in edges. Viewport map. Load from pieces to global map array.
-// ... local map files naming
+//+... local map files naming
 //+2.3 load to global map
 //+2.3.1 gmap mode
-// 2.3.2 colors (without attributes)
+//+2.3.2 colors (without attributes)
 // 2.4 global to viewport at point
 // 2.5 moving and view map
 
@@ -106,15 +106,19 @@ int cursor_key(void* data) {
             break;
         case 'j':
             g->cursor.y++;
+            g->view->cy++;
             break;
         case 'k':
             g->cursor.y--;
+            g->view->cy--;
             break;
         case 'h':
             g->cursor.x--;
+            g->view->cx--;
             break;
         case 'l':
             g->cursor.x++;
+            g->view->cx++;
             break;
     }
     return 0;
@@ -125,7 +129,7 @@ int cursor_draw(void* data) {
 
     clear();
     /* cc_putxy(g->key, cb_yellow, 3, 2); */
-    draw_map(g->gmap);
+    draw_map(g->gmap, g->view);
     cc_putxy(' ', cw_white, g->cursor.x, g->cursor.y);
     return 0;
 }

@@ -147,6 +147,21 @@ TileMap load_global_tmap() {
     return global_map;
 }
 
+void foreach_tile_viewport(TileMap map, TileFunc f, Viewport v) {
+    int top = v.cy - v.heigth / 2;
+    int left = v.cx - v.width / 2;
+    int bottom = (v.cy + v.heigth / 2);// % map->heigth + 0;
+    int right = (v.cx + v.width / 2) % map->width + 0;
+    top = (top < 0) ? 0 : top;
+    left = (left < 0) ? 0 : left;
+
+    for (int y = top; y < bottom; ++y) {
+        for (int x = left; x < right; ++x) {
+            f(tile_at(map, x, y), x - left, y - top);
+        }
+    }
+}
+
 void foreach_tile(TileMap map, TileFunc f) {
     for (int y = 0; y < map->heigth; ++y) {
         for (int x = 0; x < map->width; ++x) {
@@ -159,9 +174,11 @@ void draw_tile(Tile *tile, int x, int y) {
     cc_putxy(tile->c, tile->color, x, y);
 }
 
-void draw_map(TileMap map) {
+void draw_map(TileMap map, Viewport *v) {
     // draw by tile
-    foreach_tile(map, draw_tile);
+    /* foreach_tile(map, draw_tile); */
+    /* Viewport ve = {6, 6, 0, 0}; */
+    foreach_tile_viewport(map, draw_tile, *v);
     /* string m2; */
     /* m2 = tilemap_to2d(map); // store to g? */
     /* cc_print(m2, cd_yellow); */

@@ -10,6 +10,7 @@ typedef struct G {
     TileMap gmap;
     Point cursor;
     char key;
+    Viewport *view;
 } *G;
 
 G new_g();

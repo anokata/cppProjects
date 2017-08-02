@@ -8,11 +8,18 @@ G new_g() {
     g->cursor.x = 0;
     g->cursor.y = 0;
 
+    g->view = malloc(sizeof(Viewport));
+    g->view->cx = 0;
+    g->view->cy = 0;
+    g->view->width = 6;
+    g->view->heigth = 6;
+
     return g;
 }
 
 void free_g(G g) {
     free_wmap(g->wmap);
     free_tile_map(g->gmap);
+    free(g->view);
     free(g);
 }

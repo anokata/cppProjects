@@ -30,4 +30,3 @@ typedef struct GlobalMapTile { //?
     char c;
     Color color;
 } GlobalMapTile;
-
