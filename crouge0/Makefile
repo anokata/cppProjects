@@ -36,3 +36,6 @@ test: tmap map
 
 lint:
 	splint main.c -I./include -I../ccurses/
+
+test_sky:
+	$(CC) test_sky.c sky_view.c -I./include -I../ccurses
