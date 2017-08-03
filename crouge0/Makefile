@@ -38,4 +38,4 @@ lint:
 	splint main.c -I./include -I../ccurses/
 
 test_sky:
-	$(CC) test_sky.c sky_view.c -I./include -I../ccurses
+	$(CC) test_sky.c sky_view.c -I./include -I../ccurses -o /tmp/sky && /tmp/sky
