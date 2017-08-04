@@ -1,20 +1,21 @@
 # vim: filetype=make
 P=todonotes
 CFLAGS=-Wall -Wextra -std=gnu11 -g -D_GNU_SOURCE=1
-OBJECTS=main.c
+INCLUDES=-I./include -I../include
+OBJECTS=main.c note.c
 CC=gcc
 TARGET=/tmp/$(P)
 TEMPOUT=-o $(TARGET)
 RUN=$(TARGET)
 
 main: 
-	$(CC) $(CFLAGS) $(OBJECTS) $(TEMPOUT) && $(RUN)
+	$(CC) $(CFLAGS) $(OBJECTS) $(INCLUDES) $(TEMPOUT) && $(RUN)
 
 run:
 	$(RUN)
 
 compile:
-	$(CC) $(CFLAGS) $(OBJECTS) $(TEMPOUT)
+	$(CC) $(CFLAGS) $(OBJECTS) $(INCLUDES) $(TEMPOUT)
 
 test:
 	valgrind $(RUN)
