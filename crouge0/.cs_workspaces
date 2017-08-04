@@ -11,6 +11,12 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 set shortmess=aoO
 badd +1 app.c
+badd +1 maps/map_1_1
+badd +1 maps/global
+badd +1 test_sky.c
+badd +2 include/sky_view.h
+badd +1 Makefile
+badd +24 sky_view.c
 argglobal
 silent! argdel *
 edit app.c
@@ -21,12 +27,74 @@ set nosplitright
 wincmd t
 set winheight=1 winwidth=1
 argglobal
-let s:l = 1 - ((0 * winheight(0) + 26) / 52)
+let s:l = 43 - ((42 * winheight(0) + 26) / 52)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-1
+43
+normal! 011|
+tabedit ~/tst/cppProjects/ccurses/app.h
+edit /home/ksi/tst/cppProjects/ccurses/app.h
+edit ~/tst/cppProjects/ccurses/app.h
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+let s:l = 5 - ((4 * winheight(0) + 26) / 52)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+5
 normal! 0
+tabedit include/sky_view.h
+edit include/sky_view.h
+edit include/sky_view.h
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+let s:l = 12 - ((11 * winheight(0) + 26) / 52)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+12
+normal! 049|
+tabedit test_sky.c
+edit maps/map_1_1
+edit maps/global
+edit test_sky.c
+edit test_sky.c
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+let s:l = 10 - ((9 * winheight(0) + 26) / 52)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+10
+normal! 05|
+tabedit sky_view.c
+edit sky_view.c
+edit sky_view.c
+set splitbelow splitright
+set nosplitbelow
+set nosplitright
+wincmd t
+set winheight=1 winwidth=1
+argglobal
+let s:l = 11 - ((10 * winheight(0) + 26) / 52)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+11
+normal! 02|
 tabnext 1
 if exists('s:wipebuf')
   silent exe 'bwipe ' . s:wipebuf

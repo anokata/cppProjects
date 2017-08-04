@@ -33,6 +33,14 @@ State state;
 //+2.3.2 colors (without attributes)
 // 2.4 global to viewport at point
 // 2.5 moving and view map
+// WRite and draw GP Mechanic, view, make questions and decisions, KNOW WHAT TO DO
+// 1. walking @
+// 2. debug and msg
+// 3. simple location
+// 4. walking @ loc stop walls
+// 5. add monstr, simple ai, stay, rand. time steps
+// 6. interacting, simple combat
+// 7. items
 
 // [ ] make wmap from locals
 // UI progress bar with value

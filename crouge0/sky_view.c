@@ -1,6 +1,14 @@
 #include "lib/ccurses.h"
 #include "sky_view.h"
 #include <string.h>
+// Sun position 6--22
+// day night color
+// weather cond
+// Simple KISS
+// 1. without colors?
+// base color
+// fixed width or not?
+//
 
 Sky make_sky() {
     Sky s = malloc(sizeof(struct Sky));
@@ -15,14 +23,7 @@ void free_sky(Sky s) {
 }
 
 char *sky_draw_string(Sky s) {
-    int escape_space = 7 * 2;
-    int len = s->width + escape_space;
-    char *str = malloc(len);
-    memset(str, ' ', len - 1);
-    str[0] = '[';
-    /* strcat(str + 1, RED); */
-    str[8] = 'X';
-
-    str[len - 1] = ']';
+    char *str = NULL;
+    asprintf(&str, "[%s%s(*)%s%s]", BGBLUED, RED, BGBLUE_END, DEFAULT);
     return str;
 }
