@@ -1,3 +1,3 @@
 OUT=/tmp/
 main:
-	g++ $@.cpp -o $(OUT)$@ -lm && $(OUT)$@
+	g++ $@.cpp -g -o $(OUT)$@ -lm && $(OUT)$@
