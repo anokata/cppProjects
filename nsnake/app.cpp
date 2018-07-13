@@ -198,7 +198,7 @@ void App::init() {
     state.bind_event("exit", "key", [](){ return 1; });
     state.bind_event("bm", "step", std::bind(&App::bm_step, this));
     state.bind_event("bm", "key", std::bind(&App::bm_key, this));
-    state.change("bm");
+    state.change("menu");
 
     menu.add("bm", [this](){ this->state.change("bomberman"); return 0; });
     menu.add("start", [this](){ this->state.change("play"); return 0; });
